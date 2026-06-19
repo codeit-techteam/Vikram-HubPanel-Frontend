@@ -1,0 +1,38 @@
+[
+  {
+    "id": "wh-001",
+    "hubId": "hub-001",
+    "name": "Central Warehouse A",
+    "code": "CWA-001",
+    "capacity": 15000,
+    "utilization": 85,
+    "status": "active"
+  },
+  {
+    "id": "wh-002",
+    "hubId": "hub-001",
+    "name": "Central Warehouse B",
+    "code": "CWB-002",
+    "capacity": 12000,
+    "utilization": 72,
+    "status": "active"
+  },
+  {
+    "id": "wh-003",
+    "hubId": "hub-002",
+    "name": "North Warehouse A",
+    "code": "NWA-001",
+    "capacity": 10000,
+    "utilization": 68,
+    "status": "active"
+  },
+  {
+    "id": "wh-004",
+    "hubId": "hub-003",
+    "name": "South Warehouse A",
+    "code": "SWA-001",
+    "capacity": 14000,
+    "utilization": 90,
+    "status": "active"
+  }
+]

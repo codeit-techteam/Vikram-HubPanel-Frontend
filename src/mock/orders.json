@@ -1,0 +1,271 @@
+{
+  "summary": {
+    "todaysOrders": 48,
+    "dailyTarget": 60,
+    "revenue": 345500,
+    "revenueChangePercent": 14,
+    "pendingDeliveries": 14,
+    "etaAvgHours": 4.2,
+    "completedOrders": 32,
+    "totalOrders": 48
+  },
+  "orders": [
+    {
+      "id": "ord-9521",
+      "orderNo": "ORD-9521",
+      "customer": {
+        "name": "L&T Construction",
+        "type": "Corp Account",
+        "email": "procurement@ltconstruction.com",
+        "phone": "+91 98765 43210"
+      },
+      "location": "Worli Sector 4",
+      "value": 124000,
+      "status": "new",
+      "materials": [
+        {
+          "id": "mat-001",
+          "name": "Cement Bags (Grade 43)",
+          "sku": "CMN-43-GRD",
+          "quantity": 200,
+          "unit": "Bags",
+          "unitPrice": 380,
+          "totalPrice": 76000
+        },
+        {
+          "id": "mat-002",
+          "name": "TMT Steel (12mm)",
+          "sku": "STL-TMT-12",
+          "quantity": 40,
+          "unit": "Tons",
+          "unitPrice": 1200,
+          "totalPrice": 48000
+        }
+      ],
+      "payment": {
+        "method": "Credit Account",
+        "status": "Pending",
+        "amount": 124000,
+        "paidAmount": 0,
+        "dueDate": "2025-06-25"
+      },
+      "deliveryAddress": "L&T Construction Site, Worli Sector 4, Mumbai - 400018",
+      "timeline": [
+        { "id": "tl-1", "title": "Order Created", "timestamp": "Today, 9:15 AM", "status": "completed" },
+        { "id": "tl-2", "title": "Approved", "status": "pending" },
+        { "id": "tl-3", "title": "Packed", "status": "pending" },
+        { "id": "tl-4", "title": "Assigned To Vehicle", "status": "pending" },
+        { "id": "tl-5", "title": "Out For Delivery", "status": "pending" },
+        { "id": "tl-6", "title": "Delivered", "status": "pending" }
+      ],
+      "orderDate": "2025-06-18",
+      "createdAt": "2025-06-18T09:15:00"
+    },
+    {
+      "id": "ord-9518",
+      "orderNo": "ORD-9518",
+      "customer": {
+        "name": "Lodha Group",
+        "type": "Premium Partner",
+        "email": "supply@lodhagroup.com",
+        "phone": "+91 98200 12345"
+      },
+      "location": "Thane West Site",
+      "value": 45000,
+      "status": "processing",
+      "materials": [
+        {
+          "id": "mat-003",
+          "name": "Red Bricks (Class A)",
+          "sku": "BRK-RED-A",
+          "quantity": 5000,
+          "unit": "Units",
+          "unitPrice": 6,
+          "totalPrice": 30000
+        },
+        {
+          "id": "mat-004",
+          "name": "River Sand",
+          "sku": "SND-RVR-01",
+          "quantity": 10,
+          "unit": "Tons",
+          "unitPrice": 1500,
+          "totalPrice": 15000
+        }
+      ],
+      "payment": {
+        "method": "Net 30",
+        "status": "Approved",
+        "amount": 45000,
+        "paidAmount": 0,
+        "dueDate": "2025-07-18"
+      },
+      "deliveryAddress": "Lodha Amara, Thane West, Mumbai - 400607",
+      "timeline": [
+        { "id": "tl-1", "title": "Order Created", "timestamp": "Today, 8:30 AM", "status": "completed" },
+        { "id": "tl-2", "title": "Approved", "timestamp": "Today, 9:00 AM", "status": "completed" },
+        { "id": "tl-3", "title": "Packed", "status": "active" },
+        { "id": "tl-4", "title": "Assigned To Vehicle", "status": "pending" },
+        { "id": "tl-5", "title": "Out For Delivery", "status": "pending" },
+        { "id": "tl-6", "title": "Delivered", "status": "pending" }
+      ],
+      "orderDate": "2025-06-18",
+      "createdAt": "2025-06-18T08:30:00"
+    },
+    {
+      "id": "ord-9515",
+      "orderNo": "ORD-9515",
+      "customer": {
+        "name": "Shapoorji Pallonji",
+        "type": "Contract ID: SP-42",
+        "email": "orders@shapoorji.com",
+        "phone": "+91 99887 76655"
+      },
+      "location": "Bandra Kurla Complex",
+      "value": 210000,
+      "status": "packed",
+      "materials": [
+        {
+          "id": "mat-005",
+          "name": "Structural Steel Beams",
+          "sku": "STL-BM-400",
+          "quantity": 25,
+          "unit": "Tons",
+          "unitPrice": 6500,
+          "totalPrice": 162500
+        },
+        {
+          "id": "mat-006",
+          "name": "Ready Mix Concrete (M25)",
+          "sku": "RMC-M25",
+          "quantity": 15,
+          "unit": "Cubic M",
+          "unitPrice": 3167,
+          "totalPrice": 47500
+        }
+      ],
+      "payment": {
+        "method": "Bank Transfer",
+        "status": "Paid",
+        "amount": 210000,
+        "paidAmount": 210000,
+        "transactionId": "TXN-SP-20250617"
+      },
+      "deliveryAddress": "SP Infocity, Bandra Kurla Complex, Mumbai - 400051",
+      "timeline": [
+        { "id": "tl-1", "title": "Order Created", "timestamp": "Yesterday, 4:00 PM", "status": "completed" },
+        { "id": "tl-2", "title": "Approved", "timestamp": "Yesterday, 5:30 PM", "status": "completed" },
+        { "id": "tl-3", "title": "Packed", "timestamp": "Today, 10:00 AM", "status": "completed" },
+        { "id": "tl-4", "title": "Assigned To Vehicle", "status": "active" },
+        { "id": "tl-5", "title": "Out For Delivery", "status": "pending" },
+        { "id": "tl-6", "title": "Delivered", "status": "pending" }
+      ],
+      "orderDate": "2025-06-17",
+      "createdAt": "2025-06-17T16:00:00"
+    },
+    {
+      "id": "ord-9512",
+      "orderNo": "ORD-9512",
+      "customer": {
+        "name": "Godrej Properties",
+        "type": "Priority Hub Client",
+        "email": "logistics@godrejproperties.com",
+        "phone": "+91 97654 32109"
+      },
+      "location": "Vikhroli East",
+      "value": 88000,
+      "status": "out_for_delivery",
+      "materials": [
+        {
+          "id": "mat-007",
+          "name": "PVC Pipes (4 inch)",
+          "sku": "PVC-PIP-4",
+          "quantity": 300,
+          "unit": "Units",
+          "unitPrice": 120,
+          "totalPrice": 36000
+        },
+        {
+          "id": "mat-008",
+          "name": "Electrical Cables (2.5 sqmm)",
+          "sku": "ELC-CBL-25",
+          "quantity": 50,
+          "unit": "Rolls",
+          "unitPrice": 1040,
+          "totalPrice": 52000
+        }
+      ],
+      "payment": {
+        "method": "Credit Account",
+        "status": "Partial",
+        "amount": 88000,
+        "paidAmount": 44000,
+        "dueDate": "2025-06-30"
+      },
+      "deliveryAddress": "Godrej One, Vikhroli East, Mumbai - 400079",
+      "timeline": [
+        { "id": "tl-1", "title": "Order Created", "timestamp": "Yesterday, 11:00 AM", "status": "completed" },
+        { "id": "tl-2", "title": "Approved", "timestamp": "Yesterday, 12:00 PM", "status": "completed" },
+        { "id": "tl-3", "title": "Packed", "timestamp": "Yesterday, 3:00 PM", "status": "completed" },
+        { "id": "tl-4", "title": "Assigned To Vehicle", "timestamp": "Today, 8:00 AM", "status": "completed" },
+        { "id": "tl-5", "title": "Out For Delivery", "timestamp": "Today, 9:30 AM", "status": "active" },
+        { "id": "tl-6", "title": "Delivered", "status": "pending" }
+      ],
+      "orderDate": "2025-06-17",
+      "createdAt": "2025-06-17T11:00:00",
+      "dispatchId": "dsp-ord-9512"
+    },
+    {
+      "id": "ord-9510",
+      "orderNo": "ORD-9510",
+      "customer": {
+        "name": "Tata Housing",
+        "type": "Completed 2:30 PM",
+        "email": "procurement@tatahousing.com",
+        "phone": "+91 96543 21098"
+      },
+      "location": "Mulund Hub",
+      "value": 112000,
+      "status": "delivered",
+      "materials": [
+        {
+          "id": "mat-009",
+          "name": "AAC Blocks",
+          "sku": "AAC-BLK-600",
+          "quantity": 2000,
+          "unit": "Units",
+          "unitPrice": 42,
+          "totalPrice": 84000
+        },
+        {
+          "id": "mat-010",
+          "name": "Waterproofing Compound",
+          "sku": "WPF-CMP-01",
+          "quantity": 40,
+          "unit": "Buckets",
+          "unitPrice": 700,
+          "totalPrice": 28000
+        }
+      ],
+      "payment": {
+        "method": "Bank Transfer",
+        "status": "Paid",
+        "amount": 112000,
+        "paidAmount": 112000,
+        "transactionId": "TXN-TH-20250618"
+      },
+      "deliveryAddress": "Tata Serein, Mulund West, Mumbai - 400080",
+      "timeline": [
+        { "id": "tl-1", "title": "Order Created", "timestamp": "Yesterday, 7:00 AM", "status": "completed" },
+        { "id": "tl-2", "title": "Approved", "timestamp": "Yesterday, 8:00 AM", "status": "completed" },
+        { "id": "tl-3", "title": "Packed", "timestamp": "Yesterday, 10:00 AM", "status": "completed" },
+        { "id": "tl-4", "title": "Assigned To Vehicle", "timestamp": "Yesterday, 11:30 AM", "status": "completed" },
+        { "id": "tl-5", "title": "Out For Delivery", "timestamp": "Today, 9:00 AM", "status": "completed" },
+        { "id": "tl-6", "title": "Delivered", "timestamp": "Today, 2:30 PM", "status": "completed" }
+      ],
+      "orderDate": "2025-06-17",
+      "createdAt": "2025-06-17T07:00:00",
+      "dispatchId": "dsp-ord-9510"
+    }
+  ]
+}

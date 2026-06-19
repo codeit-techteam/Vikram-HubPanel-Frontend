@@ -1,0 +1,104 @@
+{
+  "summary": {
+    "totalSkus": 124,
+    "lowStockItems": 8,
+    "outOfStockItems": 3
+  },
+  "warehouse": {
+    "label": "HUB STATUS",
+    "capacityUsed": 94,
+    "description": "Warehouse Capacity Used",
+    "backgroundImage": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&q=80"
+  },
+  "categories": [
+    { "value": "all", "label": "All Categories" },
+    { "value": "raw_materials", "label": "Raw Materials" },
+    { "value": "structural_steel", "label": "Structural Steel" },
+    { "value": "masonry", "label": "Masonry" },
+    { "value": "plumbing", "label": "Plumbing" },
+    { "value": "electrical", "label": "Electrical" }
+  ],
+  "statuses": [
+    { "value": "all", "label": "All Statuses" },
+    { "value": "in_stock", "label": "In Stock" },
+    { "value": "low_stock", "label": "Low Stock" },
+    { "value": "out_of_stock", "label": "Out of Stock" }
+  ],
+  "pagination": {
+    "totalProducts": 124,
+    "pageSize": 5,
+    "totalPages": 3
+  },
+  "products": [
+    {
+      "id": "prod-001",
+      "name": "Cement Bags (Grade 43)",
+      "description": "Grade 43 Portland Cement",
+      "sku": "CMN-43-GRD",
+      "category": "Raw Materials",
+      "categoryKey": "raw_materials",
+      "icon": "package",
+      "currentStock": "450 Bags",
+      "reserved": "120 Bags",
+      "available": "330 Bags",
+      "status": "in_stock",
+      "unitPrice": 380
+    },
+    {
+      "id": "prod-002",
+      "name": "TMT Steel (12mm)",
+      "description": "High Tensile Strength",
+      "sku": "STL-12-FE500",
+      "category": "Structural Steel",
+      "categoryKey": "structural_steel",
+      "icon": "layers",
+      "currentStock": "12.5 Tons",
+      "reserved": "3 Tons",
+      "available": "9.5 Tons",
+      "status": "low_stock",
+      "unitPrice": 65000
+    },
+    {
+      "id": "prod-003",
+      "name": "River Sand",
+      "description": "Fine Filtered",
+      "sku": "SND-RV-FT",
+      "category": "Raw Materials",
+      "categoryKey": "raw_materials",
+      "icon": "mountain",
+      "currentStock": "450 Cum",
+      "reserved": "50 Cum",
+      "available": "400 Cum",
+      "status": "in_stock",
+      "unitPrice": 1200
+    },
+    {
+      "id": "prod-004",
+      "name": "Red Clay Bricks",
+      "description": "Standard 9x4x3",
+      "sku": "BRK-RED-STD",
+      "category": "Masonry",
+      "categoryKey": "masonry",
+      "icon": "box",
+      "currentStock": "0 Units",
+      "reserved": "1,200 Units",
+      "available": "-1,200 Units",
+      "status": "out_of_stock",
+      "unitPrice": 8
+    },
+    {
+      "id": "prod-005",
+      "name": "PVC Plumbing Pipes",
+      "description": "Heavy Duty 4-inch",
+      "sku": "PVC-PP-4IN",
+      "category": "Plumbing",
+      "categoryKey": "plumbing",
+      "icon": "pipette",
+      "currentStock": "820 Meters",
+      "reserved": "120 Meters",
+      "available": "700 Meters",
+      "status": "in_stock",
+      "unitPrice": 450
+    }
+  ]
+}

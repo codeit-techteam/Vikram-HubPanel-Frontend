@@ -1,0 +1,139 @@
+{
+  "lastSync": "2 mins ago",
+  "kpis": [
+    {
+      "id": "inventory-value",
+      "label": "Inventory Value",
+      "value": "₹12.5 L",
+      "variant": "primary"
+    },
+    {
+      "id": "pending-requisitions",
+      "label": "Pending Requisitions",
+      "value": "24",
+      "variant": "default"
+    },
+    {
+      "id": "incoming-transfers",
+      "label": "Incoming Transfers",
+      "value": "12",
+      "variant": "default"
+    },
+    {
+      "id": "orders-pending",
+      "label": "Orders Pending",
+      "value": "45",
+      "sublabel": "For today",
+      "variant": "default"
+    },
+    {
+      "id": "low-stock-alerts",
+      "label": "Low Stock Alerts",
+      "value": "06",
+      "variant": "alert"
+    }
+  ],
+  "incomingDeliveries": [
+    {
+      "id": "del-001",
+      "eta": "14:20 PM",
+      "material": "Cement Grade 53",
+      "quantity": "450 Bags",
+      "source": "Pune Plant 02",
+      "status": "in_transit"
+    },
+    {
+      "id": "del-002",
+      "eta": "16:45 PM",
+      "material": "TMT Steel Bars (12mm)",
+      "quantity": "12.5 Tons",
+      "source": "Surat Casting Hub",
+      "status": "loading"
+    },
+    {
+      "id": "del-003",
+      "eta": "19:10 PM",
+      "material": "Ready Mix Concrete",
+      "quantity": "2 Mixers",
+      "source": "Local Terminal B",
+      "status": "in_transit"
+    }
+  ],
+  "quickOperations": [
+    {
+      "id": "raise-request",
+      "label": "Raise Request",
+      "icon": "user-plus",
+      "href": "/requisitions/create"
+    },
+    {
+      "id": "receive-material",
+      "label": "Receive Material",
+      "icon": "package-check",
+      "href": "/material-receiving/TR-8029-X"
+    },
+    {
+      "id": "create-dispatch",
+      "label": "Create Dispatch",
+      "icon": "truck",
+      "href": "/dispatch"
+    },
+    {
+      "id": "view-inventory",
+      "label": "View Inventory",
+      "icon": "layout-grid",
+      "href": "/inventory"
+    }
+  ],
+  "activeRequisitions": [
+    {
+      "id": "req-8821",
+      "code": "RQ-8821",
+      "title": "Admixtures",
+      "badge": "Procurement",
+      "badgeVariant": "default",
+      "progress": 1,
+      "totalSteps": 4,
+      "statusText": "Vendor Assigned - Waiting for PO approval"
+    },
+    {
+      "id": "req-8845",
+      "code": "RQ-8845",
+      "title": "Electrical Conduits",
+      "badge": "Expedited",
+      "badgeVariant": "expedited",
+      "progress": 3,
+      "totalSteps": 4,
+      "statusText": "Order Placed - Shipment expected today"
+    }
+  ],
+  "outboundEfficiency": {
+    "total": 45,
+    "dispatched": 28,
+    "loading": 12,
+    "pending": 5
+  },
+  "recentLogs": [
+    {
+      "id": "log-001",
+      "title": "Dispatch DIS-1029 confirmed",
+      "subtitle": "4 mins ago · Site: Work Diamond",
+      "type": "dispatch",
+      "timestamp": "4 mins ago"
+    },
+    {
+      "id": "log-002",
+      "title": "Low stock alert: Rebar 16mm",
+      "subtitle": "15 mins ago · Below threshold (15%)",
+      "type": "alert",
+      "timestamp": "15 mins ago"
+    },
+    {
+      "id": "log-003",
+      "title": "Gate Entry: TR-442 (Cement)",
+      "subtitle": "1 hour ago · Dock Area 02",
+      "type": "gate",
+      "timestamp": "1 hour ago"
+    }
+  ]
+}

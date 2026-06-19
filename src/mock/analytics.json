@@ -1,0 +1,134 @@
+{
+  "overview": {
+    "inventoryTurnover": "8.2x",
+    "fulfillmentRate": "94.8%",
+    "avgDeliveryTime": "4.2 hrs",
+    "stockAccuracy": "99.1%",
+    "revenue": "₹14.2 L"
+  },
+  "inventoryTrends": [
+    { "name": "Week 1", "stockIn": 220, "consumption": 180 },
+    { "name": "Week 2", "stockIn": 340, "consumption": 280 },
+    { "name": "Week 3", "stockIn": 390, "consumption": 330 },
+    { "name": "Week 4", "stockIn": 450, "consumption": 310 }
+  ],
+  "consumption": [
+    { "name": "Cement", "percentage": 42, "color": "#FF6B00" },
+    { "name": "Steel", "percentage": 28, "color": "#D97706" },
+    { "name": "Bricks", "percentage": 18, "color": "#64748B" },
+    { "name": "Sand", "percentage": 12, "color": "#9CA3AF" }
+  ],
+  "requisitionVolume": {
+    "totalRequests": 1248,
+    "completed": 1182,
+    "monthly": [
+      { "name": "Jan", "value": 142 },
+      { "name": "Feb", "value": 156 },
+      { "name": "Mar", "value": 168 },
+      { "name": "Apr", "value": 175 },
+      { "name": "May", "value": 189 },
+      { "name": "Jun", "value": 198 },
+      { "name": "Jul", "value": 210 },
+      { "name": "Aug", "value": 224 }
+    ]
+  },
+  "deliveryPerformance": {
+    "onTime": 88.4,
+    "minorDelay": 7.2,
+    "criticalDelay": 4.4,
+    "avgLagHours": 4.2
+  },
+  "movementLogs": [
+    {
+      "id": "mov-001",
+      "shipmentId": "TRK-98421",
+      "material": "Portland Cement (400 Bags)",
+      "destination": "Metro Phase 2 - Block A",
+      "eta": "14:30 PM",
+      "status": "in_transit",
+      "actionType": "map"
+    },
+    {
+      "id": "mov-002",
+      "shipmentId": "TRK-98425",
+      "material": "Reinforced Steel Bars (20T)",
+      "destination": "Airport Extension Terminal",
+      "eta": "16:15 PM",
+      "status": "pending",
+      "actionType": "map"
+    },
+    {
+      "id": "mov-003",
+      "shipmentId": "TRK-98399",
+      "material": "Sand (Coarse) - 5 Trucks",
+      "destination": "Coastal Road Project",
+      "eta": "Delivered",
+      "status": "delivered",
+      "actionType": "eye"
+    }
+  ],
+  "hubOptions": [
+    { "value": "central", "label": "Central Hub" },
+    { "value": "noida", "label": "Noida Hub" },
+    { "value": "mumbai", "label": "Mumbai Hub" },
+    { "value": "pune", "label": "Pune Hub" },
+    { "value": "ahmedabad", "label": "Ahmedabad Hub" }
+  ],
+  "lastUpdated": "14 Oct 2026, 11:24 AM",
+  "inventoryTrend": [
+    { "name": "Jan", "value": 42000, "inbound": 8500, "outbound": 6200 },
+    { "name": "Feb", "value": 44300, "inbound": 9200, "outbound": 6900 },
+    { "name": "Mar", "value": 46100, "inbound": 7800, "outbound": 6000 },
+    { "name": "Apr", "value": 47800, "inbound": 10200, "outbound": 8500 },
+    { "name": "May", "value": 49200, "inbound": 9500, "outbound": 8100 },
+    { "name": "Jun", "value": 51500, "inbound": 11000, "outbound": 8700 }
+  ],
+  "requisitionTrend": [
+    { "name": "Jan", "value": 142, "approved": 128, "rejected": 14 },
+    { "name": "Feb", "value": 156, "approved": 140, "rejected": 16 },
+    { "name": "Mar", "value": 168, "approved": 152, "rejected": 16 },
+    { "name": "Apr", "value": 175, "approved": 158, "rejected": 17 },
+    { "name": "May", "value": 189, "approved": 172, "rejected": 17 },
+    { "name": "Jun", "value": 198, "approved": 180, "rejected": 18 }
+  ],
+  "dispatchTrend": [
+    { "name": "Jan", "value": 89, "onTime": 82, "delayed": 7 },
+    { "name": "Feb", "value": 95, "onTime": 88, "delayed": 7 },
+    { "name": "Mar", "value": 102, "onTime": 94, "delayed": 8 },
+    { "name": "Apr", "value": 108, "onTime": 99, "delayed": 9 },
+    { "name": "May", "value": 115, "onTime": 106, "delayed": 9 },
+    { "name": "Jun", "value": 121, "onTime": 112, "delayed": 9 }
+  ],
+  "monthlyPerformance": [
+    { "name": "Jan", "efficiency": 88, "throughput": 4200, "accuracy": 96 },
+    { "name": "Feb", "efficiency": 90, "throughput": 4500, "accuracy": 97 },
+    { "name": "Mar", "efficiency": 91, "throughput": 4800, "accuracy": 96 },
+    { "name": "Apr", "efficiency": 93, "throughput": 5100, "accuracy": 98 },
+    { "name": "May", "efficiency": 92, "throughput": 5300, "accuracy": 97 },
+    { "name": "Jun", "efficiency": 94, "throughput": 5600, "accuracy": 98 }
+  ],
+  "hubEfficiency": [
+    { "name": "Central", "value": 94, "utilization": 78 },
+    { "name": "North", "value": 88, "utilization": 65 },
+    { "name": "South", "value": 91, "utilization": 82 },
+    { "name": "East", "value": 85, "utilization": 55 },
+    { "name": "West", "value": 79, "utilization": 71 }
+  ],
+  "materialFlow": [
+    { "name": "Inbound", "value": 11000 },
+    { "name": "Outbound", "value": 8700 },
+    { "name": "Transfers", "value": 4200 },
+    { "name": "Returns", "value": 380 },
+    { "name": "Adjustments", "value": 120 }
+  ],
+  "kpis": {
+    "totalInventory": 51500,
+    "activeRequisitions": 42,
+    "pendingDispatches": 18,
+    "hubUtilization": 72,
+    "inventoryChange": 4.7,
+    "requisitionChange": 4.8,
+    "dispatchChange": 5.2,
+    "utilizationChange": 2.1
+  }
+}

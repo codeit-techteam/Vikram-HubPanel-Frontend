@@ -1,0 +1,32 @@
+[
+  {
+    "id": "route-001",
+    "name": "Western Express Highway",
+    "via": "Via Western Express Highway",
+    "estimatedMinutes": 45
+  },
+  {
+    "id": "route-002",
+    "name": "Eastern Freeway",
+    "via": "Via Eastern Freeway",
+    "estimatedMinutes": 70
+  },
+  {
+    "id": "route-003",
+    "name": "Noida Expressway",
+    "via": "Via Noida Expressway",
+    "estimatedMinutes": 35
+  },
+  {
+    "id": "route-004",
+    "name": "Yamuna Expressway",
+    "via": "Via Yamuna Expressway",
+    "estimatedMinutes": 55
+  },
+  {
+    "id": "route-005",
+    "name": "NH-48 Corridor",
+    "via": "Via NH-48 Corridor",
+    "estimatedMinutes": 90
+  }
+]

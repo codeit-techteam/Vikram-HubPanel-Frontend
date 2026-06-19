@@ -1,0 +1,405 @@
+{
+  "summary": {
+    "totalIncoming": 12,
+    "onTime": 8,
+    "delayed": 4
+  },
+  "transfers": [
+    {
+      "id": "trf-8029",
+      "transferId": "TR-8029-X",
+      "status": "dispatched",
+      "eta": "2026-10-24T13:30:00",
+      "scheduled": null,
+      "etaDisplay": "ETA in 4 Hours",
+      "isDelayed": false,
+      "source": "Central Hub Sector 4",
+      "destination": "Sector 63, Noida (UP-04)",
+      "dispatchDate": "Oct 24, 2026",
+      "vehicle": "MH-01-AX-4029",
+      "vehicleDetails": {
+        "number": "MH-01-AX-4029",
+        "type": "Heavy Material Carrier",
+        "capacity": "15 Tons",
+        "status": "On Route"
+      },
+      "driver": {
+        "name": "Suresh Kumar",
+        "phone": "+91 98765 43210"
+      },
+      "materials": [
+        {
+          "id": "mat-001",
+          "name": "TMT Steel (FE 550)",
+          "quantity": "1,250 Metric Tons",
+          "sku": "STL-FE550-TMT"
+        },
+        {
+          "id": "mat-002",
+          "name": "Portland Cement",
+          "quantity": "450 Bags (50kg)",
+          "sku": "CMN-PRT-50"
+        },
+        {
+          "id": "mat-003",
+          "name": "Engineered Bricks",
+          "quantity": "12,000 Units",
+          "sku": "BRK-ENG-STD"
+        }
+      ],
+      "manifest": [
+        {
+          "id": "man-001",
+          "name": "TMT Steel (FE 550)",
+          "quantity": 1250,
+          "unit": "Metric Tons",
+          "status": "loaded",
+          "sku": "STL-FE550-TMT"
+        },
+        {
+          "id": "man-002",
+          "name": "Portland Cement",
+          "quantity": 450,
+          "unit": "Bags (50kg)",
+          "status": "loaded",
+          "sku": "CMN-PRT-50"
+        },
+        {
+          "id": "man-003",
+          "name": "Engineered Bricks",
+          "quantity": 12000,
+          "unit": "Units",
+          "status": "loaded",
+          "sku": "BRK-ENG-STD"
+        }
+      ],
+      "timeline": [
+        {
+          "id": "tl-1",
+          "title": "Transfer Created",
+          "subtitle": "Requisition REQ-2026-118 approved",
+          "timestamp": "Oct 23, 09:00 AM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-2",
+          "title": "Approved",
+          "subtitle": "Procurement lead verified materials",
+          "timestamp": "Oct 23, 02:30 PM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-3",
+          "title": "Dispatched",
+          "subtitle": "Vehicle MH-01-AX-4029 departed",
+          "timestamp": "Oct 24, 09:30 AM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-4",
+          "title": "In Transit",
+          "subtitle": "En route to Sector 63, Noida",
+          "timestamp": "Expected Arrival",
+          "status": "active"
+        },
+        {
+          "id": "tl-5",
+          "title": "Delivered",
+          "subtitle": "Pending hub confirmation",
+          "timestamp": "Pending",
+          "status": "pending"
+        }
+      ],
+      "shipmentTimeline": [
+        {
+          "id": "st-1",
+          "title": "Created",
+          "timestamp": "Oct 23, 09:00 AM",
+          "status": "completed"
+        },
+        {
+          "id": "st-2",
+          "title": "Approved",
+          "timestamp": "Oct 23, 02:30 PM",
+          "status": "completed"
+        },
+        {
+          "id": "st-3",
+          "title": "Dispatched",
+          "timestamp": "Oct 24, 09:30 AM",
+          "status": "completed",
+          "highlight": "ETA in 4 Hours"
+        },
+        {
+          "id": "st-4",
+          "title": "In Transit",
+          "timestamp": "Expected Arrival",
+          "status": "pending"
+        },
+        {
+          "id": "st-5",
+          "title": "Delivered",
+          "timestamp": "Pending",
+          "status": "pending"
+        }
+      ],
+      "documents": [
+        {
+          "id": "doc-1",
+          "name": "Transfer Challan",
+          "type": "PDF",
+          "size": "245 KB"
+        },
+        {
+          "id": "doc-2",
+          "name": "Material Manifest",
+          "type": "PDF",
+          "size": "128 KB"
+        }
+      ],
+      "requisitionId": "REQ-2026-118",
+      "inventoryId": "INV-CW-001",
+      "dispatchId": "DSP-2026-442",
+      "siteId": "CN-7821",
+      "createdAt": "2026-10-23T09:00:00Z"
+    },
+    {
+      "id": "trf-9142",
+      "transferId": "TR-9142-W",
+      "status": "delayed",
+      "eta": "2026-06-18T10:00:00",
+      "scheduled": null,
+      "etaDisplay": "Tomorrow, 10:00 AM",
+      "isDelayed": true,
+      "source": "Central Warehouse",
+      "destination": "Mumbai Hub 04",
+      "dispatchDate": "Jun 15, 2026",
+      "vehicle": "MH-43-BE-1102",
+      "driver": {
+        "name": "Rajesh Patil",
+        "phone": "+91 91234-56789"
+      },
+      "materials": [
+        {
+          "id": "mat-003",
+          "name": "Paving Blocks",
+          "quantity": "800 sqm Paving Blocks",
+          "sku": "PVB-STD-800"
+        },
+        {
+          "id": "mat-004",
+          "name": "Sandbags",
+          "quantity": "20 Bulk Sandbags",
+          "sku": "SND-BLK-20"
+        }
+      ],
+      "manifest": [
+        {
+          "id": "man-9142-001",
+          "name": "Paving Blocks",
+          "quantity": 800,
+          "unit": "SQM",
+          "status": "loaded",
+          "sku": "PVB-STD-800"
+        },
+        {
+          "id": "man-9142-002",
+          "name": "Bulk Sandbags",
+          "quantity": 20,
+          "unit": "Bags",
+          "status": "loaded",
+          "sku": "SND-BLK-20"
+        }
+      ],
+      "timeline": [
+        {
+          "id": "tl-1",
+          "title": "Transfer Created",
+          "subtitle": "Requisition REQ-2026-105 approved",
+          "timestamp": "Jun 15, 08:00 AM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-2",
+          "title": "Dispatched from Central Warehouse",
+          "subtitle": "Vehicle MH-43-BE-1102 assigned",
+          "timestamp": "Jun 15, 10:00 AM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-3",
+          "title": "Delayed — Traffic on NH-48",
+          "subtitle": "ETA revised to Tomorrow, 10:00 AM",
+          "timestamp": "Jun 17, 07:00 AM",
+          "status": "active"
+        },
+        {
+          "id": "tl-4",
+          "title": "Arrival at Hub",
+          "subtitle": "Pending",
+          "timestamp": "Expected Tomorrow",
+          "status": "pending"
+        }
+      ],
+      "documents": [
+        {
+          "id": "doc-1",
+          "name": "Transfer Challan",
+          "type": "PDF",
+          "size": "198 KB"
+        }
+      ],
+      "requisitionId": "REQ-2026-105",
+      "dispatchId": "DSP-2026-318",
+      "inventoryId": "INV-CW-002",
+      "createdAt": "2026-06-15T08:00:00Z"
+    },
+    {
+      "id": "trf-7701",
+      "transferId": "TR-7701-K",
+      "status": "in_transit",
+      "eta": "2026-06-17T17:45:00",
+      "scheduled": null,
+      "etaDisplay": "Today, 05:45 PM",
+      "isDelayed": false,
+      "source": "Central Warehouse",
+      "destination": "Mumbai Hub 04",
+      "dispatchDate": "Jun 17, 2026",
+      "vehicle": "MH-04-ZZ-3345",
+      "driver": {
+        "name": "Amit Shinde",
+        "phone": "+91 99000-88888"
+      },
+      "materials": [
+        {
+          "id": "mat-005",
+          "name": "Reinforcement Bars",
+          "quantity": "5 Tons Reinforcement Bars",
+          "sku": "STL-12-FE500"
+        }
+      ],
+      "manifest": [
+        {
+          "id": "man-7701-001",
+          "name": "Reinforcement Bars (FE 500)",
+          "quantity": 5000,
+          "unit": "KG",
+          "status": "loaded",
+          "sku": "STL-12-FE500"
+        }
+      ],
+      "timeline": [
+        {
+          "id": "tl-1",
+          "title": "Transfer Created",
+          "subtitle": "Requisition REQ-2026-122 approved",
+          "timestamp": "Jun 16, 14:00 PM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-2",
+          "title": "Dispatched from Central Warehouse",
+          "subtitle": "Vehicle MH-04-ZZ-3345 assigned",
+          "timestamp": "Jun 17, 08:30 AM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-3",
+          "title": "In Transit",
+          "subtitle": "65% route completed",
+          "timestamp": "Jun 17, 02:00 PM",
+          "status": "active"
+        },
+        {
+          "id": "tl-4",
+          "title": "Arrival at Hub",
+          "subtitle": "Pending",
+          "timestamp": "Expected 05:45 PM",
+          "status": "pending"
+        }
+      ],
+      "documents": [
+        {
+          "id": "doc-1",
+          "name": "Transfer Challan",
+          "type": "PDF",
+          "size": "156 KB"
+        },
+        {
+          "id": "doc-2",
+          "name": "Weight Slip",
+          "type": "PDF",
+          "size": "89 KB"
+        }
+      ],
+      "requisitionId": "REQ-2026-122",
+      "dispatchId": "DSP-2026-501",
+      "inventoryId": "INV-CW-003",
+      "createdAt": "2026-06-16T14:00:00Z"
+    },
+    {
+      "id": "trf-8559",
+      "transferId": "TR-8559-L",
+      "status": "ready",
+      "eta": null,
+      "scheduled": "Tomorrow",
+      "etaDisplay": "Scheduled: Tomorrow",
+      "isDelayed": false,
+      "source": "Central Warehouse",
+      "destination": "Mumbai Hub 04",
+      "vehicle": "TBD",
+      "driver": {
+        "name": "Unassigned",
+        "phone": "—"
+      },
+      "materials": [
+        {
+          "id": "mat-006",
+          "name": "Bricks",
+          "quantity": "1500 Bricks (Grade A)",
+          "sku": "BRK-RED-STD"
+        }
+      ],
+      "timeline": [
+        {
+          "id": "tl-1",
+          "title": "Transfer Created",
+          "subtitle": "Requisition REQ-2026-130 approved",
+          "timestamp": "Jun 17, 06:00 AM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-2",
+          "title": "Awaiting Vehicle Assignment",
+          "subtitle": "Scheduled for Tomorrow",
+          "timestamp": "Pending",
+          "status": "active"
+        },
+        {
+          "id": "tl-3",
+          "title": "Dispatch",
+          "subtitle": "Not yet dispatched",
+          "timestamp": "—",
+          "status": "pending"
+        },
+        {
+          "id": "tl-4",
+          "title": "Arrival at Hub",
+          "subtitle": "Pending",
+          "timestamp": "—",
+          "status": "pending"
+        }
+      ],
+      "documents": [
+        {
+          "id": "doc-1",
+          "name": "Transfer Order",
+          "type": "PDF",
+          "size": "112 KB"
+        }
+      ],
+      "requisitionId": "REQ-2026-130",
+      "createdAt": "2026-06-17T06:00:00Z"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "currentUser": {
+    "id": "user-001",
+    "name": "Amit Sharma",
+    "email": "amit.sharma@hubops.com",
+    "role": "Hub Manager",
+    "employeeId": "hubmanager01",
+    "avatar": null,
+    "terminal": {
+      "code": "N4",
+      "location": "Noida (UP-04)",
+      "darkStore": "Dark Store #422"
+    }
+  }
+}

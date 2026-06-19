@@ -1,0 +1,184 @@
+{
+  "records": [
+    {
+      "id": "rcv-8029",
+      "transferId": "TR-8029-X",
+      "requisitionId": "REQ-2026-118",
+      "dispatchId": "DSP-2026-442",
+      "inventoryId": "INV-CW-001",
+      "source": "Central Hub Sector 4",
+      "sourceHub": "Central Warehouse",
+      "subtitle": "Incoming transfer from Central Hub Sector 4",
+      "transferNumber": "TR-8029-X",
+      "dispatchDate": "Oct 24, 2026",
+      "dispatchTime": "09:30 AM",
+      "vehicleNumber": "MH-01-AX-4029",
+      "driverName": "Suresh Kumar",
+      "status": "pending_verification",
+      "materials": [
+        {
+          "id": "rcv-mat-001",
+          "productId": "mat-001",
+          "productName": "TMT Steel Rebars (12mm)",
+          "sku": "ST-12-B00",
+          "dispatchedQty": 1250,
+          "dispatchedUnit": "KG",
+          "dispatchedDisplay": "1,250 KG",
+          "receivedQty": 1250,
+          "verificationStatus": "pending",
+          "inventoryProductId": "prod-002"
+        },
+        {
+          "id": "rcv-mat-002",
+          "productId": "mat-002",
+          "productName": "Portland Cement Bags",
+          "sku": "CM-P50-Ultra",
+          "dispatchedQty": 500,
+          "dispatchedUnit": "Bags",
+          "dispatchedDisplay": "500 Bags",
+          "receivedQty": 0,
+          "verificationStatus": "pending",
+          "inventoryProductId": "prod-001"
+        },
+        {
+          "id": "rcv-mat-003",
+          "productId": "mat-003",
+          "productName": "Bricks - Red Burnt",
+          "sku": "BK-RB-9X4",
+          "dispatchedQty": 2000,
+          "dispatchedUnit": "Units",
+          "dispatchedDisplay": "2,000 Units",
+          "receivedQty": 0,
+          "verificationStatus": "pending",
+          "inventoryProductId": "prod-004"
+        }
+      ],
+      "photos": [
+        {
+          "id": "photo-001",
+          "name": "steel-rebars-delivery.jpg",
+          "url": "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=400&q=80",
+          "size": "2.4 MB",
+          "uploadedAt": "5 minutes ago"
+        }
+      ],
+      "documents": [
+        {
+          "id": "doc-grn-001",
+          "name": "GRN-8029-X-Signed.pdf",
+          "type": "PDF",
+          "size": "1.2 MB",
+          "uploadedAt": "2 minutes ago"
+        }
+      ]
+    },
+    {
+      "id": "rcv-9142",
+      "transferId": "TR-9142-W",
+      "requisitionId": "REQ-2026-105",
+      "dispatchId": "DSP-2026-318",
+      "inventoryId": "INV-CW-002",
+      "source": "Central Warehouse",
+      "sourceHub": "Central Warehouse",
+      "subtitle": "Incoming transfer from Central Warehouse",
+      "transferNumber": "TR-9142-W",
+      "dispatchDate": "Jun 15, 2026",
+      "dispatchTime": "10:00 AM",
+      "vehicleNumber": "MH-43-BE-1102",
+      "driverName": "Rajesh Patil",
+      "status": "pending_verification",
+      "materials": [
+        {
+          "id": "rcv-mat-9142-001",
+          "productId": "mat-003",
+          "productName": "Paving Blocks",
+          "sku": "PVB-STD-800",
+          "dispatchedQty": 800,
+          "dispatchedUnit": "SQM",
+          "dispatchedDisplay": "800 SQM",
+          "receivedQty": 800,
+          "verificationStatus": "pending",
+          "inventoryProductId": "prod-004"
+        },
+        {
+          "id": "rcv-mat-9142-002",
+          "productId": "mat-004",
+          "productName": "Bulk Sandbags",
+          "sku": "SND-BLK-20",
+          "dispatchedQty": 20,
+          "dispatchedUnit": "Bags",
+          "dispatchedDisplay": "20 Bags",
+          "receivedQty": 0,
+          "verificationStatus": "pending",
+          "inventoryProductId": "prod-003"
+        }
+      ],
+      "photos": [
+        {
+          "id": "photo-9142-001",
+          "name": "paving-blocks-delivery.jpg",
+          "url": "https://images.unsplash.com/photo-1589939705382-10ae525d25cc?w=400&q=80",
+          "size": "1.8 MB",
+          "uploadedAt": "8 minutes ago"
+        }
+      ],
+      "documents": [
+        {
+          "id": "doc-grn-9142",
+          "name": "GRN-9142-W-Signed.pdf",
+          "type": "PDF",
+          "size": "980 KB",
+          "uploadedAt": "4 minutes ago"
+        }
+      ]
+    },
+    {
+      "id": "rcv-7701",
+      "transferId": "TR-7701-K",
+      "requisitionId": "REQ-2026-122",
+      "dispatchId": "DSP-2026-501",
+      "inventoryId": "INV-CW-003",
+      "source": "Central Warehouse",
+      "sourceHub": "Central Warehouse",
+      "subtitle": "Incoming transfer from Central Warehouse",
+      "transferNumber": "TR-7701-K",
+      "dispatchDate": "Jun 17, 2026",
+      "dispatchTime": "08:30 AM",
+      "vehicleNumber": "MH-04-ZZ-3345",
+      "driverName": "Amit Shinde",
+      "status": "pending_verification",
+      "materials": [
+        {
+          "id": "rcv-mat-7701-001",
+          "productId": "mat-005",
+          "productName": "Reinforcement Bars (FE 500)",
+          "sku": "STL-12-FE500",
+          "dispatchedQty": 5000,
+          "dispatchedUnit": "KG",
+          "dispatchedDisplay": "5,000 KG",
+          "receivedQty": 5000,
+          "verificationStatus": "pending",
+          "inventoryProductId": "prod-002"
+        }
+      ],
+      "photos": [
+        {
+          "id": "photo-7701-001",
+          "name": "reinforcement-bars-delivery.jpg",
+          "url": "https://images.unsplash.com/photo-1615880484745-a4fe0bb35256?w=400&q=80",
+          "size": "2.1 MB",
+          "uploadedAt": "3 minutes ago"
+        }
+      ],
+      "documents": [
+        {
+          "id": "doc-grn-7701",
+          "name": "GRN-7701-K-Signed.pdf",
+          "type": "PDF",
+          "size": "1.1 MB",
+          "uploadedAt": "1 minute ago"
+        }
+      ]
+    }
+  ]
+}

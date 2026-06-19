@@ -1,0 +1,370 @@
+{
+  "stats": {
+    "openRequests": { "value": 12, "badge": "+2 Today" },
+    "approvedRequests": { "value": 8, "badge": "Stable" },
+    "delayedRequests": { "value": 2, "badge": "Critical" }
+  },
+  "statusOptions": [
+    { "value": "all", "label": "All Statuses" },
+    { "value": "pending", "label": "Pending" },
+    { "value": "approved", "label": "Approved" },
+    { "value": "allocated", "label": "Allocated" },
+    { "value": "in_transit", "label": "In Transit" },
+    { "value": "delivered", "label": "Delivered" },
+    { "value": "received", "label": "Received" }
+  ],
+  "pagination": {
+    "totalOpen": 12,
+    "pageSize": 4,
+    "totalPages": 3
+  },
+  "defaultSelectedId": "req-001",
+  "requests": [
+    {
+      "id": "req-001",
+      "requestId": "RQ-8821",
+      "date": "24 Oct 2023",
+      "hubLocation": "Sub-Hub West",
+      "items": { "quantity": "450 Bags", "material": "Cement" },
+      "value": "₹1.2L",
+      "status": "in_transit",
+      "timeline": [
+        {
+          "id": "tl-1",
+          "title": "Request Created",
+          "subtitle": "Sub-Hub West",
+          "timestamp": "Oct 24, 09:15 AM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-2",
+          "title": "Approved by Central Hub Manager",
+          "timestamp": "Oct 24, 11:30 AM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-3",
+          "title": "Vehicle Assigned",
+          "subtitle": "Truck AHR-88",
+          "timestamp": "Oct 24, 02:45 PM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-4",
+          "title": "In Transit",
+          "subtitle": "En-route via NH-48 Expressway",
+          "timestamp": "Oct 25, 08:00 AM",
+          "status": "active",
+          "type": "tracking"
+        },
+        {
+          "id": "tl-5",
+          "title": "ETA Delhivery",
+          "subtitle": "Expected: Oct 26, 12:00 PM",
+          "timestamp": "",
+          "status": "pending"
+        }
+      ],
+      "liveTracking": {
+        "title": "LIVE TRACKING ACTIVE",
+        "progress": "Shipment Progress"
+      }
+    },
+    {
+      "id": "req-002",
+      "requestId": "RQ-8845",
+      "date": "25 Oct 2023",
+      "hubLocation": "Sub-Hub West",
+      "items": { "quantity": "12.5 Tons", "material": "TMT Steel" },
+      "value": "₹4.8L",
+      "status": "approved",
+      "timeline": [
+        {
+          "id": "tl-1",
+          "title": "Request Created",
+          "subtitle": "Sub-Hub West",
+          "timestamp": "Oct 25, 08:30 AM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-2",
+          "title": "Approved by Central Hub Manager",
+          "timestamp": "Oct 25, 10:15 AM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-3",
+          "title": "Pending Allocation",
+          "subtitle": "Awaiting warehouse assignment",
+          "timestamp": "",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "id": "req-003",
+      "requestId": "RQ-8710",
+      "date": "22 Oct 2023",
+      "hubLocation": "Sub-Hub West",
+      "items": { "quantity": "1200 Units", "material": "Bricks" },
+      "value": "₹95K",
+      "status": "delivered",
+      "timeline": [
+        {
+          "id": "tl-1",
+          "title": "Request Created",
+          "subtitle": "Sub-Hub West",
+          "timestamp": "Oct 22, 09:00 AM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-2",
+          "title": "Approved by Central Hub Manager",
+          "timestamp": "Oct 22, 11:00 AM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-3",
+          "title": "Delivered",
+          "subtitle": "Received at Sub-Hub West gate",
+          "timestamp": "Oct 23, 04:30 PM",
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "id": "req-004",
+      "requestId": "RQ-8692",
+      "date": "20 Oct 2023",
+      "hubLocation": "Sub-Hub West",
+      "items": { "quantity": "820 Meters", "material": "Cables" },
+      "value": "₹2.1L",
+      "status": "received",
+      "timeline": [
+        {
+          "id": "tl-1",
+          "title": "Request Created",
+          "subtitle": "Sub-Hub West",
+          "timestamp": "Oct 20, 10:00 AM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-2",
+          "title": "Approved by Central Hub Manager",
+          "timestamp": "Oct 20, 02:00 PM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-3",
+          "title": "Received",
+          "subtitle": "Stock updated in inventory",
+          "timestamp": "Oct 21, 11:45 AM",
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "id": "req-005",
+      "requestId": "RQ-8680",
+      "date": "19 Oct 2023",
+      "hubLocation": "Sub-Hub East",
+      "items": { "quantity": "200 Bags", "material": "Sand" },
+      "value": "₹45K",
+      "status": "pending",
+      "timeline": [
+        {
+          "id": "tl-1",
+          "title": "Request Created",
+          "subtitle": "Sub-Hub East",
+          "timestamp": "Oct 19, 03:20 PM",
+          "status": "active"
+        },
+        {
+          "id": "tl-2",
+          "title": "Pending Approval",
+          "subtitle": "Awaiting central hub review",
+          "timestamp": "",
+          "status": "pending"
+        }
+      ]
+    },
+    {
+      "id": "req-006",
+      "requestId": "RQ-8675",
+      "date": "18 Oct 2023",
+      "hubLocation": "Sub-Hub North",
+      "items": { "quantity": "50 Units", "material": "Pipes" },
+      "value": "₹1.8L",
+      "status": "allocated",
+      "timeline": [
+        {
+          "id": "tl-1",
+          "title": "Request Created",
+          "subtitle": "Sub-Hub North",
+          "timestamp": "Oct 18, 11:00 AM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-2",
+          "title": "Approved by Central Hub Manager",
+          "timestamp": "Oct 18, 01:30 PM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-3",
+          "title": "Allocated",
+          "subtitle": "Warehouse B - Section 4",
+          "timestamp": "Oct 18, 04:00 PM",
+          "status": "active"
+        }
+      ]
+    },
+    {
+      "id": "req-007",
+      "requestId": "RQ-8660",
+      "date": "17 Oct 2023",
+      "hubLocation": "Sub-Hub South",
+      "items": { "quantity": "300 Sheets", "material": "Plywood" },
+      "value": "₹3.2L",
+      "status": "in_transit",
+      "timeline": [
+        {
+          "id": "tl-1",
+          "title": "Request Created",
+          "subtitle": "Sub-Hub South",
+          "timestamp": "Oct 17, 08:45 AM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-2",
+          "title": "In Transit",
+          "subtitle": "En-route via Yamuna Expressway",
+          "timestamp": "Oct 18, 07:00 AM",
+          "status": "active",
+          "type": "tracking"
+        }
+      ],
+      "liveTracking": {
+        "title": "LIVE TRACKING ACTIVE",
+        "progress": "Shipment Progress"
+      }
+    },
+    {
+      "id": "req-008",
+      "requestId": "RQ-8655",
+      "date": "16 Oct 2023",
+      "hubLocation": "Sub-Hub West",
+      "items": { "quantity": "80 Bags", "material": "Cement" },
+      "value": "₹22K",
+      "status": "approved",
+      "timeline": [
+        {
+          "id": "tl-1",
+          "title": "Request Created",
+          "subtitle": "Sub-Hub West",
+          "timestamp": "Oct 16, 02:15 PM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-2",
+          "title": "Approved by Central Hub Manager",
+          "timestamp": "Oct 16, 05:00 PM",
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "id": "req-009",
+      "requestId": "RQ-8640",
+      "date": "15 Oct 2023",
+      "hubLocation": "Sub-Hub East",
+      "items": { "quantity": "15 Tons", "material": "Gravel" },
+      "value": "₹1.5L",
+      "status": "delivered",
+      "timeline": [
+        {
+          "id": "tl-1",
+          "title": "Request Created",
+          "subtitle": "Sub-Hub East",
+          "timestamp": "Oct 15, 09:30 AM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-2",
+          "title": "Delivered",
+          "subtitle": "Gate entry confirmed",
+          "timestamp": "Oct 16, 03:00 PM",
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "id": "req-010",
+      "requestId": "RQ-8630",
+      "date": "14 Oct 2023",
+      "hubLocation": "Sub-Hub North",
+      "items": { "quantity": "500 Units", "material": "Tiles" },
+      "value": "₹2.8L",
+      "status": "received",
+      "timeline": [
+        {
+          "id": "tl-1",
+          "title": "Request Created",
+          "subtitle": "Sub-Hub North",
+          "timestamp": "Oct 14, 10:00 AM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-2",
+          "title": "Received",
+          "subtitle": "Inventory updated",
+          "timestamp": "Oct 15, 02:30 PM",
+          "status": "completed"
+        }
+      ]
+    },
+    {
+      "id": "req-011",
+      "requestId": "RQ-8620",
+      "date": "13 Oct 2023",
+      "hubLocation": "Sub-Hub South",
+      "items": { "quantity": "25 Rolls", "material": "Wire Mesh" },
+      "value": "₹68K",
+      "status": "pending",
+      "timeline": [
+        {
+          "id": "tl-1",
+          "title": "Request Created",
+          "subtitle": "Sub-Hub South",
+          "timestamp": "Oct 13, 11:45 AM",
+          "status": "active"
+        }
+      ]
+    },
+    {
+      "id": "req-012",
+      "requestId": "RQ-8610",
+      "date": "12 Oct 2023",
+      "hubLocation": "Sub-Hub West",
+      "items": { "quantity": "100 Liters", "material": "Paint" },
+      "value": "₹35K",
+      "status": "allocated",
+      "timeline": [
+        {
+          "id": "tl-1",
+          "title": "Request Created",
+          "subtitle": "Sub-Hub West",
+          "timestamp": "Oct 12, 08:00 AM",
+          "status": "completed"
+        },
+        {
+          "id": "tl-2",
+          "title": "Allocated",
+          "subtitle": "Warehouse A - Section 2",
+          "timestamp": "Oct 12, 03:00 PM",
+          "status": "active"
+        }
+      ]
+    }
+  ]
+}

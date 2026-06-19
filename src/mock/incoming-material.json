@@ -1,0 +1,38 @@
+[
+  {
+    "id": "inc-001",
+    "shipmentNo": "SHP-2025-00891",
+    "supplier": "Tata Steel Ltd",
+    "hubId": "hub-001",
+    "hubName": "Vikram Central Hub",
+    "materialCount": 3,
+    "totalQuantity": 5000,
+    "expectedDate": "2025-06-18",
+    "status": "in_transit",
+    "carrier": "VRL Logistics"
+  },
+  {
+    "id": "inc-002",
+    "shipmentNo": "SHP-2025-00885",
+    "supplier": "UltraTech Cement",
+    "hubId": "hub-002",
+    "hubName": "Vikram North Hub",
+    "materialCount": 1,
+    "totalQuantity": 10000,
+    "expectedDate": "2025-06-17",
+    "status": "pending",
+    "carrier": "Gati KWE"
+  },
+  {
+    "id": "inc-003",
+    "shipmentNo": "SHP-2025-00878",
+    "supplier": "Havells India",
+    "hubId": "hub-003",
+    "hubName": "Vikram South Hub",
+    "materialCount": 2,
+    "totalQuantity": 25000,
+    "expectedDate": "2025-06-16",
+    "status": "received",
+    "carrier": "Blue Dart"
+  }
+]

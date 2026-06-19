@@ -1,0 +1,187 @@
+{
+  "fleet": {
+    "activeFleet": { "current": 18, "total": 24, "changePercent": 12 },
+    "avgHubExit": { "minutes": 14, "status": "Optimal" },
+    "activeTransits": 42,
+    "pendingLoadTons": 128
+  },
+  "pendingOrders": [
+    {
+      "id": "ord-pending-9921",
+      "orderNo": "ORD-9921",
+      "label": "ORD-9921 – Ultra Premium Cement (45T)",
+      "customer": "UltraBuild Corp",
+      "materials": "Ultra Premium Cement (45T)"
+    },
+    {
+      "id": "ord-pending-9915",
+      "orderNo": "ORD-9915",
+      "label": "ORD-9915 – Steel Reinforcement Package",
+      "customer": "Navi Port Infrastructure",
+      "materials": "Steel Reinforcement Package"
+    },
+    {
+      "id": "ord-pending-9908",
+      "orderNo": "ORD-9908",
+      "label": "ORD-9908 – Concrete Mix Bundle",
+      "customer": "Skyline Developers",
+      "materials": "Concrete Mix Bundle"
+    },
+    {
+      "id": "ord-pending-9892",
+      "orderNo": "ORD-9892",
+      "label": "ORD-9892 – Masonry Material Kit",
+      "customer": "Heritage Builders",
+      "materials": "Masonry Material Kit"
+    }
+  ],
+  "queue": [
+    {
+      "id": "dsp-queue-9912",
+      "dispatchNo": "DSP-2025-00912",
+      "orderNo": "ORD-9912",
+      "orderId": "ord-9912",
+      "status": "pending",
+      "customer": "Skyline Tower A – Sector 62",
+      "customerDetails": {
+        "name": "Skyline Tower A – Sector 62",
+        "email": "site@skylinetower.com",
+        "phone": "+91 98100 22334",
+        "address": "Sector 62, Noida, UP-201301"
+      },
+      "schedule": "15:45 Today",
+      "scheduledTime": "15:45",
+      "vehicle": "MH-04-AX-4432",
+      "driver": "Karan Rathore",
+      "route": "Via Western Express Highway",
+      "eta": "45 min",
+      "priority": "high",
+      "items": 6,
+      "timeline": [
+        { "id": "tl-1", "title": "Order Ready", "timestamp": "Today, 2:30 PM", "status": "completed" },
+        { "id": "tl-2", "title": "Vehicle Assigned", "timestamp": "Today, 2:45 PM", "status": "completed" },
+        { "id": "tl-3", "title": "Loading Started", "status": "pending" },
+        { "id": "tl-4", "title": "Loading Complete", "status": "pending" },
+        { "id": "tl-5", "title": "Dispatched", "status": "pending" },
+        { "id": "tl-6", "title": "In Transit", "status": "pending" },
+        { "id": "tl-7", "title": "Delivered", "status": "pending" }
+      ],
+      "documents": [
+        { "id": "doc-1", "name": "Delivery Challan", "type": "PDF" },
+        { "id": "doc-2", "name": "Material Manifest", "type": "PDF" }
+      ],
+      "dispatchDate": "2025-06-18"
+    },
+    {
+      "id": "dsp-queue-9915",
+      "dispatchNo": "DSP-2025-00915",
+      "orderNo": "ORD-9915",
+      "orderId": "ord-9915",
+      "status": "preparing",
+      "customer": "Navi Port Infrastructure",
+      "customerDetails": {
+        "name": "Navi Port Infrastructure",
+        "email": "logistics@navipport.com",
+        "phone": "+91 98200 44556",
+        "address": "Navi Mumbai Port Zone, MH-400707"
+      },
+      "schedule": "16:15 Today",
+      "scheduledTime": "16:15",
+      "vehicle": "MH-01-CZ-9910",
+      "driver": "Sanjay Dutta",
+      "route": "Via Eastern Freeway",
+      "eta": "1h 10m",
+      "priority": "normal",
+      "items": 4,
+      "timeline": [
+        { "id": "tl-1", "title": "Order Ready", "timestamp": "Today, 2:00 PM", "status": "completed" },
+        { "id": "tl-2", "title": "Vehicle Assigned", "timestamp": "Today, 2:20 PM", "status": "completed" },
+        { "id": "tl-3", "title": "Loading Started", "timestamp": "Today, 3:00 PM", "status": "active" },
+        { "id": "tl-4", "title": "Loading Complete", "status": "pending" },
+        { "id": "tl-5", "title": "Dispatched", "status": "pending" },
+        { "id": "tl-6", "title": "In Transit", "status": "pending" },
+        { "id": "tl-7", "title": "Delivered", "status": "pending" }
+      ],
+      "documents": [
+        { "id": "doc-1", "name": "Delivery Challan", "type": "PDF" },
+        { "id": "doc-2", "name": "Gate Pass", "type": "PDF" }
+      ],
+      "dispatchDate": "2025-06-18"
+    },
+    {
+      "id": "dsp-queue-9905",
+      "dispatchNo": "DSP-2025-00905",
+      "orderNo": "ORD-9905",
+      "orderId": "ord-9905",
+      "status": "in_transit",
+      "customer": "DLF Cyber City Phase 3",
+      "customerDetails": {
+        "name": "DLF Cyber City Phase 3",
+        "email": "procurement@dlf.com",
+        "phone": "+91 98765 77889",
+        "address": "Cyber City, Gurugram, HR-122002"
+      },
+      "schedule": "14:30 Today",
+      "scheduledTime": "14:30",
+      "vehicle": "MH-43-BE-1102",
+      "driver": "Rajesh Kumar",
+      "route": "Via NH-48 Corridor",
+      "eta": "25 min",
+      "priority": "urgent",
+      "items": 8,
+      "timeline": [
+        { "id": "tl-1", "title": "Order Ready", "timestamp": "Today, 12:00 PM", "status": "completed" },
+        { "id": "tl-2", "title": "Vehicle Assigned", "timestamp": "Today, 12:15 PM", "status": "completed" },
+        { "id": "tl-3", "title": "Loading Started", "timestamp": "Today, 12:30 PM", "status": "completed" },
+        { "id": "tl-4", "title": "Loading Complete", "timestamp": "Today, 1:00 PM", "status": "completed" },
+        { "id": "tl-5", "title": "Dispatched", "timestamp": "Today, 1:15 PM", "status": "completed" },
+        { "id": "tl-6", "title": "In Transit", "timestamp": "Today, 1:20 PM", "status": "active" },
+        { "id": "tl-7", "title": "Delivered", "status": "pending" }
+      ],
+      "documents": [
+        { "id": "doc-1", "name": "Delivery Challan", "type": "PDF" },
+        { "id": "doc-2", "name": "E-Way Bill", "type": "PDF" },
+        { "id": "doc-3", "name": "Material Manifest", "type": "PDF" }
+      ],
+      "dispatchDate": "2025-06-18"
+    }
+  ],
+  "dispatches": [
+    {
+      "id": "dsp-001",
+      "dispatchNo": "DSP-2025-00789",
+      "orderNo": "ORD-2025-01220",
+      "destination": "Vikram Sub Hub - Chennai",
+      "vehicleNo": "MH-12-AB-4567",
+      "driver": "Ramesh Yadav",
+      "items": 8,
+      "status": "in_transit",
+      "dispatchDate": "2025-06-15",
+      "estimatedArrival": "2025-06-18"
+    },
+    {
+      "id": "dsp-002",
+      "dispatchNo": "DSP-2025-00785",
+      "orderNo": "ORD-2025-01215",
+      "destination": "Vikram Sub Hub - Lucknow",
+      "vehicleNo": "DL-01-CD-8901",
+      "driver": "Vikram Singh",
+      "items": 5,
+      "status": "delivered",
+      "dispatchDate": "2025-06-12",
+      "estimatedArrival": "2025-06-15"
+    },
+    {
+      "id": "dsp-003",
+      "dispatchNo": "DSP-2025-00780",
+      "orderNo": "ORD-2025-01210",
+      "destination": "Vikram Sub Hub - Hyderabad",
+      "vehicleNo": "KA-05-EF-2345",
+      "driver": "Mohammed Ali",
+      "items": 3,
+      "status": "dispatched",
+      "dispatchDate": "2025-06-16",
+      "estimatedArrival": "2025-06-19"
+    }
+  ]
+}
