@@ -239,6 +239,12 @@ export function AddMaterialModal() {
     });
   };
 
+  if (!isAddModalOpen) {
+    return null;
+  }
+
+  const categoryKey = form.watch("categoryKey");
+
   return (
     <Dialog open={isAddModalOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="max-h-[92vh] max-w-2xl gap-0 overflow-hidden rounded-2xl border-0 p-0 shadow-2xl [&>button]:right-5 [&>button]:top-5 [&>button]:rounded-full [&>button]:bg-white/20 [&>button]:text-white [&>button]:opacity-100 [&>button]:backdrop-blur-sm [&>button]:transition-colors [&>button]:hover:bg-white/30 [&>button]:focus:ring-white/50">
@@ -305,16 +311,14 @@ export function AddMaterialModal() {
                   error={form.formState.errors.categoryKey?.message}
                 >
                   <Select
-                    value={form.watch("categoryKey")}
+                    value={categoryKey || undefined}
                     onValueChange={(value) =>
                       form.setValue("categoryKey", value)
                     }
                   >
-                    <SelectTrigger className="h-11 rounded-xl border-gray-200 bg-gray-50/50 transition-all hover:border-orange-200 hover:bg-white">
-                      <div className="flex items-center gap-2">
-                        <Layers className="h-4 w-4 text-gray-400" />
-                        <SelectValue placeholder="Select category" />
-                      </div>
+                    <SelectTrigger className="relative h-11 rounded-xl border-gray-200 bg-gray-50/50 pl-10 transition-all hover:border-orange-200 hover:bg-white">
+                      <Layers className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                      <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                     <SelectContent>
                       {materialCategories.map((category) => (
@@ -334,11 +338,9 @@ export function AddMaterialModal() {
                     value={form.watch("unit")}
                     onValueChange={(value) => form.setValue("unit", value)}
                   >
-                    <SelectTrigger className="h-11 rounded-xl border-gray-200 bg-gray-50/50 transition-all hover:border-orange-200 hover:bg-white">
-                      <div className="flex items-center gap-2">
-                        <Boxes className="h-4 w-4 text-gray-400" />
-                        <SelectValue />
-                      </div>
+                    <SelectTrigger className="relative h-11 rounded-xl border-gray-200 bg-gray-50/50 pl-10 transition-all hover:border-orange-200 hover:bg-white">
+                      <Boxes className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
                       {UNITS.map((u) => (
