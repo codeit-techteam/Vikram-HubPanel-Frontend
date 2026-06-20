@@ -17,20 +17,30 @@ import { InvoicePreviewModal } from "@/components/orders/InvoicePreviewModal";
 
 function OrdersTabSync() {
   const searchParams = useSearchParams();
+  const filters = useOrdersStore((state) => state.filters);
   const setFilterTab = useOrdersStore((state) => state.setFilterTab);
 
   useEffect(() => {
     const tab = searchParams.get("tab");
-    if (tab === "active" || tab === "completed" || tab === "all") {
-      setFilterTab(tab);
+    if (
+      tab === "active" ||
+      tab === "completed" ||
+      tab === "all"
+    ) {
+      if (filters.tab !== tab) {
+        setFilterTab(tab);
+      }
+    } else if (!tab && filters.tab !== "all") {
+      setFilterTab("all");
     }
-  }, [searchParams, setFilterTab]);
+  }, [searchParams, filters.tab, setFilterTab]);
 
   return null;
 }
 
 export default function OrdersPage() {
-  const { loading, loadOrders } = useOrdersStore();
+  const { loading, error, allOrders, loadOrders } = useOrdersStore();
+  const isInitialLoad = loading && allOrders.length === 0;
 
   useEffect(() => {
     loadOrders();
@@ -40,7 +50,7 @@ export default function OrdersPage() {
     toast.success("Orders exported to CSV (mock).");
   };
 
-  if (loading) {
+  if (isInitialLoad) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#FF6B00] border-t-transparent" />
@@ -104,7 +114,23 @@ export default function OrdersPage() {
 
         <OrderStatusTabs />
 
-        <OrdersTable />
+        {error ? (
+          <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-center">
+            <p className="text-sm text-red-700">
+              Couldn&apos;t load orders: {error}
+            </p>
+            <Button
+              variant="outline"
+              size="sm"
+              className="mt-3"
+              onClick={() => loadOrders()}
+            >
+              Retry
+            </Button>
+          </div>
+        ) : (
+          <OrdersTable />
+        )}
       </motion.div>
 
       <OrderDetailsModal />

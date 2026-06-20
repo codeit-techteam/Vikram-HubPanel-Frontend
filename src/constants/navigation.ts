@@ -34,9 +34,6 @@ export const NAV_SECTIONS = [
 
 export const NAV_ITEMS: NavItem[] = [
   { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { title: "Inventory", href: "/inventory", icon: Boxes },
-  { title: "Requisitions", href: "/requisitions", icon: ClipboardList },
-  { title: "Transfers", href: "/transfers", icon: ArrowLeftRight },
   {
     title: "Orders",
     href: "/orders",
@@ -48,6 +45,9 @@ export const NAV_ITEMS: NavItem[] = [
       { title: "New Request", href: "/orders/create" },
     ],
   },
+  { title: "Inventory", href: "/inventory", icon: Boxes },
+  { title: "Requisitions", href: "/requisitions", icon: ClipboardList },
+  { title: "Transfers", href: "/transfers", icon: ArrowLeftRight },
   {
     title: "Dispatch Planning",
     href: "/dispatch",

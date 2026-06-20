@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+import { Cell, Pie, PieChart } from "recharts";
 import type { AnalyticsDeliveryPerformance } from "@/types";
 
 interface DeliveryPerformanceCardProps {
@@ -35,26 +35,24 @@ export function DeliveryPerformanceCard({ data }: DeliveryPerformanceCardProps) 
 
       <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
         <div className="relative mx-auto h-44 w-44 min-h-[176px] min-w-[176px] shrink-0">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={chartData}
-                cx="50%"
-                cy="50%"
-                innerRadius={52}
-                outerRadius={72}
-                paddingAngle={2}
-                dataKey="value"
-                strokeWidth={0}
-                animationDuration={1200}
-                animationEasing="ease-out"
-              >
-                {chartData.map((entry) => (
-                  <Cell key={entry.name} fill={entry.color} />
-                ))}
-              </Pie>
-            </PieChart>
-          </ResponsiveContainer>
+          <PieChart width={176} height={176}>
+            <Pie
+              data={chartData}
+              cx="50%"
+              cy="50%"
+              innerRadius={52}
+              outerRadius={72}
+              paddingAngle={2}
+              dataKey="value"
+              strokeWidth={0}
+              animationDuration={1200}
+              animationEasing="ease-out"
+            >
+              {chartData.map((entry) => (
+                <Cell key={entry.name} fill={entry.color} />
+              ))}
+            </Pie>
+          </PieChart>
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
             <span className="text-2xl font-bold text-[#111827]">
               {data.avgLagHours}h

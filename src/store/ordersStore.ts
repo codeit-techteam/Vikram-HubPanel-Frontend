@@ -7,7 +7,7 @@ import type {
   OrderPagination,
   OrderSummaryData,
 } from "@/types";
-import { ordersService } from "@/services/orders.service";
+import { ordersService, filterOrdersByTab } from "@/services/orders.service";
 import { useInventoryStore } from "./inventoryStore";
 import { useDashboardStore } from "./dashboardStore";
 
@@ -24,6 +24,7 @@ interface OrdersState {
   filters: OrderFilters;
   pagination: OrderPagination;
   loading: boolean;
+  error: string | null;
   isDetailsOpen: boolean;
   isDispatchOpen: boolean;
   isInvoiceOpen: boolean;
@@ -40,6 +41,7 @@ interface OrdersState {
   openInvoice: (order: HubOrder) => void;
   closeInvoice: () => void;
   loadOrders: () => Promise<void>;
+  applyFilters: () => void;
   createDispatch: (payload: CreateDispatchPayload) => Promise<void>;
   updateOrderStatus: (
     orderId: string,
@@ -79,6 +81,7 @@ export const useOrdersStore = create<OrdersState>((set, get) => ({
   filters: defaultFilters,
   pagination: defaultPagination,
   loading: false,
+  error: null,
   isDetailsOpen: false,
   isDispatchOpen: false,
   isInvoiceOpen: false,
@@ -86,11 +89,14 @@ export const useOrdersStore = create<OrdersState>((set, get) => ({
   invoiceOrderId: null,
 
   setFilterTab: (tab) => {
+    const { filters } = get();
+    if (filters.tab === tab) return;
+
     set((state) => ({
       filters: { ...state.filters, tab },
       pagination: { ...state.pagination, page: 1 },
     }));
-    get().loadOrders();
+    get().applyFilters();
   },
 
   setSearch: (search) => {
@@ -98,14 +104,14 @@ export const useOrdersStore = create<OrdersState>((set, get) => ({
       filters: { ...state.filters, search },
       pagination: { ...state.pagination, page: 1 },
     }));
-    get().loadOrders();
+    get().applyFilters();
   },
 
   setPage: (page) => {
     set((state) => ({
       pagination: { ...state.pagination, page },
     }));
-    get().loadOrders();
+    get().applyFilters();
   },
 
   selectOrder: (order) => set({ selectedOrder: order }),
@@ -135,28 +141,60 @@ export const useOrdersStore = create<OrdersState>((set, get) => ({
   closeInvoice: () =>
     set({ isInvoiceOpen: false, invoiceOrderId: null }),
 
-  loadOrders: async () => {
-    set({ loading: true });
+  applyFilters: () => {
     const state = get();
-    const response = await ordersService.getOrders({
-      tab: state.filters.tab,
-      search: state.filters.search || undefined,
-      page: state.pagination.page,
-      pageSize: state.pagination.pageSize,
-    });
+    let filtered = filterOrdersByTab(state.allOrders, state.filters.tab);
+
+    if (state.filters.search) {
+      const search = state.filters.search.toLowerCase();
+      filtered = filtered.filter(
+        (o) =>
+          o.orderNo.toLowerCase().includes(search) ||
+          o.customer.name.toLowerCase().includes(search) ||
+          o.location.toLowerCase().includes(search)
+      );
+    }
+
+    const pageSize = state.pagination.pageSize;
+    const total = filtered.length;
+    const totalPages = Math.max(1, Math.ceil(total / pageSize));
+    const page = Math.min(state.pagination.page, totalPages);
+    const start = (page - 1) * pageSize;
 
     set({
-      orders: response.data,
-      allOrders: ordersService.getAllOrdersData().orders,
-      summary: response.summary,
+      orders: filtered.slice(start, start + pageSize),
       pagination: {
-        page: response.page,
-        pageSize: response.pageSize,
-        total: response.total,
-        totalPages: response.totalPages,
+        page,
+        pageSize,
+        total,
+        totalPages,
       },
-      loading: false,
     });
+  },
+
+  loadOrders: async () => {
+    set({ loading: true, error: null });
+
+    try {
+      // Fetch all orders once (same path as "All Orders" tab)
+      await ordersService.getOrders({ tab: "all", page: 1, pageSize: 9999 });
+      const { orders, summary } = ordersService.getAllOrdersData();
+
+      set({
+        allOrders: orders,
+        summary,
+        loading: false,
+      });
+      get().applyFilters();
+    } catch (err) {
+      console.error("Failed to fetch orders:", err);
+      set({
+        loading: false,
+        error: err instanceof Error ? err.message : "Failed to load orders",
+        orders: [],
+        allOrders: [],
+      });
+    }
   },
 
   createDispatch: async (payload) => {

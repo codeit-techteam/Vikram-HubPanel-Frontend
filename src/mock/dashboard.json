@@ -70,7 +70,7 @@
       "id": "receive-material",
       "label": "Receive Material",
       "icon": "package-check",
-      "href": "/material-receiving/TR-8029-X"
+      "href": "/transfers"
     },
     {
       "id": "create-dispatch",

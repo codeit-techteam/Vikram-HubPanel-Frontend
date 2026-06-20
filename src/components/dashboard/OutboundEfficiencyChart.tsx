@@ -1,6 +1,6 @@
 "use client";
 
-import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+import { Cell, Pie, PieChart } from "recharts";
 import type { OutboundEfficiency } from "@/types";
 
 interface OutboundEfficiencyChartProps {
@@ -21,24 +21,22 @@ export function OutboundEfficiencyChart({ data }: OutboundEfficiencyChartProps) 
       </h3>
 
       <div className="relative mx-auto h-44 w-44 min-h-[176px] min-w-[176px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <PieChart>
-            <Pie
-              data={chartData}
-              cx="50%"
-              cy="50%"
-              innerRadius={52}
-              outerRadius={72}
-              paddingAngle={2}
-              dataKey="value"
-              strokeWidth={0}
-            >
-              {chartData.map((entry) => (
-                <Cell key={entry.name} fill={entry.color} />
-              ))}
-            </Pie>
-          </PieChart>
-        </ResponsiveContainer>
+        <PieChart width={176} height={176}>
+          <Pie
+            data={chartData}
+            cx="50%"
+            cy="50%"
+            innerRadius={52}
+            outerRadius={72}
+            paddingAngle={2}
+            dataKey="value"
+            strokeWidth={0}
+          >
+            {chartData.map((entry) => (
+              <Cell key={entry.name} fill={entry.color} />
+            ))}
+          </Pie>
+        </PieChart>
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
           <span className="text-2xl font-bold text-gray-900">{data.total}</span>
           <span className="text-[9px] font-semibold uppercase tracking-wider text-gray-400">

@@ -10,7 +10,7 @@ import {
   Plus,
   X,
 } from "lucide-react";
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { NAV_ITEMS } from "@/constants/navigation";
 import { useAuthStore, useInventoryStore, useSidebarStore } from "@/store";
 import { useUserStore } from "@/store/userStore";
@@ -31,6 +31,7 @@ export function AppSidebar() {
   const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({
     "/orders": true,
   });
+  const activeNavRef = useRef<HTMLAnchorElement | null>(null);
 
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(`${href}/`);
@@ -42,6 +43,13 @@ export function AppSidebar() {
     setExpandedMenus((prev) => ({ ...prev, [href]: !prev[href] }));
   };
 
+  useLayoutEffect(() => {
+    activeNavRef.current?.scrollIntoView({
+      block: "nearest",
+      behavior: "smooth",
+    });
+  }, [pathname, searchParams.toString()]);
+
   const handleLogout = () => {
     logout();
     setMobileOpen(false);
@@ -49,7 +57,7 @@ export function AppSidebar() {
   };
 
   const sidebarContent = (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full min-h-0 flex-col">
       <div className="border-b border-gray-200 px-5 py-5">
         <div className="flex items-center justify-between">
           {!isCollapsed && (
@@ -90,7 +98,7 @@ export function AppSidebar() {
         )}
       </div>
 
-      <ScrollArea className="flex-1 px-3 py-4">
+      <ScrollArea className="min-h-0 flex-1 px-3 py-4">
         <nav className="space-y-1">
           {NAV_ITEMS.map((item, index) => {
             const showSectionLabel =
@@ -147,6 +155,7 @@ export function AppSidebar() {
                         return (
                           <Link
                             key={child.title}
+                            ref={childActive ? activeNavRef : undefined}
                             href={childHref}
                             onClick={() => setMobileOpen(false)}
                             className={cn(
@@ -174,6 +183,7 @@ export function AppSidebar() {
                   </p>
                 )}
                 <Link
+                  ref={active ? activeNavRef : undefined}
                   href={item.href}
                   onClick={() => setMobileOpen(false)}
                   className={cn(

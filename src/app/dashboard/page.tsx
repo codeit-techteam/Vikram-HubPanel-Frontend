@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { Download, Loader2, RefreshCw } from "lucide-react";
 import toast from "react-hot-toast";
 import { ActivityTimeline } from "@/components/dashboard/ActivityTimeline";
-import { IncomingDeliveriesTable } from "@/components/dashboard/IncomingDeliveriesTable";
+import { OutgoingDispatchesTable } from "@/components/dashboard/OutgoingDispatchesTable";
 import { KPICard } from "@/components/dashboard/KPICard";
 import { OutboundEfficiencyChart } from "@/components/dashboard/OutboundEfficiencyChart";
 import { QuickOperations } from "@/components/dashboard/QuickOperations";
@@ -126,6 +126,7 @@ export default function DashboardPage() {
         {kpis.map((kpi, index) => (
           <motion.div
             key={kpi.id}
+            className="h-full"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05 }}
@@ -137,7 +138,7 @@ export default function DashboardPage() {
 
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <IncomingDeliveriesTable deliveries={incomingDeliveries} />
+          <OutgoingDispatchesTable />
         </div>
         <QuickOperations operations={quickOperations} />
       </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import type { OrderFilterTab } from "@/types";
 import { useOrdersStore } from "@/store";
 import { cn } from "@/lib/utils";
@@ -12,7 +13,14 @@ const TABS: { id: OrderFilterTab; label: string }[] = [
 ];
 
 export function OrderStatusTabs() {
+  const router = useRouter();
   const { filters, setFilterTab } = useOrdersStore();
+
+  const handleTabClick = (tabId: OrderFilterTab) => {
+    setFilterTab(tabId);
+    const href = tabId === "all" ? "/orders" : `/orders?tab=${tabId}`;
+    router.push(href, { scroll: false });
+  };
 
   return (
     <div className="flex gap-1 rounded-xl border border-[#E5E7EB] bg-white p-1">
@@ -22,7 +30,7 @@ export function OrderStatusTabs() {
           <button
             key={tab.id}
             type="button"
-            onClick={() => setFilterTab(tab.id)}
+            onClick={() => handleTabClick(tab.id)}
             className={cn(
               "relative flex-1 rounded-lg px-4 py-2 text-sm font-medium transition-colors",
               isActive ? "text-white" : "text-gray-500 hover:text-gray-900"

@@ -111,8 +111,16 @@ export function OrdersTable() {
     orders,
     pagination,
     loading,
+    filters,
     setPage,
   } = useOrdersStore();
+
+  const emptyLabel =
+    filters.tab === "active"
+      ? "No active orders found."
+      : filters.tab === "completed"
+        ? "No completed orders found."
+        : "No orders match your filters.";
 
   const pageNumbers = Array.from(
     { length: Math.min(pagination.totalPages, 5) },
@@ -128,7 +136,12 @@ export function OrdersTable() {
   }
 
   return (
-    <div className="rounded-2xl border border-[#E5E7EB] bg-white shadow-sm">
+    <div className="relative rounded-2xl border border-[#E5E7EB] bg-white shadow-sm">
+      {loading && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center rounded-2xl bg-white/60">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#FF6B00] border-t-transparent" />
+        </div>
+      )}
       {/* Desktop / Tablet Table */}
       <div className="hidden overflow-x-auto md:block">
         <table className="w-full min-w-[720px]">
@@ -148,7 +161,7 @@ export function OrdersTable() {
                   colSpan={COLUMNS.length}
                   className="px-5 py-12 text-center text-sm text-gray-500"
                 >
-                  No orders match your filters.
+                  {emptyLabel}
                 </td>
               </tr>
             ) : (
@@ -198,7 +211,7 @@ export function OrdersTable() {
       <div className="space-y-3 p-4 md:hidden">
         {orders.length === 0 ? (
           <p className="py-8 text-center text-sm text-gray-500">
-            No orders match your filters.
+            {emptyLabel}
           </p>
         ) : (
           orders.map((order, index) => (

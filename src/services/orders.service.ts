@@ -11,18 +11,23 @@ import type {
 import { delay } from "@/lib/utils";
 import { erpDatabase } from "./erpDatabase";
 
-const ACTIVE_STATUSES: HubOrder["status"][] = [
+export const ORDER_ACTIVE_STATUSES: HubOrder["status"][] = [
   "new",
   "processing",
   "packed",
   "out_for_delivery",
 ];
 
-function filterByTab(orders: HubOrder[], tab: OrderFilterTab): HubOrder[] {
+export const ORDER_COMPLETED_STATUSES: HubOrder["status"][] = ["delivered"];
+
+export function filterOrdersByTab(
+  orders: HubOrder[],
+  tab: OrderFilterTab
+): HubOrder[] {
   if (tab === "all") return orders;
   if (tab === "active")
-    return orders.filter((o) => ACTIVE_STATUSES.includes(o.status));
-  return orders.filter((o) => o.status === "delivered");
+    return orders.filter((o) => ORDER_ACTIVE_STATUSES.includes(o.status));
+  return orders.filter((o) => ORDER_COMPLETED_STATUSES.includes(o.status));
 }
 
 function buildTimelineForDispatch(): HubOrder["timeline"] {
@@ -78,7 +83,7 @@ export const ordersService = {
     let data = [...erpDatabase.getOrders()];
 
     if (filters?.tab) {
-      data = filterByTab(data, filters.tab);
+      data = filterOrdersByTab(data, filters.tab);
     }
 
     if (filters?.status) {

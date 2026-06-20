@@ -843,6 +843,23 @@ export interface IncomingDelivery {
   status: DeliveryStatus;
 }
 
+export type OutgoingDispatchStatus =
+  | "in_transit"
+  | "loading"
+  | "dispatched"
+  | "pending";
+
+export interface OutgoingDispatch {
+  id: string;
+  orderId: string;
+  customerName: string;
+  eta: string;
+  material: string;
+  quantity: string;
+  destination: string;
+  status: OutgoingDispatchStatus;
+}
+
 export interface QuickOperation {
   id: string;
   label: string;
