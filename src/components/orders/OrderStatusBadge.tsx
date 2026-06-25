@@ -2,33 +2,8 @@
 
 import { motion } from "framer-motion";
 import type { OrderStatus } from "@/types";
+import { HUB_OPERATION_STATUS_CONFIG } from "@/constants/operationStatus";
 import { cn } from "@/lib/utils";
-
-const STATUS_CONFIG: Record<
-  OrderStatus,
-  { label: string; className: string }
-> = {
-  new: {
-    label: "New",
-    className: "bg-blue-100 text-blue-700",
-  },
-  processing: {
-    label: "Processing",
-    className: "bg-orange-100 text-[#FF6B00]",
-  },
-  packed: {
-    label: "Packed",
-    className: "bg-purple-100 text-purple-700",
-  },
-  out_for_delivery: {
-    label: "Out For Delivery",
-    className: "bg-indigo-100 text-indigo-700",
-  },
-  delivered: {
-    label: "Delivered",
-    className: "bg-emerald-100 text-emerald-700",
-  },
-};
 
 interface OrderStatusBadgeProps {
   status: OrderStatus;
@@ -36,7 +11,7 @@ interface OrderStatusBadgeProps {
 }
 
 export function OrderStatusBadge({ status, className }: OrderStatusBadgeProps) {
-  const config = STATUS_CONFIG[status];
+  const config = HUB_OPERATION_STATUS_CONFIG[status];
 
   return (
     <motion.span

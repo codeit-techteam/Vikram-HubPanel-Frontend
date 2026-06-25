@@ -71,17 +71,6 @@ export function RequisitionDetailSummary({
           </p>
         </div>
       </div>
-
-      {request.liveTracking && (
-        <div className="mt-5 rounded-xl border border-orange-100 bg-orange-50/50 px-4 py-3">
-          <p className="text-xs font-bold uppercase tracking-wide text-[#FF6B00]">
-            {request.liveTracking.title}
-          </p>
-          <p className="mt-0.5 text-sm text-gray-600">
-            {request.liveTracking.progress}
-          </p>
-        </div>
-      )}
     </motion.div>
   );
 }

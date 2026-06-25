@@ -15,14 +15,15 @@ import {
 } from "@/components/ui/select";
 import { DispatchQueueCard } from "./DispatchQueueCard";
 import type { DispatchQueueTab, DispatchSortField } from "@/types";
+import { HUB_OPERATION_STATUS_CONFIG } from "@/constants/operationStatus";
 import { cn } from "@/lib/utils";
 
-const TABS: { id: DispatchQueueTab; label: string }[] = [
-  { id: "pending", label: "Pending" },
-  { id: "preparing", label: "Preparing" },
-  { id: "assigned", label: "Assigned" },
-  { id: "in_transit", label: "In Transit" },
-];
+const TABS: { id: DispatchQueueTab; label: string }[] = (
+  Object.keys(HUB_OPERATION_STATUS_CONFIG) as DispatchQueueTab[]
+).map((id) => ({
+  id,
+  label: HUB_OPERATION_STATUS_CONFIG[id].label,
+}));
 
 export function DispatchLiveQueue() {
   const router = useRouter();
@@ -32,6 +33,7 @@ export function DispatchLiveQueue() {
     setTab,
     setQueueSearch,
     setSortBy,
+    openDetails,
   } = useDispatchStore();
 
   return (
@@ -78,23 +80,23 @@ export function DispatchLiveQueue() {
                 type="search"
                 value={filters.queueSearch}
                 onChange={(e) => setQueueSearch(e.target.value)}
-                placeholder="Filter queue..."
-                className="h-10 w-full rounded-xl border border-[#E5E7EB] bg-[#F8F9FB] pl-10 pr-4 text-sm placeholder:text-gray-400 focus:border-[#FF6B00] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#FF6B00]/20"
+                placeholder="Search queue..."
+                className="h-10 w-full rounded-xl border border-[#E5E7EB] bg-white pl-9 pr-3 text-sm outline-none focus:border-[#FF6B00]/50 focus:ring-2 focus:ring-[#FF6B00]/20"
               />
             </div>
             <Select
               value={filters.sortBy}
               onValueChange={(v) => setSortBy(v as DispatchSortField)}
             >
-              <SelectTrigger className="h-10 w-[120px] rounded-xl border-[#E5E7EB]">
-                <Filter className="mr-1 h-3.5 w-3.5" />
+              <SelectTrigger className="h-10 w-[130px] rounded-xl border-[#E5E7EB]">
+                <Filter className="mr-2 h-4 w-4 text-gray-400" />
                 <SelectValue placeholder="Sort" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="eta">ETA</SelectItem>
-                <SelectItem value="priority">Priority</SelectItem>
-                <SelectItem value="driver">Driver</SelectItem>
-                <SelectItem value="vehicle">Vehicle</SelectItem>
+                <SelectItem value="eta">By ETA</SelectItem>
+                <SelectItem value="priority">By Priority</SelectItem>
+                <SelectItem value="driver">By Driver</SelectItem>
+                <SelectItem value="vehicle">By Vehicle</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -102,34 +104,32 @@ export function DispatchLiveQueue() {
           <AnimatePresence mode="popLayout">
             {filteredQueue.length === 0 ? (
               <motion.div
-                key="empty"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="flex min-h-[200px] flex-col items-center justify-center rounded-xl border border-dashed border-[#E5E7EB] bg-[#F8F9FB] py-12"
+                className="flex flex-col items-center justify-center py-12 text-center"
               >
-                <Inbox className="mb-2 h-8 w-8 text-gray-300" />
-                <p className="text-sm text-gray-500">
+                <Inbox className="mb-3 h-10 w-10 text-gray-300" />
+                <p className="text-sm font-medium text-gray-500">
                   No dispatches in this queue
                 </p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="mt-4 rounded-xl"
+                  onClick={() => router.push("/dispatch")}
+                >
+                  View Planning Center
+                </Button>
               </motion.div>
             ) : (
-              <div className="space-y-3">
-                {filteredQueue.map((dispatch, index) => (
-                  <DispatchQueueCard
-                    key={dispatch.id}
-                    dispatch={dispatch}
-                    index={index}
-                    onClick={() => router.push(`/dispatch/${dispatch.dispatchNo}`)}
-                  />
-                ))}
-                <div className="flex items-center justify-center rounded-xl border border-dashed border-[#E5E7EB] py-6">
-                  <p className="flex items-center gap-2 text-xs text-gray-400">
-                    <Inbox className="h-4 w-4" />
-                    End of immediate queue
-                  </p>
-                </div>
-              </div>
+              filteredQueue.map((item, index) => (
+                <DispatchQueueCard
+                  key={item.id}
+                  dispatch={item}
+                  index={index}
+                  onClick={openDetails}
+                />
+              ))
             )}
           </AnimatePresence>
         </CardContent>

@@ -5,8 +5,11 @@ import { Download, FileText } from "lucide-react";
 import { Modal } from "@/components/modals/modal";
 import { Button } from "@/components/ui/button";
 import { useOrdersStore } from "@/store";
+import { generateInvoicePdf } from "@/lib/generateInvoicePdf";
+import { printInvoice } from "@/lib/printInvoice";
 import { formatCurrency } from "@/lib/utils";
 import toast from "react-hot-toast";
+import { Printer } from "lucide-react";
 
 export function InvoicePreviewModal() {
   const { isInvoiceOpen, closeInvoice, selectedOrder } = useOrdersStore();
@@ -16,7 +19,13 @@ export function InvoicePreviewModal() {
   const order = selectedOrder;
 
   const handleDownload = () => {
-    toast.success(`Invoice for ${order.orderNo} downloaded (mock PDF).`);
+    generateInvoicePdf(order);
+    toast.success(`Invoice ${order.orderNo} downloaded as PDF.`);
+  };
+
+  const handlePrint = () => {
+    printInvoice(order);
+    toast.success(`Print dialog opened for ${order.orderNo}.`);
   };
 
   return (
@@ -108,6 +117,10 @@ export function InvoicePreviewModal() {
         <div className="flex justify-end gap-2">
           <Button variant="outline" onClick={() => closeInvoice()}>
             Close
+          </Button>
+          <Button variant="outline" onClick={handlePrint} className="gap-2">
+            <Printer className="h-4 w-4" />
+            Print Invoice
           </Button>
           <Button
             onClick={handleDownload}

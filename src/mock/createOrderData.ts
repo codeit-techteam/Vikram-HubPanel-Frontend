@@ -202,10 +202,17 @@ export const CUSTOMER_TYPE_OPTIONS: { value: CustomerType; label: string }[] = [
 
 export const DELIVERY_CHARGE = 2500;
 export const GST_RATE = 0.18;
-export const DEFAULT_DISCOUNT = 1500;
+export const DEFAULT_DISCOUNT = 0;
 
 export function normalizeMobile(input: string): string {
   return input.replace(/\D/g, "").slice(-10);
+}
+
+export function formatMobileDisplay(digits: string): string {
+  const normalized = normalizeMobile(digits);
+  if (!normalized) return "";
+  if (normalized.length <= 5) return `+91 ${normalized}`;
+  return `+91 ${normalized.slice(0, 5)} ${normalized.slice(5)}`;
 }
 
 export function searchCustomerByMobile(mobile: string): MockCustomer | null {

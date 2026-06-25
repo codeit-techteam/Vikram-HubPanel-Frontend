@@ -9,7 +9,7 @@ interface OutboundEfficiencyChartProps {
 
 export function OutboundEfficiencyChart({ data }: OutboundEfficiencyChartProps) {
   const chartData = [
-    { name: "Dispatched", value: data.dispatched, color: "#FF6B00" },
+    { name: "Dispatch", value: data.dispatched, color: "#FF6B00" },
     { name: "Loading", value: data.loading, color: "#FFB366" },
     { name: "Pending", value: data.pending, color: "#E5E7EB" },
   ];

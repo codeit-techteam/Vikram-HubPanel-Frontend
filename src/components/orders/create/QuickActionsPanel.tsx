@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCreateOrderStore } from "@/store/createOrderStore";
+import { generateQuotePdf } from "@/lib/generateQuotePdf";
 import { formatCurrency } from "@/lib/utils";
 import toast from "react-hot-toast";
 
@@ -23,9 +24,51 @@ const ACTIONS = [
 ];
 
 export function QuickActionsPanel() {
-  const { customer, setDiscount } = useCreateOrderStore();
+  const {
+    customer,
+    setDiscount,
+    lineItems,
+    orderId,
+    siteDetails,
+    materialTotal,
+    deliveryCharge,
+    gstAmount,
+    grandTotal,
+    discount,
+  } = useCreateOrderStore();
+
+  const handleGenerateQuote = () => {
+    if (lineItems.length === 0) {
+      toast.error("Please add at least one product before generating a quote.");
+      return;
+    }
+
+    generateQuotePdf({
+      orderId,
+      customer: customer
+        ? {
+            name: customer.name,
+            mobile: customer.mobile,
+            email: customer.email,
+            customerTypeLabel: customer.customerTypeLabel,
+          }
+        : null,
+      siteDetails,
+      lineItems,
+      materialTotal: materialTotal(),
+      deliveryCharge: deliveryCharge(),
+      gstAmount: gstAmount(),
+      discount,
+      grandTotal: grandTotal(),
+    });
+    toast.success("Quotation PDF downloaded.");
+  };
 
   const handleAction = (label: string) => {
+    if (label === "Generate Quotation PDF") {
+      handleGenerateQuote();
+      return;
+    }
     if (label === "Apply Discount") {
       setDiscount(3000);
       toast.success("Special discount of ₹3,000 applied.");

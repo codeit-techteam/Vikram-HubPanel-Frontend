@@ -123,16 +123,7 @@ export const dispatchService = {
     let data = [...erpDatabase.getQueue()];
 
     if (tab && tab !== "all") {
-      const statusMap: Record<string, DispatchQueueStatus[]> = {
-        pending: ["pending"],
-        preparing: ["preparing"],
-        assigned: ["assigned", "dispatched"],
-        in_transit: ["in_transit", "arrived"],
-      };
-      const statuses = statusMap[tab];
-      if (statuses) {
-        data = data.filter((d) => statuses.includes(d.status));
-      }
+      data = data.filter((d) => d.status === tab);
     }
 
     if (search) {
@@ -202,7 +193,7 @@ export const dispatchService = {
       dispatchNo,
       orderNo: payload.orderNo,
       orderId: payload.orderId,
-      status: "assigned",
+      status: "loading",
       customer: payload.customer,
       customerDetails: {
         name: payload.customer,
@@ -297,20 +288,20 @@ export const dispatchService = {
       dispatchNo,
       orderNo: payload.orderNo,
       customerName: payload.customer,
-      status: "assigned",
+      status: "loading",
       otp,
       podGenerated: false,
     });
 
     if (order) {
       erpDatabase.updateOrder(payload.orderId, {
-        status: "out_for_delivery",
+        status: "dispatch",
         dispatchId: id,
         dispatchHistory: [
           ...(order.dispatchHistory ?? []),
           {
             dispatchNo,
-            status: "assigned",
+            status: "dispatch",
             vehicle: payload.vehicle,
             driver: payload.driver,
             dispatchedAt: now.toISOString(),
@@ -386,17 +377,11 @@ export const dispatchService = {
 
     const timeline = item.timeline.map((t) => {
       const now = "Just now";
-      if (status === "preparing" && t.title === "Loading Started") {
+      if (status === "loading" && t.title === "Loading Started") {
         return { ...t, status: "active" as const, timestamp: now };
       }
-      if (status === "dispatched" && t.title === "Dispatched") {
+      if (status === "dispatch" && t.title === "Dispatched") {
         return { ...t, status: "completed" as const, timestamp: now };
-      }
-      if (status === "in_transit" && t.title === "In Transit") {
-        return { ...t, status: "active" as const, timestamp: now };
-      }
-      if (status === "arrived" && t.title === "Delivered") {
-        return { ...t, status: "pending" as const };
       }
       if (status === "delivered" && t.title === "Delivered") {
         return { ...t, status: "completed" as const, timestamp: now };

@@ -274,7 +274,7 @@ export const useTransferStore = create<TransferState>((set, get) => ({
     useDashboardStore.getState().addActivityLog({
       title: `Material Received — ${payload.transferId}`,
       subtitle: `${payload.materials.length} material(s) verified and added to inventory`,
-      type: "gate",
+      type: "transfer",
     });
 
     useDashboardStore.getState().updateIncomingTransfersKpi();
@@ -372,7 +372,7 @@ export const useTransferStore = create<TransferState>((set, get) => ({
     useDashboardStore.getState().addActivityLog({
       title: `Transfer Created — ${newTransfer.transferId}`,
       subtitle: `${payload.materials} scheduled from ${payload.sourceWarehouse}`,
-      type: "dispatch",
+      type: "transfer",
     });
 
     set({

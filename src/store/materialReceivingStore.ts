@@ -225,7 +225,7 @@ export const useMaterialReceivingStore = create<MaterialReceivingState>(
         useDashboardStore.getState().addActivityLog({
           title: `Delivery Accepted — ${record.transferId}`,
           subtitle: `GRN ${grn.grnNumber} created · Inventory updated`,
-          type: "gate",
+          type: "transfer",
         });
 
         useDashboardStore.getState().updateIncomingTransfersKpi();

@@ -9,15 +9,22 @@ import {
   CheckCircle2,
   Circle,
   Clock,
+  Download,
   FileText,
   MapPin,
   Package,
   Phone,
+  Printer,
   Truck,
   User,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { ContactCustomerModal } from "@/components/orders/ContactCustomerModal";
+import { InvoicePreviewModal } from "@/components/orders/InvoicePreviewModal";
 import { ordersService } from "@/services/orders.service";
+import { useOrdersStore } from "@/store";
+import { generateInvoicePdf } from "@/lib/generateInvoicePdf";
+import { printInvoice } from "@/lib/printInvoice";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { OrderStatusBadge } from "@/components/orders/OrderStatusBadge";
@@ -33,6 +40,8 @@ export default function OrderDetailsPage() {
   const [order, setOrder] = useState<HubOrder | null>(null);
   const [dispatchHistory, setDispatchHistory] = useState<DispatchRecord[]>([]);
   const [loading, setLoading] = useState(true);
+  const [contactOpen, setContactOpen] = useState(false);
+  const { openInvoice } = useOrdersStore();
 
   useEffect(() => {
     async function load() {
@@ -111,21 +120,37 @@ export default function OrderDetailsPage() {
           <Button
             variant="outline"
             className="gap-2 rounded-xl border-[#E5E7EB]"
-            onClick={() => toast.success("Invoice downloaded (mock)")}
+            onClick={() => {
+              printInvoice(order);
+              toast.success(`Print dialog opened for ${order.orderNo}`);
+            }}
           >
-            <FileText className="h-4 w-4" />
-            Download Invoice
+            <Printer className="h-4 w-4" />
+            Print Invoice
           </Button>
           <Button
             variant="outline"
             className="gap-2 rounded-xl border-[#E5E7EB]"
             onClick={() => {
-              if (order.customer.phone) {
-                window.open(`tel:${order.customer.phone.replace(/\s/g, "")}`);
-              } else {
-                toast.error("No phone number on file");
-              }
+              generateInvoicePdf(order);
+              toast.success(`Invoice ${order.orderNo} downloaded as PDF`);
             }}
+          >
+            <Download className="h-4 w-4" />
+            Download PDF
+          </Button>
+          <Button
+            variant="outline"
+            className="gap-2 rounded-xl border-[#E5E7EB]"
+            onClick={() => openInvoice(order)}
+          >
+            <FileText className="h-4 w-4" />
+            Preview Invoice
+          </Button>
+          <Button
+            variant="outline"
+            className="gap-2 rounded-xl border-[#E5E7EB]"
+            onClick={() => setContactOpen(true)}
           >
             <Phone className="h-4 w-4" />
             Contact Customer
@@ -346,6 +371,41 @@ export default function OrderDetailsPage() {
           )}
         </CardContent>
       </Card>
+
+      <Card className="rounded-2xl border-[#E5E7EB] shadow-sm">
+        <CardHeader>
+          <CardTitle className="text-base">Payment Summary</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <InfoRow label="Order Value" value={formatCurrency(order.value)} />
+            <InfoRow label="Payment Method" value={order.payment.method} />
+            <InfoRow label="Payment Status" value={order.payment.status} />
+            <InfoRow
+              label="Paid Amount"
+              value={formatCurrency(order.payment.paidAmount ?? 0)}
+            />
+          </div>
+          {order.payment.dueDate && (
+            <p className="mt-3 text-xs text-gray-400">
+              Due date: {order.payment.dueDate}
+            </p>
+          )}
+          {order.payment.transactionId && (
+            <p className="mt-1 text-xs text-gray-400">
+              Transaction: {order.payment.transactionId}
+            </p>
+          )}
+        </CardContent>
+      </Card>
+
+      <ContactCustomerModal
+        open={contactOpen}
+        onOpenChange={setContactOpen}
+        customer={order.customer}
+        orderNo={order.orderNo}
+      />
+      <InvoicePreviewModal />
     </motion.div>
   );
 }

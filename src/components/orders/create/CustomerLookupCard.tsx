@@ -12,6 +12,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { MobileNumberInput } from "@/components/ui/MobileNumberInput";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -72,15 +73,13 @@ export function CustomerLookupCard() {
       </CardHeader>
       <CardContent className="space-y-5">
         <form onSubmit={handleSearch} className="flex flex-col gap-3 sm:flex-row">
-          <div className="relative flex-1">
-            <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-            <Input
-              placeholder="+91 9876543210"
-              value={mobileSearch}
-              onChange={(e) => setMobileSearch(e.target.value)}
-              className="h-12 rounded-xl border-[#E5E7EB] pl-10 text-base"
-            />
-          </div>
+          <MobileNumberInput
+            value={mobileSearch}
+            onChange={setMobileSearch}
+            leadingIcon={<Phone className="h-4 w-4" />}
+            size="lg"
+            className="flex-1 border-[#E5E7EB] text-base"
+          />
           <Button
             type="submit"
             disabled={isSearching}
@@ -194,11 +193,11 @@ export function CustomerLookupCard() {
                 />
               </div>
               <div className="space-y-2">
-                <Label>Mobile Number</Label>
-                <Input
+                <Label>Mobile Number *</Label>
+                <MobileNumberInput
                   value={newCustomer.mobile}
-                  readOnly
-                  className="rounded-xl bg-gray-50"
+                  onChange={(digits) => setNewCustomerField("mobile", digits)}
+                  size="lg"
                 />
               </div>
               <div className="space-y-2">

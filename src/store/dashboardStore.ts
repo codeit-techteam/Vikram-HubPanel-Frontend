@@ -5,6 +5,7 @@ import type {
   DashboardKpi,
   IncomingDelivery,
   OutboundEfficiency,
+  OutgoingDispatch,
   QuickOperation,
 } from "@/types";
 import { dashboardService } from "@/services/dashboard.service";
@@ -12,6 +13,7 @@ import { dashboardService } from "@/services/dashboard.service";
 interface DashboardState {
   lastSync: string;
   kpis: DashboardKpi[];
+  outgoingDispatches: OutgoingDispatch[];
   incomingDeliveries: IncomingDelivery[];
   quickOperations: QuickOperation[];
   activeRequisitions: ActiveRequisition[];
@@ -28,7 +30,7 @@ interface DashboardState {
   }) => void;
   setSelectedHub: (hubId: string) => void;
   loadDashboard: () => Promise<void>;
-  addActivityLog: (log: Omit<ActivityLog, "id" | "timestamp">) => void;
+  addActivityLog: (log: Omit<ActivityLog, "id" | "timestamp" | "scheduledDate">) => void;
   updateIncomingTransfersKpi: () => void;
   updateDispatchKpis: (
     action: "created" | "delivered",
@@ -39,6 +41,7 @@ interface DashboardState {
 export const useDashboardStore = create<DashboardState>((set) => ({
   lastSync: "",
   kpis: [],
+  outgoingDispatches: [],
   incomingDeliveries: [],
   quickOperations: [],
   activeRequisitions: [],
@@ -62,6 +65,7 @@ export const useDashboardStore = create<DashboardState>((set) => ({
     set({
       lastSync: data.lastSync,
       kpis: data.kpis,
+      outgoingDispatches: data.outgoingDispatches,
       incomingDeliveries: data.incomingDeliveries,
       quickOperations: data.quickOperations,
       activeRequisitions: data.activeRequisitions,
@@ -76,6 +80,7 @@ export const useDashboardStore = create<DashboardState>((set) => ({
       ...log,
       id: `log-${Date.now()}`,
       timestamp: "Just now",
+      scheduledDate: new Date().toISOString().slice(0, 10),
     };
     set((state) => ({
       recentLogs: [newLog, ...state.recentLogs].slice(0, 20),

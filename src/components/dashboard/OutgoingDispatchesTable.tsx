@@ -1,90 +1,35 @@
 "use client";
 
 import Link from "next/link";
-import { MoreHorizontal } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { EllipsisVertical } from "lucide-react";
 import toast from "react-hot-toast";
-import type { OutgoingDispatch, OutgoingDispatchStatus } from "@/types";
+import type { HubOrder, OutgoingDispatch, OutgoingDispatchStatus } from "@/types";
+import {
+  DashboardTimeFilter,
+  isWithinDashboardPeriod,
+  type DashboardTimePeriod,
+} from "@/components/dashboard/DashboardTimeFilter";
+import { ContactCustomerModal } from "@/components/orders/ContactCustomerModal";
+import { HUB_OPERATION_STATUS_CONFIG } from "@/constants/operationStatus";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { generateInvoicePdf } from "@/lib/generateInvoicePdf";
+import { printInvoice } from "@/lib/printInvoice";
+import { ordersService } from "@/services/orders.service";
 import { cn } from "@/lib/utils";
-
-export const OUTGOING_DISPATCHES: OutgoingDispatch[] = [
-  {
-    id: "d1",
-    orderId: "BJW-ORD-7741",
-    customerName: "Prime Construction Ltd.",
-    eta: "13:50 PM",
-    material: "Cement Grade 53",
-    quantity: "200 Bags",
-    destination: "Skyline Tower Site, Andheri East",
-    status: "in_transit",
-  },
-  {
-    id: "d2",
-    orderId: "BJW-ORD-7742",
-    customerName: "Kumar Builders & Co.",
-    eta: "15:30 PM",
-    material: "TMT Steel Bars (12mm)",
-    quantity: "5 Tons",
-    destination: "Worli Project Site, Mumbai",
-    status: "loading",
-  },
-  {
-    id: "d3",
-    orderId: "BJW-ORD-7743",
-    customerName: "Anita Desai Infra",
-    eta: "17:15 PM",
-    material: "Ready Mix Concrete",
-    quantity: "3 Mixers",
-    destination: "New Harbor Bridge, Sector 18",
-    status: "dispatched",
-  },
-  {
-    id: "d4",
-    orderId: "BJW-ORD-7744",
-    customerName: "Sanjay Gupta Constructions",
-    eta: "18:40 PM",
-    material: "Red Clay Bricks ISI",
-    quantity: "8,000 pcs",
-    destination: "Mumbai Metro P-4 Site",
-    status: "pending",
-  },
-  {
-    id: "d5",
-    orderId: "BJW-ORD-7745",
-    customerName: "Vikram Malhotra Group",
-    eta: "20:00 PM",
-    material: "Stone Aggregate 20mm",
-    quantity: "6 MT",
-    destination: "Skyline Tower Site, Andheri East",
-    status: "in_transit",
-  },
-];
 
 const STATUS_STYLES: Record<
   OutgoingDispatchStatus,
   { label: string; className: string }
 > = {
-  in_transit: {
-    label: "IN-TRANSIT",
-    className: "bg-orange-100 text-[#FF6B00]",
-  },
-  loading: {
-    label: "LOADING",
-    className: "bg-sky-100 text-sky-700",
-  },
-  dispatched: {
-    label: "DISPATCHED",
-    className: "bg-emerald-100 text-emerald-700",
-  },
-  pending: {
-    label: "PENDING",
-    className: "bg-gray-100 text-gray-500",
-  },
+  ...HUB_OPERATION_STATUS_CONFIG,
 };
 
 function StatusPill({ status }: { status: OutgoingDispatchStatus }) {
@@ -101,110 +46,234 @@ function StatusPill({ status }: { status: OutgoingDispatchStatus }) {
   );
 }
 
-function ActionsMenu({ dispatchId }: { dispatchId: string }) {
-  const trackDispatch = () =>
-    toast.success(`Tracking dispatch ${dispatchId}…`);
-  const viewOrderDetails = () =>
-    toast.success(`Opening order details for ${dispatchId}…`);
-  const contactCustomer = () =>
-    toast.success(`Contacting customer for ${dispatchId}…`);
-  const printInvoice = () =>
-    toast.success(`Preparing invoice for ${dispatchId}…`);
+function DispatchRowActions({ dispatch }: { dispatch: OutgoingDispatch }) {
+  const router = useRouter();
+  const [contactOpen, setContactOpen] = useState(false);
+  const [contactOrder, setContactOrder] = useState<HubOrder | null>(null);
+
+  const loadOrder = async () => {
+    const order = await ordersService.getOrderById(dispatch.orderId);
+    return order ?? null;
+  };
+
+  const handleTrackDispatch = () => {
+    router.push(`/dispatch?search=${encodeURIComponent(dispatch.orderId)}`);
+  };
+
+  const handleViewOrderDetails = () => {
+    router.push(`/orders/${dispatch.orderId}`);
+  };
+
+  const handleContactCustomer = async () => {
+    const order = await loadOrder();
+    if (order) {
+      setContactOrder(order);
+      setContactOpen(true);
+      return;
+    }
+
+    setContactOrder({
+      id: dispatch.id,
+      orderNo: dispatch.orderId,
+      customer: {
+        name: dispatch.customerName,
+        type: "Customer",
+      },
+      location: dispatch.destination,
+      value: 0,
+      status: dispatch.status,
+      materials: [],
+      payment: { method: "—", status: "—", amount: 0, paidAmount: 0 },
+      deliveryAddress: dispatch.destination,
+      timeline: [],
+      orderDate: dispatch.scheduledDate,
+      createdAt: dispatch.scheduledDate,
+    });
+    setContactOpen(true);
+  };
+
+  const handlePrintInvoice = async () => {
+    const order = await loadOrder();
+    if (!order) {
+      toast.error(`Order ${dispatch.orderId} not found`);
+      return;
+    }
+    printInvoice(order);
+    toast.success(`Print dialog opened for ${dispatch.orderId}`);
+  };
+
+  const handleDownloadInvoice = async () => {
+    const order = await loadOrder();
+    if (!order) {
+      toast.error(`Order ${dispatch.orderId} not found`);
+      return;
+    }
+    generateInvoicePdf(order);
+    toast.success(`Invoice ${dispatch.orderId} downloaded as PDF`);
+  };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button
-          type="button"
-          className="inline-flex h-8 w-8 items-center justify-center rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-          aria-label="More actions"
-        >
-          <MoreHorizontal className="h-4 w-4" />
-        </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={trackDispatch}>
-          Track Dispatch
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={viewOrderDetails}>
-          View Order Details
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={contactCustomer}>
-          Contact Customer
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={printInvoice}>Print Invoice</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 text-gray-400 hover:bg-gray-100 hover:text-gray-700"
+            aria-label={`Actions for ${dispatch.orderId}`}
+          >
+            <EllipsisVertical className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-48">
+          <DropdownMenuItem
+            className="cursor-pointer text-sm"
+            onClick={handleTrackDispatch}
+          >
+            Track Dispatch
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="cursor-pointer text-sm"
+            onClick={handleViewOrderDetails}
+          >
+            View Order Details
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="cursor-pointer text-sm"
+            onClick={handleContactCustomer}
+          >
+            Contact Customer
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="cursor-pointer text-sm"
+            onClick={handlePrintInvoice}
+          >
+            Print Invoice
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="cursor-pointer text-sm"
+            onClick={handleDownloadInvoice}
+          >
+            Download PDF
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {contactOrder && (
+        <ContactCustomerModal
+          open={contactOpen}
+          onOpenChange={setContactOpen}
+          customer={contactOrder.customer}
+          orderNo={contactOrder.orderNo}
+        />
+      )}
+    </>
   );
 }
 
 interface OutgoingDispatchesTableProps {
   dispatches?: OutgoingDispatch[];
+  period: DashboardTimePeriod;
+  selectedMonth: number;
+  onPeriodChange: (period: DashboardTimePeriod) => void;
+  onMonthChange: (month: number) => void;
 }
 
 export function OutgoingDispatchesTable({
-  dispatches = OUTGOING_DISPATCHES,
+  dispatches = [],
+  period,
+  selectedMonth,
+  onPeriodChange,
+  onMonthChange,
 }: OutgoingDispatchesTableProps) {
+  const filteredDispatches = dispatches.filter((dispatch) =>
+    isWithinDashboardPeriod(dispatch.scheduledDate, period, selectedMonth)
+  );
+
   return (
     <div className="rounded-xl border border-gray-200 bg-white">
-      <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
-        <h3 className="text-sm font-semibold text-gray-900">
-          Outgoing Dispatches
-        </h3>
-        <Link
-          href="/orders?tab=active"
-          className="text-xs font-semibold text-[#FF6B00] hover:underline"
-        >
-          View All Orders
-        </Link>
+      <div className="border-b border-gray-100 px-5 py-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-gray-900">
+            Outgoing Dispatches
+          </h3>
+          <Link
+            href="/orders?tab=active"
+            className="text-xs font-semibold text-[#FF6B00] hover:underline"
+          >
+            View All Orders
+          </Link>
+        </div>
+        <div className="mt-3">
+          <DashboardTimeFilter
+            period={period}
+            selectedMonth={selectedMonth}
+            onPeriodChange={onPeriodChange}
+            onMonthChange={onMonthChange}
+            compact
+          />
+        </div>
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[560px]">
+        <table className="w-full min-w-[720px]">
           <thead>
             <tr className="border-b border-gray-100 text-left text-[10px] font-semibold uppercase tracking-wider text-gray-400">
-              <th className="px-5 py-3">ETA</th>
-              <th className="px-5 py-3">Order / Customer</th>
-              <th className="px-5 py-3">Material</th>
+              <th className="px-5 py-3">Delivery</th>
+              <th className="px-5 py-3">Order ID</th>
+              <th className="px-5 py-3">Customer Name</th>
               <th className="px-5 py-3">Destination</th>
               <th className="px-5 py-3">Status</th>
               <th className="px-5 py-3 text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {dispatches.map((dispatch) => (
-              <tr
-                key={dispatch.id}
-                className="border-b border-gray-50 last:border-0"
-              >
-                <td className="whitespace-nowrap px-5 py-4 text-sm font-medium text-gray-900">
-                  {dispatch.eta}
-                </td>
-                <td className="px-5 py-4">
-                  <p className="text-sm font-medium text-gray-900">
-                    {dispatch.orderId}
-                  </p>
-                  <p className="text-xs text-gray-400">
-                    {dispatch.customerName}
-                  </p>
-                </td>
-                <td className="px-5 py-4">
-                  <p className="text-sm font-medium text-gray-900">
-                    {dispatch.material}
-                  </p>
-                  <p className="text-xs text-gray-400">{dispatch.quantity}</p>
-                </td>
-                <td className="px-5 py-4 text-sm text-gray-600">
-                  {dispatch.destination}
-                </td>
-                <td className="px-5 py-4">
-                  <StatusPill status={dispatch.status} />
-                </td>
-                <td className="px-5 py-4 text-right">
-                  <ActionsMenu dispatchId={dispatch.id} />
+            {filteredDispatches.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={6}
+                  className="px-5 py-8 text-center text-sm text-gray-400"
+                >
+                  No dispatches for the selected period.
                 </td>
               </tr>
-            ))}
+            ) : (
+              filteredDispatches.map((dispatch) => (
+                <tr
+                  key={dispatch.id}
+                  className="border-b border-gray-50 last:border-0 hover:bg-gray-50/50"
+                >
+                  <td className="whitespace-nowrap px-5 py-4 text-sm font-medium text-gray-900">
+                    <Link
+                      href={`/orders?tab=active&search=${dispatch.orderId}`}
+                      className="hover:text-[#FF6B00] hover:underline"
+                    >
+                      {dispatch.orderReceiveTime}
+                    </Link>
+                  </td>
+                  <td className="px-5 py-4">
+                    <Link
+                      href={`/orders/${dispatch.orderId}`}
+                      className="text-sm font-medium text-[#FF6B00] hover:underline"
+                    >
+                      {dispatch.orderId}
+                    </Link>
+                  </td>
+                  <td className="px-5 py-4 text-sm text-gray-700">
+                    {dispatch.customerName}
+                  </td>
+                  <td className="px-5 py-4 text-sm text-gray-600">
+                    {dispatch.destination}
+                  </td>
+                  <td className="px-5 py-4">
+                    <StatusPill status={dispatch.status} />
+                  </td>
+                  <td className="px-5 py-4 text-right">
+                    <DispatchRowActions dispatch={dispatch} />
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

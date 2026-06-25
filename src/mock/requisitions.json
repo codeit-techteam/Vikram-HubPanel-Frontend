@@ -64,11 +64,7 @@
           "timestamp": "",
           "status": "pending"
         }
-      ],
-      "liveTracking": {
-        "title": "LIVE TRACKING ACTIVE",
-        "progress": "Shipment Progress"
-      }
+      ]
     },
     {
       "id": "req-002",
@@ -243,11 +239,7 @@
           "status": "active",
           "type": "tracking"
         }
-      ],
-      "liveTracking": {
-        "title": "LIVE TRACKING ACTIVE",
-        "progress": "Shipment Progress"
-      }
+      ]
     },
     {
       "id": "req-008",

@@ -2,6 +2,13 @@
   "lastSync": "2 mins ago",
   "kpis": [
     {
+      "id": "orders-pending",
+      "label": "Orders Pending",
+      "value": "39",
+      "sublabel": "For today",
+      "variant": "default"
+    },
+    {
       "id": "inventory-value",
       "label": "Inventory Value",
       "value": "₹12.5 L",
@@ -10,7 +17,7 @@
     {
       "id": "pending-requisitions",
       "label": "Pending Requisitions",
-      "value": "24",
+      "value": "0",
       "variant": "default"
     },
     {
@@ -20,58 +27,55 @@
       "variant": "default"
     },
     {
-      "id": "orders-pending",
-      "label": "Orders Pending",
-      "value": "45",
-      "sublabel": "For today",
-      "variant": "default"
-    },
-    {
       "id": "low-stock-alerts",
       "label": "Low Stock Alerts",
-      "value": "06",
+      "value": "08",
       "variant": "alert"
     }
   ],
   "incomingDeliveries": [
     {
       "id": "del-001",
-      "eta": "14:20 PM",
+      "transferId": "TRF-4421",
+      "expectedArrival": "14:20 PM",
       "material": "Cement Grade 53",
       "quantity": "450 Bags",
       "source": "Pune Plant 02",
-      "status": "in_transit"
+      "status": "dispatch",
+      "scheduledDate": "2026-06-23"
     },
     {
       "id": "del-002",
-      "eta": "16:45 PM",
+      "transferId": "TRF-4438",
+      "expectedArrival": "16:45 PM",
       "material": "TMT Steel Bars (12mm)",
       "quantity": "12.5 Tons",
       "source": "Surat Casting Hub",
-      "status": "loading"
+      "status": "loading",
+      "scheduledDate": "2026-06-23"
     },
     {
       "id": "del-003",
-      "eta": "19:10 PM",
+      "transferId": "TRF-4452",
+      "expectedArrival": "19:10 PM",
       "material": "Ready Mix Concrete",
       "quantity": "2 Mixers",
       "source": "Local Terminal B",
-      "status": "in_transit"
+      "status": "dispatch",
+      "scheduledDate": "2026-06-22"
+    },
+    {
+      "id": "del-004",
+      "transferId": "TRF-4401",
+      "expectedArrival": "11:30 AM",
+      "material": "Red Clay Bricks ISI",
+      "quantity": "5,000 pcs",
+      "source": "Nashik Brick Works",
+      "status": "delivered",
+      "scheduledDate": "2026-06-17"
     }
   ],
   "quickOperations": [
-    {
-      "id": "raise-request",
-      "label": "Raise Request",
-      "icon": "user-plus",
-      "href": "/requisitions/create"
-    },
-    {
-      "id": "receive-material",
-      "label": "Receive Material",
-      "icon": "package-check",
-      "href": "/transfers"
-    },
     {
       "id": "create-dispatch",
       "label": "Create Dispatch",
@@ -83,28 +87,40 @@
       "label": "View Inventory",
       "icon": "layout-grid",
       "href": "/inventory"
+    },
+    {
+      "id": "raise-request",
+      "label": "Raise Request",
+      "icon": "user-plus",
+      "href": "/requisitions/create"
+    },
+    {
+      "id": "receive-material",
+      "label": "Receive Material",
+      "icon": "package-check",
+      "href": "/transfers"
     }
   ],
   "activeRequisitions": [
     {
-      "id": "req-8821",
-      "code": "RQ-8821",
-      "title": "Admixtures",
+      "id": "req-8680",
+      "code": "RQ-8680",
+      "title": "Sand",
       "badge": "Procurement",
       "badgeVariant": "default",
       "progress": 1,
       "totalSteps": 4,
-      "statusText": "Vendor Assigned - Waiting for PO approval"
+      "statusText": "Pending Approval - Awaiting central hub review"
     },
     {
-      "id": "req-8845",
-      "code": "RQ-8845",
-      "title": "Electrical Conduits",
+      "id": "req-8660",
+      "code": "RQ-8660",
+      "title": "Plywood",
       "badge": "Expedited",
       "badgeVariant": "expedited",
       "progress": 3,
       "totalSteps": 4,
-      "statusText": "Order Placed - Shipment expected today"
+      "statusText": "In Transit - En-route via Yamuna Expressway"
     }
   ],
   "outboundEfficiency": {
@@ -117,23 +133,60 @@
     {
       "id": "log-001",
       "title": "Dispatch DIS-1029 confirmed",
-      "subtitle": "4 mins ago · Site: Work Diamond",
+      "subtitle": "4 mins ago · Outbound to Skyline Tower",
       "type": "dispatch",
-      "timestamp": "4 mins ago"
+      "timestamp": "4 mins ago",
+      "referenceId": "DIS-1029",
+      "href": "/dispatch",
+      "scheduledDate": "2026-06-23"
     },
     {
       "id": "log-002",
-      "title": "Low stock alert: Rebar 16mm",
-      "subtitle": "15 mins ago · Below threshold (15%)",
-      "type": "alert",
-      "timestamp": "15 mins ago"
+      "title": "Order accepted ORD-287",
+      "subtitle": "12 mins ago · Prime Construction Ltd.",
+      "type": "accept",
+      "timestamp": "12 mins ago",
+      "referenceId": "ORD-287",
+      "href": "/orders?tab=active",
+      "scheduledDate": "2026-06-23"
     },
     {
       "id": "log-003",
-      "title": "Gate Entry: TR-442 (Cement)",
-      "subtitle": "1 hour ago · Dock Area 02",
-      "type": "gate",
-      "timestamp": "1 hour ago"
+      "title": "Packing started for ORD-291",
+      "subtitle": "25 mins ago · Cement Grade 53, 200 Bags",
+      "type": "packing",
+      "timestamp": "25 mins ago",
+      "referenceId": "ORD-291",
+      "href": "/orders?tab=active",
+      "scheduledDate": "2026-06-23"
+    },
+    {
+      "id": "log-005",
+      "title": "Transfer TRF-442 arrived at gate",
+      "subtitle": "1 hour ago · Cement · Dock Area 02",
+      "type": "transfer",
+      "timestamp": "1 hour ago",
+      "referenceId": "TRF-442",
+      "href": "/transfers",
+      "scheduledDate": "2026-06-23"
+    },
+    {
+      "id": "log-006",
+      "title": "Low stock alert: Rebar 16mm",
+      "subtitle": "1 hour ago · Below threshold (15%)",
+      "type": "alert",
+      "timestamp": "1 hour ago",
+      "scheduledDate": "2026-06-23"
+    },
+    {
+      "id": "log-007",
+      "title": "Order ORD-285 marked Delivered",
+      "subtitle": "Yesterday · Kumar Builders & Co.",
+      "type": "order",
+      "timestamp": "Yesterday",
+      "referenceId": "ORD-285",
+      "href": "/orders?tab=completed",
+      "scheduledDate": "2026-06-22"
     }
   ]
 }

@@ -154,11 +154,6 @@ export interface TimelineEvent {
   type?: "tracking";
 }
 
-export interface LiveTracking {
-  title: string;
-  progress: string;
-}
-
 export interface RequisitionRequest {
   id: string;
   requestId: string;
@@ -168,7 +163,6 @@ export interface RequisitionRequest {
   value: string;
   status: RequisitionStatus;
   timeline: TimelineEvent[];
-  liveTracking?: LiveTracking;
 }
 
 export interface RequisitionStatsData {
@@ -561,12 +555,13 @@ export interface SubHubOrder {
   deliveryDate: string;
 }
 
-export type OrderStatus =
-  | "new"
-  | "processing"
-  | "packed"
-  | "out_for_delivery"
+export type HubOperationStatus =
+  | "pending"
+  | "loading"
+  | "dispatch"
   | "delivered";
+
+export type OrderStatus = HubOperationStatus;
 
 export type OrderFilterTab = "all" | "active" | "completed";
 
@@ -824,7 +819,7 @@ export interface ApiFilters {
   sortOrder?: "asc" | "desc";
 }
 
-export type DeliveryStatus = "in_transit" | "loading" | "delivered";
+export type DeliveryStatus = HubOperationStatus;
 
 export interface DashboardKpi {
   id: string;
@@ -836,28 +831,25 @@ export interface DashboardKpi {
 
 export interface IncomingDelivery {
   id: string;
-  eta: string;
+  transferId: string;
+  expectedArrival: string;
   material: string;
   quantity: string;
   source: string;
   status: DeliveryStatus;
+  scheduledDate: string;
 }
 
-export type OutgoingDispatchStatus =
-  | "in_transit"
-  | "loading"
-  | "dispatched"
-  | "pending";
+export type OutgoingDispatchStatus = HubOperationStatus;
 
 export interface OutgoingDispatch {
   id: string;
   orderId: string;
   customerName: string;
-  eta: string;
-  material: string;
-  quantity: string;
+  orderReceiveTime: string;
   destination: string;
   status: OutgoingDispatchStatus;
+  scheduledDate: string;
 }
 
 export interface QuickOperation {
@@ -885,29 +877,29 @@ export interface OutboundEfficiency {
   pending: number;
 }
 
+export type ActivityLogType =
+  | "dispatch"
+  | "order"
+  | "requisition"
+  | "transfer"
+  | "packing"
+  | "accept"
+  | "alert";
+
 export interface ActivityLog {
   id: string;
   title: string;
   subtitle: string;
-  type: "dispatch" | "alert" | "gate";
+  type: ActivityLogType;
   timestamp: string;
+  referenceId?: string;
+  href?: string;
+  scheduledDate: string;
 }
 
-export type DispatchQueueStatus =
-  | "pending"
-  | "preparing"
-  | "assigned"
-  | "dispatched"
-  | "in_transit"
-  | "arrived"
-  | "delivered"
-  | "delayed";
+export type DispatchQueueStatus = HubOperationStatus;
 
-export type DispatchQueueTab =
-  | "pending"
-  | "preparing"
-  | "assigned"
-  | "in_transit";
+export type DispatchQueueTab = HubOperationStatus;
 
 export type DispatchSortField = "eta" | "priority" | "driver" | "vehicle";
 
@@ -1197,7 +1189,7 @@ export interface AnalyticsDeliveryPerformance {
   avgLagHours: number;
 }
 
-export type LogisticsMovementStatus = "in_transit" | "pending" | "delivered";
+export type LogisticsMovementStatus = HubOperationStatus;
 
 export interface LogisticsMovementLog {
   id: string;

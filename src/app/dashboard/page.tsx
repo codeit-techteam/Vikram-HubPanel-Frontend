@@ -5,7 +5,9 @@ import { motion } from "framer-motion";
 import { Download, Loader2, RefreshCw } from "lucide-react";
 import toast from "react-hot-toast";
 import { ActivityTimeline } from "@/components/dashboard/ActivityTimeline";
+import { IncomingDeliveriesTable } from "@/components/dashboard/IncomingDeliveriesTable";
 import { OutgoingDispatchesTable } from "@/components/dashboard/OutgoingDispatchesTable";
+import type { DashboardTimePeriod } from "@/components/dashboard/DashboardTimeFilter";
 import { KPICard } from "@/components/dashboard/KPICard";
 import { OutboundEfficiencyChart } from "@/components/dashboard/OutboundEfficiencyChart";
 import { QuickOperations } from "@/components/dashboard/QuickOperations";
@@ -18,6 +20,7 @@ export default function DashboardPage() {
   const {
     lastSync,
     kpis,
+    outgoingDispatches,
     incomingDeliveries,
     quickOperations,
     activeRequisitions,
@@ -28,6 +31,8 @@ export default function DashboardPage() {
   } = useDashboardStore();
   const [isExporting, setIsExporting] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
+  const [period, setPeriod] = useState<DashboardTimePeriod>("today");
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
 
   useEffect(() => {
     loadDashboard();
@@ -51,6 +56,7 @@ export default function DashboardPage() {
       await dashboardService.downloadPDF({
         lastSync,
         kpis,
+        outgoingDispatches,
         incomingDeliveries,
         activeRequisitions,
         outboundEfficiency,
@@ -138,16 +144,32 @@ export default function DashboardPage() {
 
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <OutgoingDispatchesTable />
+          <OutgoingDispatchesTable
+            dispatches={outgoingDispatches}
+            period={period}
+            selectedMonth={selectedMonth}
+            onPeriodChange={setPeriod}
+            onMonthChange={setSelectedMonth}
+          />
         </div>
         <QuickOperations operations={quickOperations} />
       </div>
 
+      <IncomingDeliveriesTable
+        deliveries={incomingDeliveries}
+        period={period}
+        selectedMonth={selectedMonth}
+        onPeriodChange={setPeriod}
+        onMonthChange={setSelectedMonth}
+      />
+
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="space-y-4">
-          <h3 className="text-sm font-semibold text-gray-900">
-            Active Requisitions
-          </h3>
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-semibold text-gray-900">
+              Active Requisitions
+            </h3>
+          </div>
           {activeRequisitions.map((req) => (
             <RequisitionCard key={req.id} requisition={req} />
           ))}
@@ -155,7 +177,13 @@ export default function DashboardPage() {
 
         <OutboundEfficiencyChart data={outboundEfficiency} />
 
-        <ActivityTimeline logs={recentLogs} />
+        <ActivityTimeline
+          logs={recentLogs}
+          period={period}
+          selectedMonth={selectedMonth}
+          onPeriodChange={setPeriod}
+          onMonthChange={setSelectedMonth}
+        />
       </div>
     </div>
   );

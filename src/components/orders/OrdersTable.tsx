@@ -37,7 +37,7 @@ function OrderActions({ order }: { order: HubOrder }) {
       >
         <Eye className="h-4 w-4" />
       </Button>
-      {order.status !== "delivered" && order.status !== "out_for_delivery" && (
+      {order.status !== "delivered" && order.status !== "dispatch" && (
         <Button
           variant="ghost"
           size="icon"

@@ -4,10 +4,7 @@ import { motion } from "framer-motion";
 import { List } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useCreateOrderStore } from "@/store/createOrderStore";
-import {
-  DELIVERY_CHARGE,
-  GST_RATE,
-} from "@/mock/createOrderData";
+import { GST_RATE } from "@/mock/createOrderData";
 import { formatCurrency } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import type { OrderPaymentStatus } from "@/mock/createOrderData";
@@ -36,6 +33,7 @@ export function OrderSummaryPanel() {
     siteDetails,
     lineItems,
     materialTotal,
+    deliveryCharge,
     gstAmount,
     grandTotal,
     discount,
@@ -43,6 +41,7 @@ export function OrderSummaryPanel() {
   } = useCreateOrderStore();
 
   const material = materialTotal();
+  const delivery = deliveryCharge();
   const gst = gstAmount();
   const total = grandTotal();
   const status = STATUS_CONFIG[paymentStatus];
@@ -84,8 +83,18 @@ export function OrderSummaryPanel() {
 
           <div className="space-y-2 border-t border-[#E5E7EB] pt-4">
             <LineItem label="Material Total" value={formatCurrency(material)} />
-            <LineItem label="Delivery Charges" value={formatCurrency(DELIVERY_CHARGE)} />
-            <LineItem label={`GST (${GST_RATE * 100}%)`} value={formatCurrency(gst)} />
+            {delivery > 0 && (
+              <LineItem
+                label="Delivery Charges"
+                value={formatCurrency(delivery)}
+              />
+            )}
+            {gst > 0 && (
+              <LineItem
+                label={`GST (${GST_RATE * 100}%)`}
+                value={formatCurrency(gst)}
+              />
+            )}
             {discount > 0 && (
               <LineItem
                 label="Discount"

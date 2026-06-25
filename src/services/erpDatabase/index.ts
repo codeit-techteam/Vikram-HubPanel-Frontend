@@ -8,6 +8,7 @@ import type {
   AnalyticsOverview,
   AnalyticsRequisitionVolume,
   DashboardKpi,
+  DeliveryStatus,
   DiscrepancyRecord,
   Dispatch,
   DispatchDriver,
@@ -38,8 +39,12 @@ import type {
   RequisitionRequest,
   TransferData,
   TransferStatus,
+  IncomingDelivery,
   IncomingMaterial,
+  OutgoingDispatch,
+  ActivityLog,
 } from "@/types";
+import { HUB_OPERATION_ACTIVE_STATUSES } from "@/constants/operationStatus";
 import {
   applyStockDelta,
   buildDefaultDispatchTimeline,
@@ -380,6 +385,102 @@ function mapTransferToIncomingStatus(status: TransferStatus): IncomingMaterial["
     delayed: "in_transit",
   };
   return map[status] ?? "pending";
+}
+
+function mapTransferToDeliveryStatus(status: TransferStatus): DeliveryStatus {
+  const map: Record<TransferStatus, DeliveryStatus> = {
+    ready: "pending",
+    dispatched: "loading",
+    in_transit: "dispatch",
+    arriving_today: "dispatch",
+    received: "delivered",
+    delayed: "dispatch",
+  };
+  return map[status] ?? "pending";
+}
+
+function formatOrderReceiveTime(createdAt: string): string {
+  const date = new Date(createdAt);
+  if (Number.isNaN(date.getTime())) return "—";
+  return date.toLocaleTimeString("en-IN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+}
+
+const RECENT_ACTIVITY_DAY_OFFSETS: Record<string, number> = {
+  "log-001": 0,
+  "log-002": 0,
+  "log-003": 0,
+  "log-005": 0,
+  "log-006": 0,
+  "log-007": 1,
+};
+
+const TRANSFER_DAY_OFFSETS: Record<string, number> = {
+  "trf-8029": 0,
+  "trf-9142": 1,
+  "trf-7701": 0,
+  "trf-8559": 0,
+};
+
+const INCOMING_DELIVERY_DAY_OFFSETS: Record<string, number> = {
+  "del-001": 0,
+  "del-002": 0,
+  "del-003": 1,
+  "del-004": 4,
+};
+
+function toRelativeScheduledDate(daysAgo: number): string {
+  const date = new Date();
+  date.setDate(date.getDate() - daysAgo);
+  return date.toISOString().slice(0, 10);
+}
+
+function getTransferScheduledDate(transfer: IncomingTransfer): string {
+  const offset = TRANSFER_DAY_OFFSETS[transfer.id];
+  if (offset !== undefined) {
+    return toRelativeScheduledDate(offset);
+  }
+  return parseTransferScheduledDate(transfer);
+}
+
+function parseTransferScheduledDate(transfer: IncomingTransfer): string {
+  if (transfer.eta) return transfer.eta.slice(0, 10);
+  if (transfer.dispatchDate) {
+    const parsed = new Date(transfer.dispatchDate);
+    if (!Number.isNaN(parsed.getTime())) {
+      return parsed.toISOString().slice(0, 10);
+    }
+  }
+  if (transfer.createdAt) return transfer.createdAt.slice(0, 10);
+  return new Date().toISOString().slice(0, 10);
+}
+
+function formatTransferExpectedArrival(transfer: IncomingTransfer): string {
+  if (transfer.eta) {
+    const date = new Date(transfer.eta);
+    if (!Number.isNaN(date.getTime())) {
+      return date.toLocaleTimeString("en-IN", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+    }
+  }
+  return transfer.etaDisplay || transfer.scheduled || "TBD";
+}
+
+function getSeedIncomingDeliveries(): IncomingDelivery[] {
+  return (seeds.dashboard.incomingDeliveries as IncomingDelivery[]).map(
+    (delivery) => ({
+      ...delivery,
+      scheduledDate: toRelativeScheduledDate(
+        INCOMING_DELIVERY_DAY_OFFSETS[delivery.id] ?? 0
+      ),
+    })
+  );
 }
 
 // ─── Public API ─────────────────────────────────────────────────────────────
@@ -859,9 +960,8 @@ export const erpDatabase = {
     const queue = queueStore.slice(0, 3);
     const statusMap: Record<string, LogisticsMovementLog["status"]> = {
       pending: "pending",
-      preparing: "pending",
-      in_transit: "in_transit",
-      dispatched: "in_transit",
+      loading: "loading",
+      dispatch: "dispatch",
       delivered: "delivered",
     };
     if (queue.length >= 1) {
@@ -906,6 +1006,51 @@ export const erpDatabase = {
   // Dashboard
   getDashboardKpis: () => computeDashboardKpis(),
   getDashboardSeed: () => seeds.dashboard,
+  getOutgoingDispatches: (): OutgoingDispatch[] =>
+    ordersStore
+      .filter(
+        (order) =>
+          HUB_OPERATION_ACTIVE_STATUSES.includes(order.status) ||
+          order.status === "delivered"
+      )
+      .map((order) => ({
+        id: order.id,
+        orderId: order.orderNo,
+        customerName: order.customer.name,
+        orderReceiveTime: formatOrderReceiveTime(order.createdAt),
+        destination: order.deliveryAddress || order.location,
+        status: order.status,
+        scheduledDate: order.orderDate,
+      })),
+  getIncomingDeliveries: (): IncomingDelivery[] => {
+    const fromTransfers = transfersStore
+      .filter((transfer) => transfer.status !== "received")
+      .flatMap((transfer) => {
+        const scheduledDate = getTransferScheduledDate(transfer);
+        const expectedArrival = formatTransferExpectedArrival(transfer);
+        const status = mapTransferToDeliveryStatus(transfer.status);
+
+        return transfer.materials.map((material) => ({
+          id: `${transfer.id}-${material.id}`,
+          transferId: transfer.transferId,
+          expectedArrival,
+          material: material.name,
+          quantity: material.quantity,
+          source: transfer.source,
+          status,
+          scheduledDate,
+        }));
+      });
+
+    return [...fromTransfers, ...getSeedIncomingDeliveries()];
+  },
+  getRecentActivityLogs: (): ActivityLog[] =>
+    (seeds.dashboard.recentLogs as ActivityLog[]).map((log) => ({
+      ...log,
+      scheduledDate: toRelativeScheduledDate(
+        RECENT_ACTIVITY_DAY_OFFSETS[log.id] ?? 0
+      ),
+    })),
   updateDashboardKpi: (kpiId: string, value: string) => {
     dashboardKpis = dashboardKpis.map((k) =>
       k.id === kpiId ? { ...k, value } : k

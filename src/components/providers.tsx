@@ -3,6 +3,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 import { Toaster } from "react-hot-toast";
+import { THEME } from "@/constants/theme";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -29,7 +30,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
             color: "#fff",
           },
           success: {
-            iconTheme: { primary: "#FF6B00", secondary: "#fff" },
+            style: {
+              borderLeft: `4px solid ${THEME.success}`,
+            },
+            iconTheme: { primary: THEME.success, secondary: "#fff" },
           },
         }}
       />

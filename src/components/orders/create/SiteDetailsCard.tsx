@@ -109,27 +109,6 @@ export function SiteDetailsCard() {
           </div>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div className="space-y-2">
-            <Label>Site Supervisor Name</Label>
-            <Input
-              placeholder="Name"
-              value={siteDetails.supervisorName}
-              onChange={(e) => setSiteField("supervisorName", e.target.value)}
-              className="rounded-xl"
-            />
-          </div>
-          <div className="space-y-2">
-            <Label>Supervisor Phone</Label>
-            <Input
-              placeholder="Mobile Number"
-              value={siteDetails.supervisorPhone}
-              onChange={(e) => setSiteField("supervisorPhone", e.target.value)}
-              className="rounded-xl"
-            />
-          </div>
-        </div>
-
         <div className="space-y-2">
           <Label>Special Delivery Instructions</Label>
           <Textarea

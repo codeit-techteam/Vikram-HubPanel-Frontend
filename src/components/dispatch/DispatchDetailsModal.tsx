@@ -117,24 +117,20 @@ export function DispatchDetailsModal() {
           {selectedDispatch.status === "pending" && (
             <Button
               className="rounded-xl bg-[#FF6B00] hover:bg-[#E55F00]"
-              onClick={() =>
-                updateStatus(selectedDispatch.id, "preparing")
-              }
+              onClick={() => updateStatus(selectedDispatch.id, "loading")}
             >
-              Start Preparing
+              Start Loading
             </Button>
           )}
-          {selectedDispatch.status === "preparing" && (
+          {selectedDispatch.status === "loading" && (
             <Button
               className="rounded-xl bg-[#FF6B00] hover:bg-[#E55F00]"
-              onClick={() =>
-                updateStatus(selectedDispatch.id, "in_transit")
-              }
+              onClick={() => updateStatus(selectedDispatch.id, "dispatch")}
             >
-              Mark In Transit
+              Start Dispatch
             </Button>
           )}
-          {selectedDispatch.status === "in_transit" && (
+          {selectedDispatch.status === "dispatch" && (
             <Button
               className="rounded-xl bg-green-600 hover:bg-green-700"
               onClick={() => completeDispatch(selectedDispatch.id)}

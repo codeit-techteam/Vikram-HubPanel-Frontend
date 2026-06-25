@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ClipboardList, Package, Plus, Search, Trash2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -39,10 +39,12 @@ export function MaterialProcurementCard() {
     useCreateOrderStore();
   const [searchQuery, setSearchQuery] = useState("");
   const [showResults, setShowResults] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const results = searchProducts(searchQuery);
 
   const handleAdd = (product: MockProduct) => {
+    if (product.stockStatus === "out_of_stock") return;
     addProduct({
       productId: product.id,
       name: product.name,
@@ -57,6 +59,25 @@ export function MaterialProcurementCard() {
     setSearchQuery("");
     setShowResults(false);
   };
+
+  const handleAddProductClick = () => {
+    setShowResults(true);
+    containerRef.current?.querySelector<HTMLInputElement>("input")?.focus();
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setShowResults(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   return (
     <Card className="rounded-2xl border-[#E5E7EB] shadow-sm">
@@ -74,14 +95,14 @@ export function MaterialProcurementCard() {
           variant="outline"
           size="sm"
           className="rounded-lg border-orange-200 bg-orange-50 text-[#FF6B00] hover:bg-orange-100"
-          onClick={() => setShowResults(true)}
+          onClick={handleAddProductClick}
         >
           <Plus className="mr-1 h-4 w-4" />
           Add Product
         </Button>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="relative">
+        <div className="relative" ref={containerRef}>
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
           <Input
             placeholder="Search products by SKU, category or name..."
@@ -94,7 +115,7 @@ export function MaterialProcurementCard() {
             className="rounded-xl pl-10"
           />
           <AnimatePresence>
-            {showResults && searchQuery && (
+            {showResults && (
               <motion.div
                 initial={{ opacity: 0, y: -4 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -108,8 +129,14 @@ export function MaterialProcurementCard() {
                     <button
                       key={product.id}
                       type="button"
+                      disabled={product.stockStatus === "out_of_stock"}
                       onClick={() => handleAdd(product)}
-                      className="flex w-full items-center gap-3 border-b border-gray-50 px-4 py-3 text-left hover:bg-orange-50/50 last:border-0"
+                      className={cn(
+                        "flex w-full items-center gap-3 border-b border-gray-50 px-4 py-3 text-left last:border-0",
+                        product.stockStatus === "out_of_stock"
+                          ? "cursor-not-allowed opacity-50"
+                          : "hover:bg-orange-50/50"
+                      )}
                     >
                       <ProductIcon name={product.name} />
                       <div className="min-w-0 flex-1">

@@ -248,10 +248,9 @@ export function generateStubOrders(
     "Kalyan",
   ];
   const statuses: HubOrder["status"][] = [
-    "new",
-    "processing",
-    "packed",
-    "out_for_delivery",
+    "pending",
+    "loading",
+    "dispatch",
     "delivered",
   ];
 
@@ -287,10 +286,9 @@ export function generateStubOrders(
       timeline: [
         { id: "tl-1", title: "Order Created", status: "completed" },
         { id: "tl-2", title: "Approved", status: "pending" },
-        { id: "tl-3", title: "Packed", status: "pending" },
-        { id: "tl-4", title: "Assigned To Vehicle", status: "pending" },
-        { id: "tl-5", title: "Out For Delivery", status: "pending" },
-        { id: "tl-6", title: "Delivered", status: "pending" },
+        { id: "tl-3", title: "Loading", status: "pending" },
+        { id: "tl-4", title: "Dispatch", status: "pending" },
+        { id: "tl-5", title: "Delivered", status: "pending" },
       ],
       orderDate: "2025-06-16",
       createdAt: "2025-06-16T10:00:00",

@@ -11,12 +11,12 @@ import type {
 import { delay } from "@/lib/utils";
 import { erpDatabase } from "./erpDatabase";
 
-export const ORDER_ACTIVE_STATUSES: HubOrder["status"][] = [
-  "new",
-  "processing",
-  "packed",
-  "out_for_delivery",
-];
+import {
+  HUB_OPERATION_ACTIVE_STATUSES,
+} from "@/constants/operationStatus";
+
+export const ORDER_ACTIVE_STATUSES: HubOrder["status"][] =
+  HUB_OPERATION_ACTIVE_STATUSES;
 
 export const ORDER_COMPLETED_STATUSES: HubOrder["status"][] = ["delivered"];
 
@@ -51,24 +51,18 @@ function buildTimelineForDispatch(): HubOrder["timeline"] {
     },
     {
       id: "tl-3",
-      title: "Packed",
+      title: "Loading",
       timestamp: "Earlier",
       status: "completed" as const,
     },
     {
       id: "tl-4",
-      title: "Assigned To Vehicle",
+      title: "Dispatch",
       timestamp: `Today, ${now}`,
       status: "completed" as const,
     },
     {
       id: "tl-5",
-      title: "Out For Delivery",
-      timestamp: `Today, ${now}`,
-      status: "active" as const,
-    },
-    {
-      id: "tl-6",
       title: "Delivered",
       status: "pending" as const,
     },
@@ -150,7 +144,7 @@ export const ordersService = {
     erpDatabase.addDispatch(dispatch);
 
     const updatedOrder = erpDatabase.updateOrder(order.id, {
-      status: "out_for_delivery",
+      status: "dispatch",
       dispatchId,
       timeline: buildTimelineForDispatch(),
     });

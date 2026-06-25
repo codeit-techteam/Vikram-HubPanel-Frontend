@@ -12,7 +12,6 @@ import type {
   RequisitionStatsData,
 } from "@/types";
 import { requisitionService } from "@/services/requisition.service";
-import { inventoryService } from "@/services/inventory.service";
 
 const SOURCE_WAREHOUSE = "Central Materials Hub";
 const DEFAULT_HUB_ID = "hub-sh-40291";
@@ -50,16 +49,6 @@ function generateRequisitionId(): string {
 
 function getDefaultMaterials(): DraftMaterialItem[] {
   return [];
-}
-
-async function loadDefaultMaterials(): Promise<DraftMaterialItem[]> {
-  const products = await inventoryService.getProducts();
-  const cement = products.find((p) => p.id === "prod-001");
-  const steel = products.find((p) => p.id === "prod-002");
-  const materials: DraftMaterialItem[] = [];
-  if (cement) materials.push(productToMaterial(cement));
-  if (steel) materials.push(productToMaterial(steel));
-  return materials;
 }
 
 function createDefaultDraft(): DraftRequisition {
@@ -565,15 +554,11 @@ export const useRequisitionStore = create<RequisitionState>((set, get) => ({
     }),
 
   initDraft: async () => {
-    const materials = await loadDefaultMaterials();
-    const draft = {
-      ...createDefaultDraft(),
-      materials: materials.length > 0 ? materials : getDefaultMaterials(),
-    };
+    const draft = createDefaultDraft();
     set({
       draftRequisition: draft,
       selectedPriority: draft.priority,
-      estimatedValue: calculateEstimatedValue(draft.materials),
+      estimatedValue: 0,
       draftSavedAt: null,
     });
   },

@@ -5,15 +5,17 @@ import { motion } from "framer-motion";
 import { Eye, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { LogisticsMovementLog, LogisticsMovementStatus } from "@/types";
+import { HUB_OPERATION_STATUS_CONFIG } from "@/constants/operationStatus";
 import { cn } from "@/lib/utils";
 
-const STATUS_CONFIG: Record<
+const STATUS_VARIANT: Record<
   LogisticsMovementStatus,
-  { label: string; variant: "info" | "warning" | "success" }
+  "info" | "warning" | "success" | "secondary"
 > = {
-  in_transit: { label: "In Transit", variant: "info" },
-  pending: { label: "Pending", variant: "warning" },
-  delivered: { label: "Delivered", variant: "success" },
+  pending: "warning",
+  loading: "info",
+  dispatch: "info",
+  delivered: "success",
 };
 
 interface LogisticsMovementTableProps {
@@ -54,7 +56,7 @@ export function LogisticsMovementTable({ logs }: LogisticsMovementTableProps) {
           </thead>
           <tbody>
             {logs.map((log, index) => {
-              const status = STATUS_CONFIG[log.status];
+              const status = HUB_OPERATION_STATUS_CONFIG[log.status];
               return (
                 <motion.tr
                   key={log.id}
@@ -76,7 +78,7 @@ export function LogisticsMovementTable({ logs }: LogisticsMovementTableProps) {
                     {log.eta}
                   </td>
                   <td className="px-5 py-4">
-                    <Badge variant={status.variant} className="text-[10px]">
+                    <Badge variant={STATUS_VARIANT[log.status]} className="text-[10px]">
                       {status.label}
                     </Badge>
                   </td>

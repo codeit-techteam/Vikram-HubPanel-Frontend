@@ -21,7 +21,7 @@
       },
       "location": "Worli Sector 4",
       "value": 124000,
-      "status": "new",
+      "status": "pending",
       "materials": [
         {
           "id": "mat-001",
@@ -53,13 +53,12 @@
       "timeline": [
         { "id": "tl-1", "title": "Order Created", "timestamp": "Today, 9:15 AM", "status": "completed" },
         { "id": "tl-2", "title": "Approved", "status": "pending" },
-        { "id": "tl-3", "title": "Packed", "status": "pending" },
-        { "id": "tl-4", "title": "Assigned To Vehicle", "status": "pending" },
-        { "id": "tl-5", "title": "Out For Delivery", "status": "pending" },
-        { "id": "tl-6", "title": "Delivered", "status": "pending" }
+        { "id": "tl-3", "title": "Loading", "status": "pending" },
+        { "id": "tl-4", "title": "Dispatch", "status": "pending" },
+        { "id": "tl-5", "title": "Delivered", "status": "pending" }
       ],
-      "orderDate": "2025-06-18",
-      "createdAt": "2025-06-18T09:15:00"
+      "orderDate": "2026-06-25",
+      "createdAt": "2026-06-25T09:15:00"
     },
     {
       "id": "ord-9518",
@@ -72,7 +71,7 @@
       },
       "location": "Thane West Site",
       "value": 45000,
-      "status": "processing",
+      "status": "loading",
       "materials": [
         {
           "id": "mat-003",
@@ -104,13 +103,12 @@
       "timeline": [
         { "id": "tl-1", "title": "Order Created", "timestamp": "Today, 8:30 AM", "status": "completed" },
         { "id": "tl-2", "title": "Approved", "timestamp": "Today, 9:00 AM", "status": "completed" },
-        { "id": "tl-3", "title": "Packed", "status": "active" },
-        { "id": "tl-4", "title": "Assigned To Vehicle", "status": "pending" },
-        { "id": "tl-5", "title": "Out For Delivery", "status": "pending" },
-        { "id": "tl-6", "title": "Delivered", "status": "pending" }
+        { "id": "tl-3", "title": "Loading", "status": "active" },
+        { "id": "tl-4", "title": "Dispatch", "status": "pending" },
+        { "id": "tl-5", "title": "Delivered", "status": "pending" }
       ],
-      "orderDate": "2025-06-18",
-      "createdAt": "2025-06-18T08:30:00"
+      "orderDate": "2026-06-25",
+      "createdAt": "2026-06-25T08:30:00"
     },
     {
       "id": "ord-9515",
@@ -123,7 +121,7 @@
       },
       "location": "Bandra Kurla Complex",
       "value": 210000,
-      "status": "packed",
+      "status": "loading",
       "materials": [
         {
           "id": "mat-005",
@@ -155,13 +153,12 @@
       "timeline": [
         { "id": "tl-1", "title": "Order Created", "timestamp": "Yesterday, 4:00 PM", "status": "completed" },
         { "id": "tl-2", "title": "Approved", "timestamp": "Yesterday, 5:30 PM", "status": "completed" },
-        { "id": "tl-3", "title": "Packed", "timestamp": "Today, 10:00 AM", "status": "completed" },
-        { "id": "tl-4", "title": "Assigned To Vehicle", "status": "active" },
-        { "id": "tl-5", "title": "Out For Delivery", "status": "pending" },
-        { "id": "tl-6", "title": "Delivered", "status": "pending" }
+        { "id": "tl-3", "title": "Loading", "timestamp": "Today, 10:00 AM", "status": "completed" },
+        { "id": "tl-4", "title": "Dispatch", "status": "active" },
+        { "id": "tl-5", "title": "Delivered", "status": "pending" }
       ],
-      "orderDate": "2025-06-17",
-      "createdAt": "2025-06-17T16:00:00"
+      "orderDate": "2026-06-24",
+      "createdAt": "2026-06-24T16:00:00"
     },
     {
       "id": "ord-9512",
@@ -174,7 +171,7 @@
       },
       "location": "Vikhroli East",
       "value": 88000,
-      "status": "out_for_delivery",
+      "status": "dispatch",
       "materials": [
         {
           "id": "mat-007",
@@ -206,13 +203,13 @@
       "timeline": [
         { "id": "tl-1", "title": "Order Created", "timestamp": "Yesterday, 11:00 AM", "status": "completed" },
         { "id": "tl-2", "title": "Approved", "timestamp": "Yesterday, 12:00 PM", "status": "completed" },
-        { "id": "tl-3", "title": "Packed", "timestamp": "Yesterday, 3:00 PM", "status": "completed" },
-        { "id": "tl-4", "title": "Assigned To Vehicle", "timestamp": "Today, 8:00 AM", "status": "completed" },
-        { "id": "tl-5", "title": "Out For Delivery", "timestamp": "Today, 9:30 AM", "status": "active" },
+        { "id": "tl-3", "title": "Loading", "timestamp": "Yesterday, 3:00 PM", "status": "completed" },
+        { "id": "tl-4", "title": "Dispatch", "timestamp": "Today, 8:00 AM", "status": "completed" },
+        { "id": "tl-5", "title": "Dispatch", "timestamp": "Today, 9:30 AM", "status": "active" },
         { "id": "tl-6", "title": "Delivered", "status": "pending" }
       ],
-      "orderDate": "2025-06-17",
-      "createdAt": "2025-06-17T11:00:00",
+      "orderDate": "2026-06-25",
+      "createdAt": "2026-06-25T11:00:00",
       "dispatchId": "dsp-ord-9512"
     },
     {
@@ -258,14 +255,293 @@
       "timeline": [
         { "id": "tl-1", "title": "Order Created", "timestamp": "Yesterday, 7:00 AM", "status": "completed" },
         { "id": "tl-2", "title": "Approved", "timestamp": "Yesterday, 8:00 AM", "status": "completed" },
-        { "id": "tl-3", "title": "Packed", "timestamp": "Yesterday, 10:00 AM", "status": "completed" },
-        { "id": "tl-4", "title": "Assigned To Vehicle", "timestamp": "Yesterday, 11:30 AM", "status": "completed" },
-        { "id": "tl-5", "title": "Out For Delivery", "timestamp": "Today, 9:00 AM", "status": "completed" },
+        { "id": "tl-3", "title": "Loading", "timestamp": "Yesterday, 10:00 AM", "status": "completed" },
+        { "id": "tl-4", "title": "Dispatch", "timestamp": "Yesterday, 11:30 AM", "status": "completed" },
+        { "id": "tl-5", "title": "Dispatch", "timestamp": "Today, 9:00 AM", "status": "completed" },
         { "id": "tl-6", "title": "Delivered", "timestamp": "Today, 2:30 PM", "status": "completed" }
       ],
       "orderDate": "2025-06-17",
       "createdAt": "2025-06-17T07:00:00",
       "dispatchId": "dsp-ord-9510"
+    },
+    {
+      "id": "ord-bjw-7741",
+      "orderNo": "BJW-ORD-7741",
+      "customer": {
+        "name": "Prime Construction Ltd.",
+        "type": "Corp Account",
+        "email": "orders@primeconstruction.in",
+        "phone": "+91 98100 11223"
+      },
+      "location": "Skyline Tower Site, Andheri East",
+      "value": 156000,
+      "status": "dispatch",
+      "materials": [
+        {
+          "id": "mat-bjw-001",
+          "name": "Cement Bags (OPC 53)",
+          "sku": "CMN-OPC-53",
+          "quantity": 250,
+          "unit": "Bags",
+          "unitPrice": 420,
+          "totalPrice": 105000
+        },
+        {
+          "id": "mat-bjw-002",
+          "name": "TMT Steel (16mm)",
+          "sku": "STL-TMT-16",
+          "quantity": 30,
+          "unit": "Tons",
+          "unitPrice": 1700,
+          "totalPrice": 51000
+        }
+      ],
+      "payment": {
+        "method": "Credit Account",
+        "status": "Approved",
+        "amount": 156000,
+        "paidAmount": 0,
+        "dueDate": "2026-07-10"
+      },
+      "deliveryAddress": "Skyline Tower Site, Andheri East, Mumbai - 400069",
+      "billingAddress": "Prime Construction Ltd., BKC Annexe, Mumbai - 400051",
+      "gstDetails": {
+        "gstin": "27AADCP1234F1Z5",
+        "companyName": "Prime Construction Ltd.",
+        "state": "Maharashtra"
+      },
+      "timeline": [
+        { "id": "tl-1", "title": "Order Created", "timestamp": "Today, 1:50 PM", "status": "completed" },
+        { "id": "tl-2", "title": "Approved", "timestamp": "Today, 2:00 PM", "status": "completed" },
+        { "id": "tl-3", "title": "Loading", "timestamp": "Today, 2:30 PM", "status": "completed" },
+        { "id": "tl-4", "title": "Dispatch", "timestamp": "Today, 3:15 PM", "status": "active" },
+        { "id": "tl-5", "title": "Delivered", "status": "pending" }
+      ],
+      "orderDate": "2026-06-25",
+      "createdAt": "2026-06-25T13:50:00",
+      "dispatchId": "dsp-bjw-7741"
+    },
+    {
+      "id": "ord-bjw-7742",
+      "orderNo": "BJW-ORD-7742",
+      "customer": {
+        "name": "Kumar Builders & Co.",
+        "type": "Premium Partner",
+        "email": "supply@kumarbuilders.com",
+        "phone": "+91 98210 44556"
+      },
+      "location": "Worli Project Site, Mumbai",
+      "value": 78500,
+      "status": "loading",
+      "materials": [
+        {
+          "id": "mat-bjw-003",
+          "name": "Red Bricks (Class A)",
+          "sku": "BRK-RED-A",
+          "quantity": 8000,
+          "unit": "Units",
+          "unitPrice": 6,
+          "totalPrice": 48000
+        },
+        {
+          "id": "mat-bjw-004",
+          "name": "M-Sand",
+          "sku": "SND-MS-01",
+          "quantity": 15,
+          "unit": "Tons",
+          "unitPrice": 2033,
+          "totalPrice": 30500
+        }
+      ],
+      "payment": {
+        "method": "Net 30",
+        "status": "Pending",
+        "amount": 78500,
+        "paidAmount": 0,
+        "dueDate": "2026-07-23"
+      },
+      "deliveryAddress": "Kumar Builders Site, Worli, Mumbai - 400018",
+      "gstDetails": {
+        "gstin": "27AABCK5678G1Z2",
+        "companyName": "Kumar Builders & Co.",
+        "state": "Maharashtra"
+      },
+      "timeline": [
+        { "id": "tl-1", "title": "Order Created", "timestamp": "Today, 3:30 PM", "status": "completed" },
+        { "id": "tl-2", "title": "Approved", "timestamp": "Today, 3:45 PM", "status": "completed" },
+        { "id": "tl-3", "title": "Loading", "status": "active" },
+        { "id": "tl-4", "title": "Dispatch", "status": "pending" },
+        { "id": "tl-5", "title": "Delivered", "status": "pending" }
+      ],
+      "orderDate": "2026-06-25",
+      "createdAt": "2026-06-25T15:30:00"
+    },
+    {
+      "id": "ord-bjw-7743",
+      "orderNo": "BJW-ORD-7743",
+      "customer": {
+        "name": "Anita Desai Infra",
+        "type": "Contract ID: ADI-18",
+        "email": "logistics@anitadesaiinfra.com",
+        "phone": "+91 97654 88990"
+      },
+      "location": "New Harbor Bridge, Sector 18",
+      "value": 198000,
+      "status": "delivered",
+      "materials": [
+        {
+          "id": "mat-bjw-005",
+          "name": "Structural Steel Beams",
+          "sku": "STL-BM-400",
+          "quantity": 20,
+          "unit": "Tons",
+          "unitPrice": 7500,
+          "totalPrice": 150000
+        },
+        {
+          "id": "mat-bjw-006",
+          "name": "Ready Mix Concrete (M30)",
+          "sku": "RMC-M30",
+          "quantity": 12,
+          "unit": "Cubic M",
+          "unitPrice": 4000,
+          "totalPrice": 48000
+        }
+      ],
+      "payment": {
+        "method": "Bank Transfer",
+        "status": "Paid",
+        "amount": 198000,
+        "paidAmount": 198000,
+        "transactionId": "TXN-ADI-20260622"
+      },
+      "deliveryAddress": "New Harbor Bridge Project, Sector 18, Navi Mumbai - 400706",
+      "gstDetails": {
+        "gstin": "27AABCA9012H1Z8",
+        "companyName": "Anita Desai Infra Pvt Ltd",
+        "state": "Maharashtra"
+      },
+      "timeline": [
+        { "id": "tl-1", "title": "Order Created", "timestamp": "Yesterday, 5:15 PM", "status": "completed" },
+        { "id": "tl-2", "title": "Approved", "timestamp": "Yesterday, 5:30 PM", "status": "completed" },
+        { "id": "tl-3", "title": "Loading", "timestamp": "Yesterday, 6:00 PM", "status": "completed" },
+        { "id": "tl-4", "title": "Dispatch", "timestamp": "Today, 8:00 AM", "status": "completed" },
+        { "id": "tl-5", "title": "Delivered", "timestamp": "Today, 5:15 PM", "status": "completed" }
+      ],
+      "orderDate": "2026-06-24",
+      "createdAt": "2026-06-24T17:15:00",
+      "dispatchId": "dsp-bjw-7743"
+    },
+    {
+      "id": "ord-bjw-7744",
+      "orderNo": "BJW-ORD-7744",
+      "customer": {
+        "name": "Sanjay Gupta Constructions",
+        "type": "Priority Hub Client",
+        "email": "procurement@sanjaygupta.com",
+        "phone": "+91 98920 33445"
+      },
+      "location": "Mumbai Metro P-4 Site",
+      "value": 92000,
+      "status": "pending",
+      "materials": [
+        {
+          "id": "mat-bjw-007",
+          "name": "PVC Pipes (6 inch)",
+          "sku": "PVC-PIP-6",
+          "quantity": 200,
+          "unit": "Units",
+          "unitPrice": 180,
+          "totalPrice": 36000
+        },
+        {
+          "id": "mat-bjw-008",
+          "name": "Electrical Cables (4 sqmm)",
+          "sku": "ELC-CBL-40",
+          "quantity": 40,
+          "unit": "Rolls",
+          "unitPrice": 1400,
+          "totalPrice": 56000
+        }
+      ],
+      "payment": {
+        "method": "Credit Account",
+        "status": "Pending",
+        "amount": 92000,
+        "paidAmount": 0,
+        "dueDate": "2026-07-15"
+      },
+      "deliveryAddress": "Mumbai Metro Line 4, Package P-4, Andheri - 400053",
+      "gstDetails": {
+        "gstin": "27AABCS3456J1Z1",
+        "companyName": "Sanjay Gupta Constructions",
+        "state": "Maharashtra"
+      },
+      "timeline": [
+        { "id": "tl-1", "title": "Order Created", "timestamp": "Today, 6:40 PM", "status": "completed" },
+        { "id": "tl-2", "title": "Approved", "status": "pending" },
+        { "id": "tl-3", "title": "Loading", "status": "pending" },
+        { "id": "tl-4", "title": "Dispatch", "status": "pending" },
+        { "id": "tl-5", "title": "Delivered", "status": "pending" }
+      ],
+      "orderDate": "2026-06-25",
+      "createdAt": "2026-06-25T18:40:00"
+    },
+    {
+      "id": "ord-bjw-7745",
+      "orderNo": "BJW-ORD-7745",
+      "customer": {
+        "name": "Vikram Malhotra Group",
+        "type": "Corp Account",
+        "email": "orders@vikrammalhotra.com",
+        "phone": "+91 98765 77889"
+      },
+      "location": "Skyline Tower Site, Andheri East",
+      "value": 134500,
+      "status": "dispatch",
+      "materials": [
+        {
+          "id": "mat-bjw-009",
+          "name": "AAC Blocks",
+          "sku": "AAC-BLK-600",
+          "quantity": 2500,
+          "unit": "Units",
+          "unitPrice": 45,
+          "totalPrice": 112500
+        },
+        {
+          "id": "mat-bjw-010",
+          "name": "Waterproofing Compound",
+          "sku": "WPF-CMP-01",
+          "quantity": 30,
+          "unit": "Buckets",
+          "unitPrice": 733,
+          "totalPrice": 22000
+        }
+      ],
+      "payment": {
+        "method": "Bank Transfer",
+        "status": "Partial",
+        "amount": 134500,
+        "paidAmount": 67250,
+        "dueDate": "2026-07-05"
+      },
+      "deliveryAddress": "Skyline Tower Site, Andheri East, Mumbai - 400069",
+      "gstDetails": {
+        "gstin": "27AABCV7890K1Z3",
+        "companyName": "Vikram Malhotra Group",
+        "state": "Maharashtra"
+      },
+      "timeline": [
+        { "id": "tl-1", "title": "Order Created", "timestamp": "Today, 8:00 PM", "status": "completed" },
+        { "id": "tl-2", "title": "Approved", "timestamp": "Today, 8:10 PM", "status": "completed" },
+        { "id": "tl-3", "title": "Loading", "timestamp": "Today, 8:30 PM", "status": "completed" },
+        { "id": "tl-4", "title": "Dispatch", "status": "active" },
+        { "id": "tl-5", "title": "Delivered", "status": "pending" }
+      ],
+      "orderDate": "2026-06-25",
+      "createdAt": "2026-06-25T20:00:00",
+      "dispatchId": "dsp-bjw-7745"
     }
   ]
 }

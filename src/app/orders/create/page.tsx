@@ -9,11 +9,11 @@ import { CustomerLookupCard } from "@/components/orders/create/CustomerLookupCar
 import { SiteDetailsCard } from "@/components/orders/create/SiteDetailsCard";
 import { MaterialProcurementCard } from "@/components/orders/create/MaterialProcurementCard";
 import { PaymentInfoCard } from "@/components/orders/create/PaymentInfoCard";
-import { AppSyncCard } from "@/components/orders/create/AppSyncCard";
 import { DispatchReadinessCard } from "@/components/orders/create/DispatchReadinessCard";
 import { OrderSummaryPanel } from "@/components/orders/create/OrderSummaryPanel";
 import { QuickActionsPanel } from "@/components/orders/create/QuickActionsPanel";
 import { useCreateOrderStore } from "@/store/createOrderStore";
+import { generateQuotePdf } from "@/lib/generateQuotePdf";
 import { FileText, Save } from "lucide-react";
 
 export default function CreateCustomerOrderPage() {
@@ -25,6 +25,12 @@ export default function CreateCustomerOrderPage() {
     customer,
     siteDetails,
     lineItems,
+    orderId,
+    materialTotal,
+    deliveryCharge,
+    gstAmount,
+    grandTotal,
+    discount,
     reset,
   } = useCreateOrderStore();
 
@@ -33,7 +39,30 @@ export default function CreateCustomerOrderPage() {
   };
 
   const handleGenerateQuote = () => {
-    toast.success("Quotation PDF generated (mock).");
+    if (lineItems.length === 0) {
+      toast.error("Please add at least one product before generating a quote.");
+      return;
+    }
+
+    generateQuotePdf({
+      orderId,
+      customer: customer
+        ? {
+            name: customer.name,
+            mobile: customer.mobile,
+            email: customer.email,
+            customerTypeLabel: customer.customerTypeLabel,
+          }
+        : null,
+      siteDetails,
+      lineItems,
+      materialTotal: materialTotal(),
+      deliveryCharge: deliveryCharge(),
+      gstAmount: gstAmount(),
+      discount,
+      grandTotal: grandTotal(),
+    });
+    toast.success("Quotation PDF downloaded.");
   };
 
   const handleCreateOrder = () => {
@@ -118,7 +147,6 @@ export default function CreateCustomerOrderPage() {
           <SiteDetailsCard />
           <MaterialProcurementCard />
           <PaymentInfoCard />
-          <AppSyncCard />
           <DispatchReadinessCard />
         </div>
 

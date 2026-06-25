@@ -9,9 +9,11 @@ import {
   DELIVERY_CHARGE,
   DEFAULT_DISCOUNT,
   GST_RATE,
-  generateOrderId,
   generatePaymentLink,
+  generateOrderId,
   searchCustomerByMobile,
+  formatMobileDisplay,
+  normalizeMobile,
 } from "@/mock/createOrderData";
 
 export interface SiteDetails {
@@ -101,6 +103,7 @@ interface CreateOrderState {
   reset: () => void;
 
   materialTotal: () => number;
+  deliveryCharge: () => number;
   gstAmount: () => number;
   grandTotal: () => number;
   balanceDue: () => number;
@@ -164,7 +167,8 @@ export const useCreateOrderStore = create<CreateOrderState>((set, get) => ({
   discount: DEFAULT_DISCOUNT,
   isSavingDraft: false,
 
-  setMobileSearch: (value) => set({ mobileSearch: value }),
+  setMobileSearch: (value) =>
+    set({ mobileSearch: normalizeMobile(value) }),
 
   searchCustomer: async () => {
     const { mobileSearch } = get();
@@ -197,7 +201,7 @@ export const useCreateOrderStore = create<CreateOrderState>((set, get) => ({
         showRegistration: true,
         newCustomer: {
           ...defaultNewCustomer,
-          mobile: `+91 ${digits.slice(0, 5)} ${digits.slice(5)}`,
+          mobile: digits,
         },
         isSearching: false,
       });
@@ -205,8 +209,17 @@ export const useCreateOrderStore = create<CreateOrderState>((set, get) => ({
     }
   },
 
-  showQuickRegistration: () =>
-    set({ showRegistration: true, isNewCustomer: true }),
+  showQuickRegistration: () => {
+    const digits = normalizeMobile(get().mobileSearch);
+    set({
+      showRegistration: true,
+      isNewCustomer: true,
+      newCustomer: {
+        ...defaultNewCustomer,
+        mobile: digits,
+      },
+    });
+  },
 
   setNewCustomerField: (key, value) =>
     set((state) => ({
@@ -219,6 +232,11 @@ export const useCreateOrderStore = create<CreateOrderState>((set, get) => ({
       toast.error("Full name is required.");
       return;
     }
+    const digits = normalizeMobile(newCustomer.mobile);
+    if (digits.length !== 10) {
+      toast.error("Please enter a valid 10-digit mobile number.");
+      return;
+    }
     const typeLabels: Record<CustomerType, string> = {
       individual: "Individual",
       contractor: "Contractor / Mason",
@@ -229,7 +247,7 @@ export const useCreateOrderStore = create<CreateOrderState>((set, get) => ({
     const customer: MockCustomer = {
       id: `CUST-NEW-${Date.now()}`,
       name: newCustomer.fullName,
-      mobile: newCustomer.mobile,
+      mobile: formatMobileDisplay(digits),
       email: newCustomer.email || "—",
       customerType: newCustomer.customerType,
       customerTypeLabel: typeLabels[newCustomer.customerType],
@@ -381,14 +399,21 @@ export const useCreateOrderStore = create<CreateOrderState>((set, get) => ({
       0
     ),
 
+  deliveryCharge: () =>
+    get().lineItems.length > 0 ? DELIVERY_CHARGE : 0,
+
   gstAmount: () => {
-    const subtotal = get().materialTotal() + DELIVERY_CHARGE - get().discount;
-    return Math.round(subtotal * GST_RATE);
+    const material = get().materialTotal();
+    if (material <= 0) return 0;
+    const subtotal = material + get().deliveryCharge() - get().discount;
+    return Math.round(Math.max(0, subtotal) * GST_RATE);
   },
 
   grandTotal: () => {
-    const subtotal = get().materialTotal() + DELIVERY_CHARGE - get().discount;
-    return Math.round(subtotal * (1 + GST_RATE));
+    const material = get().materialTotal();
+    if (material <= 0) return 0;
+    const subtotal = material + get().deliveryCharge() - get().discount;
+    return Math.round(Math.max(0, subtotal) * (1 + GST_RATE));
   },
 
   balanceDue: () => Math.max(0, get().grandTotal() - get().advanceAmount),

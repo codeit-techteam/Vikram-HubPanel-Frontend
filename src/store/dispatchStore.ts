@@ -172,12 +172,7 @@ export const useDispatchStore = create<DispatchState>((set, get) => ({
       ]);
 
     const activeDispatches = queue.filter(
-      (d) =>
-        d.status === "in_transit" ||
-        d.status === "preparing" ||
-        d.status === "assigned" ||
-        d.status === "dispatched" ||
-        d.status === "arrived"
+      (d) => d.status !== "delivered"
     );
 
     set({

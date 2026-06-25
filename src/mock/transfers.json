@@ -9,13 +9,13 @@
       "id": "trf-8029",
       "transferId": "TR-8029-X",
       "status": "dispatched",
-      "eta": "2026-10-24T13:30:00",
+      "eta": "2026-06-25T13:30:00",
       "scheduled": null,
       "etaDisplay": "ETA in 4 Hours",
       "isDelayed": false,
       "source": "Central Hub Sector 4",
       "destination": "Sector 63, Noida (UP-04)",
-      "dispatchDate": "Oct 24, 2026",
+      "dispatchDate": "Jun 25, 2026",
       "vehicle": "MH-01-AX-4029",
       "vehicleDetails": {
         "number": "MH-01-AX-4029",
@@ -161,19 +161,19 @@
       "inventoryId": "INV-CW-001",
       "dispatchId": "DSP-2026-442",
       "siteId": "CN-7821",
-      "createdAt": "2026-10-23T09:00:00Z"
+      "createdAt": "2026-06-25T09:00:00Z"
     },
     {
       "id": "trf-9142",
       "transferId": "TR-9142-W",
       "status": "delayed",
-      "eta": "2026-06-18T10:00:00",
+      "eta": "2026-06-25T10:00:00",
       "scheduled": null,
-      "etaDisplay": "Tomorrow, 10:00 AM",
+      "etaDisplay": "Today, 10:00 AM",
       "isDelayed": true,
       "source": "Central Warehouse",
       "destination": "Mumbai Hub 04",
-      "dispatchDate": "Jun 15, 2026",
+      "dispatchDate": "Jun 24, 2026",
       "vehicle": "MH-43-BE-1102",
       "driver": {
         "name": "Rajesh Patil",
@@ -252,19 +252,19 @@
       "requisitionId": "REQ-2026-105",
       "dispatchId": "DSP-2026-318",
       "inventoryId": "INV-CW-002",
-      "createdAt": "2026-06-15T08:00:00Z"
+      "createdAt": "2026-06-24T08:00:00Z"
     },
     {
       "id": "trf-7701",
       "transferId": "TR-7701-K",
       "status": "in_transit",
-      "eta": "2026-06-17T17:45:00",
+      "eta": "2026-06-25T17:45:00",
       "scheduled": null,
       "etaDisplay": "Today, 05:45 PM",
       "isDelayed": false,
       "source": "Central Warehouse",
       "destination": "Mumbai Hub 04",
-      "dispatchDate": "Jun 17, 2026",
+      "dispatchDate": "Jun 25, 2026",
       "vehicle": "MH-04-ZZ-3345",
       "driver": {
         "name": "Amit Shinde",
@@ -335,15 +335,15 @@
       "requisitionId": "REQ-2026-122",
       "dispatchId": "DSP-2026-501",
       "inventoryId": "INV-CW-003",
-      "createdAt": "2026-06-16T14:00:00Z"
+      "createdAt": "2026-06-25T08:00:00Z"
     },
     {
       "id": "trf-8559",
       "transferId": "TR-8559-L",
       "status": "ready",
-      "eta": null,
-      "scheduled": "Tomorrow",
-      "etaDisplay": "Scheduled: Tomorrow",
+      "eta": "2026-06-25T14:00:00",
+      "scheduled": "Today",
+      "etaDisplay": "Scheduled: Today, 2:00 PM",
       "isDelayed": false,
       "source": "Central Warehouse",
       "destination": "Mumbai Hub 04",
@@ -399,7 +399,7 @@
         }
       ],
       "requisitionId": "REQ-2026-130",
-      "createdAt": "2026-06-17T06:00:00Z"
+      "createdAt": "2026-06-25T06:00:00Z"
     }
   ]
 }

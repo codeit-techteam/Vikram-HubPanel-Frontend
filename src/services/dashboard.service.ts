@@ -4,6 +4,7 @@ import type {
   DashboardKpi,
   IncomingDelivery,
   OutboundEfficiency,
+  OutgoingDispatch,
   QuickOperation,
 } from "@/types";
 import { delay } from "@/lib/utils";
@@ -12,6 +13,7 @@ import { erpDatabase } from "./erpDatabase";
 export interface DashboardReportData {
   lastSync: string;
   kpis: DashboardKpi[];
+  outgoingDispatches: OutgoingDispatch[];
   incomingDeliveries: IncomingDelivery[];
   activeRequisitions: ActiveRequisition[];
   outboundEfficiency: OutboundEfficiency;
@@ -25,11 +27,12 @@ export const dashboardService = {
     return {
       lastSync: seed.lastSync,
       kpis: erpDatabase.getDashboardKpis(),
-      incomingDeliveries: seed.incomingDeliveries as IncomingDelivery[],
+      outgoingDispatches: erpDatabase.getOutgoingDispatches(),
+      incomingDeliveries: erpDatabase.getIncomingDeliveries(),
       quickOperations: seed.quickOperations as QuickOperation[],
       activeRequisitions: seed.activeRequisitions as ActiveRequisition[],
       outboundEfficiency: seed.outboundEfficiency as OutboundEfficiency,
-      recentLogs: seed.recentLogs as ActivityLog[],
+      recentLogs: erpDatabase.getRecentActivityLogs(),
     };
   },
 
@@ -83,13 +86,13 @@ export const dashboardService = {
       .join("")}
   </div>
 
-  <h3>Incoming Deliveries</h3>
+  <h3>Incoming Materials</h3>
   <table>
-    <tr><th>ETA</th><th>Material</th><th>Quantity</th><th>Source</th><th>Status</th></tr>
+    <tr><th>Transfer ID</th><th>Expected Arrival</th><th>Material</th><th>Quantity</th><th>Source</th><th>Status</th></tr>
     ${data.incomingDeliveries
       .map(
         (d) =>
-          `<tr><td>${d.eta}</td><td>${d.material}</td><td>${d.quantity}</td><td>${d.source}</td><td class="status">${d.status}</td></tr>`
+          `<tr><td>${d.transferId}</td><td>${d.expectedArrival}</td><td>${d.material}</td><td>${d.quantity}</td><td>${d.source}</td><td class="status">${d.status}</td></tr>`
       )
       .join("")}
   </table>
@@ -108,7 +111,7 @@ export const dashboardService = {
   <h3>Outbound Efficiency</h3>
   <div class="summary">
     <div><span>Total:</span> <strong>${data.outboundEfficiency.total}</strong></div>
-    <div><span>Dispatched:</span> <strong>${data.outboundEfficiency.dispatched}</strong></div>
+    <div><span>Dispatch:</span> <strong>${data.outboundEfficiency.dispatched}</strong></div>
     <div><span>Loading:</span> <strong>${data.outboundEfficiency.loading}</strong></div>
     <div><span>Pending:</span> <strong>${data.outboundEfficiency.pending}</strong></div>
   </div>

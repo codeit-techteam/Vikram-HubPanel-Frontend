@@ -77,7 +77,7 @@
       "dispatchNo": "DSP-2025-00915",
       "orderNo": "ORD-9915",
       "orderId": "ord-9915",
-      "status": "preparing",
+      "status": "loading",
       "customer": "Navi Port Infrastructure",
       "customerDetails": {
         "name": "Navi Port Infrastructure",
@@ -113,7 +113,7 @@
       "dispatchNo": "DSP-2025-00905",
       "orderNo": "ORD-9905",
       "orderId": "ord-9905",
-      "status": "in_transit",
+      "status": "dispatch",
       "customer": "DLF Cyber City Phase 3",
       "customerDetails": {
         "name": "DLF Cyber City Phase 3",
@@ -155,7 +155,7 @@
       "vehicleNo": "MH-12-AB-4567",
       "driver": "Ramesh Yadav",
       "items": 8,
-      "status": "in_transit",
+      "status": "dispatch",
       "dispatchDate": "2025-06-15",
       "estimatedArrival": "2025-06-18"
     },
@@ -179,7 +179,7 @@
       "vehicleNo": "KA-05-EF-2345",
       "driver": "Mohammed Ali",
       "items": 3,
-      "status": "dispatched",
+      "status": "dispatch",
       "dispatchDate": "2025-06-16",
       "estimatedArrival": "2025-06-19"
     }

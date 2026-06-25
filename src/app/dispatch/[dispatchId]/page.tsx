@@ -21,18 +21,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DispatchStatusBadge } from "@/components/dispatch/DispatchStatusBadge";
 import { DispatchTimeline } from "@/components/dispatch/DispatchTimeline";
+import { HUB_OPERATION_STATUS_DESCRIPTIONS } from "@/constants/operationStatus";
 import type { DispatchQueueStatus, DispatchRecord } from "@/types";
-
-const CUSTOMER_STATUS_LABELS: Record<DispatchQueueStatus, string> = {
-  pending: "Order confirmed — awaiting hub dispatch",
-  preparing: "Materials being prepared at hub",
-  assigned: "Vehicle & driver assigned — ready to dispatch",
-  dispatched: "Dispatched from hub",
-  in_transit: "Out for delivery to customer site",
-  arrived: "Arrived at customer site",
-  delivered: "Delivered to customer",
-  delayed: "Delivery delayed — hub following up",
-};
 
 export default function DispatchDetailsPage() {
   const params = useParams();
@@ -58,7 +48,10 @@ export default function DispatchDetailsPage() {
     if (dispatchId) load();
   }, [dispatchId, reload]);
 
-  const handleStatusUpdate = async (status: DispatchQueueStatus, message: string) => {
+  const handleStatusUpdate = async (
+    status: DispatchQueueStatus,
+    message: string
+  ) => {
     if (!dispatch) return;
     setUpdating(true);
     await updateStatus(dispatch.id, status);
@@ -89,7 +82,7 @@ export default function DispatchDetailsPage() {
     );
   }
 
-  const customerStatus = CUSTOMER_STATUS_LABELS[dispatch.status];
+  const customerStatus = HUB_OPERATION_STATUS_DESCRIPTIONS[dispatch.status];
   const isDelivered = dispatch.status === "delivered";
 
   return (
@@ -113,21 +106,30 @@ export default function DispatchDetailsPage() {
           <p className="mt-1 text-sm text-gray-500">{dispatch.dispatchNo}</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          {!isDelivered &&
-            (dispatch.status === "assigned" ||
-              dispatch.status === "pending" ||
-              dispatch.status === "preparing") && (
-              <Button
-                className="gap-2 rounded-xl bg-[#FF6B00] hover:bg-[#E55F00]"
-                disabled={updating}
-                onClick={() =>
-                  handleStatusUpdate("in_transit", "Delivery started — customer notified")
-                }
-              >
-                <Play className="h-4 w-4" />
-                Start Delivery
-              </Button>
-            )}
+          {!isDelivered && dispatch.status === "pending" && (
+            <Button
+              className="gap-2 rounded-xl bg-[#FF6B00] hover:bg-[#E55F00]"
+              disabled={updating}
+              onClick={() =>
+                handleStatusUpdate("loading", "Loading started at hub")
+              }
+            >
+              <Play className="h-4 w-4" />
+              Start Loading
+            </Button>
+          )}
+          {!isDelivered && dispatch.status === "loading" && (
+            <Button
+              className="gap-2 rounded-xl bg-[#FF6B00] hover:bg-[#E55F00]"
+              disabled={updating}
+              onClick={() =>
+                handleStatusUpdate("dispatch", "Dispatch started — customer notified")
+              }
+            >
+              <Truck className="h-4 w-4" />
+              Start Dispatch
+            </Button>
+          )}
           <Button
             variant="outline"
             className="gap-2 rounded-xl"
@@ -218,35 +220,7 @@ export default function DispatchDetailsPage() {
                 <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
                   Hub Manual Updates
                 </p>
-                {dispatch.status === "in_transit" && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full rounded-xl border-[#E5E7EB]"
-                    disabled={updating}
-                    onClick={() =>
-                      handleStatusUpdate("arrived", "Marked arrived — customer status updated")
-                    }
-                  >
-                    <CheckCircle2 className="mr-2 h-3.5 w-3.5" />
-                    Mark Arrived at Site
-                  </Button>
-                )}
-                {(dispatch.status === "assigned" ||
-                  dispatch.status === "dispatched") && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full rounded-xl border-[#E5E7EB]"
-                    disabled={updating}
-                    onClick={() =>
-                      handleStatusUpdate("in_transit", "Marked in transit — customer notified")
-                    }
-                  >
-                    Mark Out for Delivery
-                  </Button>
-                )}
-                {dispatch.status === "arrived" && (
+                {dispatch.status === "dispatch" && (
                   <Button
                     size="sm"
                     className="w-full rounded-xl bg-emerald-600 hover:bg-emerald-700"
@@ -254,7 +228,8 @@ export default function DispatchDetailsPage() {
                       router.push(`/dispatch/complete/${dispatch.dispatchNo}`)
                     }
                   >
-                    Complete Delivery
+                    <CheckCircle2 className="mr-2 h-3.5 w-3.5" />
+                    Mark Delivered
                   </Button>
                 )}
               </div>
@@ -262,57 +237,18 @@ export default function DispatchDetailsPage() {
           </CardContent>
         </Card>
 
-        <Card className="rounded-2xl border-[#E5E7EB] shadow-sm">
+        <Card className="rounded-2xl border-[#E5E7EB] shadow-sm lg:col-span-2">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
-              <Truck className="h-5 w-5 text-[#FF6B00]" />
-              Vehicle
+              <MapPin className="h-5 w-5 text-[#FF6B00]" />
+              Route & Timeline
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-lg font-bold">{dispatch.vehicle}</p>
-            <Link href="/fleet" className="text-xs text-[#FF6B00] hover:underline">
-              View in Fleet Management
-            </Link>
-          </CardContent>
-        </Card>
-
-        <Card className="rounded-2xl border-[#E5E7EB] shadow-sm">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-base">
-              <User className="h-5 w-5 text-[#FF6B00]" />
-              Driver
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-lg font-bold">{dispatch.driver}</p>
-            <Link href="/drivers" className="text-xs text-[#FF6B00] hover:underline">
-              View in Driver Management
-            </Link>
+            <DispatchTimeline events={dispatch.timeline} />
           </CardContent>
         </Card>
       </div>
-
-      <Card className="rounded-2xl border-[#E5E7EB] shadow-sm">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-base">
-            <MapPin className="h-5 w-5 text-[#FF6B00]" />
-            Route Information
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-gray-600">{dispatch.route}</p>
-        </CardContent>
-      </Card>
-
-      <Card className="rounded-2xl border-[#E5E7EB] shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-base">Dispatch Timeline</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <DispatchTimeline events={dispatch.timeline} />
-        </CardContent>
-      </Card>
     </motion.div>
   );
 }
@@ -327,16 +263,16 @@ function SummaryBlock({
   href?: string;
 }) {
   return (
-    <div className="rounded-xl bg-[#F8F9FB] p-4">
+    <div>
       <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
         {label}
       </p>
       {href ? (
-        <Link href={href} className="mt-1 block font-semibold text-[#FF6B00] hover:underline">
+        <Link href={href} className="text-sm font-semibold text-[#FF6B00] hover:underline">
           {value}
         </Link>
       ) : (
-        <p className="mt-1 font-semibold text-[#111827]">{value}</p>
+        <p className="text-sm font-semibold text-[#111827]">{value}</p>
       )}
     </div>
   );
