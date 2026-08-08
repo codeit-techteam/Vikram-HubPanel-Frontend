@@ -1,0 +1,36 @@
+{
+  "deliveries": [
+    {
+      "id": "del-001",
+      "dispatchId": "dsp-queue-9912",
+      "dispatchNo": "DSP-2025-00912",
+      "orderNo": "ORD-9912",
+      "customerName": "Skyline Tower A – Sector 62",
+      "status": "pending",
+      "otp": "4829",
+      "podGenerated": false
+    },
+    {
+      "id": "del-002",
+      "dispatchId": "dsp-queue-9915",
+      "dispatchNo": "DSP-2025-00915",
+      "orderNo": "ORD-9915",
+      "customerName": "Navi Port Infrastructure",
+      "status": "in_transit",
+      "otp": "7156",
+      "podGenerated": false
+    },
+    {
+      "id": "del-003",
+      "dispatchId": "dsp-queue-9901",
+      "dispatchNo": "DSP-2025-00901",
+      "orderNo": "ORD-9901",
+      "customerName": "Heritage Builders",
+      "status": "delivered",
+      "deliveryTimestamp": "2025-06-17T16:45:00",
+      "otp": "3391",
+      "podGenerated": true,
+      "deliveryNotes": "Delivered to site supervisor. All materials verified."
+    }
+  ]
+}

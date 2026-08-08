@@ -1,0 +1,42 @@
+{
+  "templates": [
+    {
+      "id": "tpl-grn",
+      "name": "Goods Receipt Note",
+      "type": "PDF",
+      "description": "Standard GRN template for material receiving"
+    },
+    {
+      "id": "tpl-gate-pass",
+      "name": "Gate Pass",
+      "type": "PDF",
+      "description": "Vehicle gate pass for incoming transfers"
+    }
+  ],
+  "receivingDocuments": [
+    {
+      "id": "doc-grn-001",
+      "transferId": "TR-8029-X",
+      "name": "GRN-8029-X-Signed.pdf",
+      "type": "PDF",
+      "size": "1.2 MB",
+      "uploadedAt": "2 minutes ago"
+    },
+    {
+      "id": "doc-grn-9142",
+      "transferId": "TR-9142-W",
+      "name": "GRN-9142-W-Signed.pdf",
+      "type": "PDF",
+      "size": "980 KB",
+      "uploadedAt": "4 minutes ago"
+    },
+    {
+      "id": "doc-grn-7701",
+      "transferId": "TR-7701-K",
+      "name": "GRN-7701-K-Signed.pdf",
+      "type": "PDF",
+      "size": "1.1 MB",
+      "uploadedAt": "1 minute ago"
+    }
+  ]
+}

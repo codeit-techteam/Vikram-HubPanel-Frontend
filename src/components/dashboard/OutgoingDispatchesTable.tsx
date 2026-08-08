@@ -1,0 +1,339 @@
+"use client";
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { EllipsisVertical } from "lucide-react";
+import toast from "react-hot-toast";
+import type {
+  DashboardOperationalFilter,
+  HubOrder,
+  OutgoingDispatch,
+  OutgoingDispatchStatus,
+} from "@/types";
+import { OrderFeatureBadges } from "@/components/orders/OrderFeatureBadges";
+import {
+  OPERATIONAL_FILTER_LABELS,
+} from "@/lib/dashboardFilters";
+import {
+  DashboardTimeFilter,
+  isWithinDashboardPeriod,
+  type DashboardTimePeriod,
+} from "@/components/dashboard/DashboardTimeFilter";
+import { ContactCustomerModal } from "@/components/orders/ContactCustomerModal";
+import { HUB_OPERATION_STATUS_CONFIG } from "@/constants/operationStatus";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { printInvoice } from "@/lib/printInvoice";
+import { ordersService } from "@/services/orders.service";
+import { cn } from "@/lib/utils";
+import { filterOutgoingDispatches } from "@/lib/dashboardFilters";
+
+const STATUS_STYLES: Record<
+  OutgoingDispatchStatus,
+  { label: string; className: string }
+> = {
+  ...HUB_OPERATION_STATUS_CONFIG,
+};
+
+function StatusPill({ status }: { status: OutgoingDispatchStatus }) {
+  const config = STATUS_STYLES[status];
+  return (
+    <span
+      className={cn(
+        "inline-flex rounded-md px-2 py-1 text-[10px] font-bold tracking-wide",
+        config.className
+      )}
+    >
+      {config.label}
+    </span>
+  );
+}
+
+function DispatchRowActions({ dispatch }: { dispatch: OutgoingDispatch }) {
+  const router = useRouter();
+  const [contactOpen, setContactOpen] = useState(false);
+  const [contactOrder, setContactOrder] = useState<HubOrder | null>(null);
+
+  const loadOrder = async () => {
+    const order = await ordersService.getOrderById(dispatch.orderId);
+    return order ?? null;
+  };
+
+  const handleTrackDispatch = () => {
+    router.push(`/dispatch?search=${encodeURIComponent(dispatch.orderId)}`);
+  };
+
+  const handleViewOrderDetails = () => {
+    router.push(`/orders/${dispatch.orderId}`);
+  };
+
+  const handleContactCustomer = async () => {
+    const order = await loadOrder();
+    if (order) {
+      setContactOrder(order);
+      setContactOpen(true);
+      return;
+    }
+
+    setContactOrder({
+      id: dispatch.id,
+      orderNo: dispatch.orderId,
+      customer: {
+        name: dispatch.customerName,
+        type: "Customer",
+      },
+      location: dispatch.destination,
+      value: 0,
+      status: dispatch.status,
+      materials: [],
+      payment: { method: "—", status: "—", amount: 0, paidAmount: 0 },
+      deliveryAddress: dispatch.destination,
+      timeline: [],
+      orderDate: dispatch.scheduledDate,
+      createdAt: dispatch.scheduledDate,
+    });
+    setContactOpen(true);
+  };
+
+  const handlePrintInvoice = async () => {
+    const order = await loadOrder();
+    if (!order) {
+      toast.error(`Order ${dispatch.orderId} not found`);
+      return;
+    }
+    printInvoice(order);
+    toast.success(`Print dialog opened for ${dispatch.orderId}`);
+  };
+
+  const handleDownloadInvoice = async () => {
+    try {
+      await ordersService.downloadInvoice(dispatch.orderId);
+      toast.success(`Invoice ${dispatch.orderId} downloaded as PDF`);
+    } catch {
+      toast.error(`Failed to download invoice for ${dispatch.orderId}`);
+    }
+  };
+
+  return (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 text-gray-400 hover:bg-gray-100 hover:text-gray-700"
+            aria-label={`Actions for ${dispatch.orderId}`}
+          >
+            <EllipsisVertical className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-48">
+          <DropdownMenuItem
+            className="cursor-pointer text-sm"
+            onClick={handleTrackDispatch}
+          >
+            Track Dispatch
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="cursor-pointer text-sm"
+            onClick={handleViewOrderDetails}
+          >
+            View Order Details
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="cursor-pointer text-sm"
+            onClick={handleContactCustomer}
+          >
+            Contact Customer
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="cursor-pointer text-sm"
+            onClick={handlePrintInvoice}
+          >
+            Print Invoice
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="cursor-pointer text-sm"
+            onClick={handleDownloadInvoice}
+          >
+            Download PDF
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {contactOrder && (
+        <ContactCustomerModal
+          open={contactOpen}
+          onOpenChange={setContactOpen}
+          customer={contactOrder.customer}
+          orderNo={contactOrder.orderNo}
+        />
+      )}
+    </>
+  );
+}
+
+interface OutgoingDispatchesTableProps {
+  dispatches?: OutgoingDispatch[];
+  period: DashboardTimePeriod;
+  selectedMonth: number;
+  onPeriodChange: (period: DashboardTimePeriod) => void;
+  onMonthChange: (month: number) => void;
+  operationalFilter?: DashboardOperationalFilter | null;
+  onClearFilter?: () => void;
+}
+
+export function OutgoingDispatchesTable({
+  dispatches = [],
+  period,
+  selectedMonth,
+  onPeriodChange,
+  onMonthChange,
+  operationalFilter = null,
+  onClearFilter,
+}: OutgoingDispatchesTableProps) {
+  const periodFiltered = dispatches.filter((dispatch) =>
+    operationalFilter
+      ? true
+      : isWithinDashboardPeriod(dispatch.scheduledDate, period, selectedMonth)
+  );
+
+  const filteredDispatches = filterOutgoingDispatches(
+    periodFiltered,
+    operationalFilter
+  );
+
+  const tableTitle = operationalFilter
+    ? OPERATIONAL_FILTER_LABELS[operationalFilter]
+    : "Outgoing Dispatches";
+
+  return (
+    <div
+      id="outgoing-dispatches-table"
+      className="rounded-xl border border-gray-200 bg-white"
+    >
+      <div className="border-b border-gray-100 px-5 py-4">
+        <div className="flex items-center justify-between gap-2">
+          <div className="min-w-0">
+            <h3 className="text-sm font-semibold text-gray-900">{tableTitle}</h3>
+            {operationalFilter && (
+              <p className="mt-0.5 text-xs text-gray-500">
+                Showing {filteredDispatches.length} matching{" "}
+                {filteredDispatches.length === 1 ? "order" : "orders"}
+              </p>
+            )}
+          </div>
+          <div className="flex shrink-0 items-center gap-2">
+            {operationalFilter && onClearFilter && (
+              <button
+                type="button"
+                onClick={onClearFilter}
+                className="text-xs font-semibold text-gray-500 hover:text-gray-700"
+              >
+                Clear filter
+              </button>
+            )}
+            <Link
+              href="/orders?tab=active"
+              className="text-xs font-semibold text-[#FF6B00] hover:underline"
+            >
+              View All Orders
+            </Link>
+          </div>
+        </div>
+        {!operationalFilter && (
+          <div className="mt-3">
+            <DashboardTimeFilter
+              period={period}
+              selectedMonth={selectedMonth}
+              onPeriodChange={onPeriodChange}
+              onMonthChange={onMonthChange}
+              compact
+            />
+          </div>
+        )}
+      </div>
+
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[720px]">
+          <thead>
+            <tr className="border-b border-gray-100 text-left text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+              <th className="px-5 py-3">Delivery</th>
+              <th className="px-5 py-3">Order ID</th>
+              <th className="px-5 py-3">Customer Name</th>
+              <th className="px-5 py-3">Destination</th>
+              {operationalFilter && <th className="px-5 py-3">Tags</th>}
+              <th className="px-5 py-3">Status</th>
+              <th className="px-5 py-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredDispatches.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={operationalFilter ? 7 : 6}
+                  className="px-5 py-8 text-center text-sm text-gray-400"
+                >
+                  {operationalFilter
+                    ? `No ${OPERATIONAL_FILTER_LABELS[operationalFilter].toLowerCase()} found.`
+                    : "No dispatches for the selected period."}
+                </td>
+              </tr>
+            ) : (
+              filteredDispatches.map((dispatch) => (
+                <tr
+                  key={dispatch.id}
+                  className="border-b border-gray-50 last:border-0 hover:bg-gray-50/50"
+                >
+                  <td className="whitespace-nowrap px-5 py-4 text-sm font-medium text-gray-900">
+                    <Link
+                      href={`/orders?tab=active&search=${dispatch.orderId}`}
+                      className="hover:text-[#FF6B00] hover:underline"
+                    >
+                      {dispatch.orderReceiveTime}
+                    </Link>
+                  </td>
+                  <td className="px-5 py-4">
+                    <Link
+                      href={
+                        dispatch.dispatchNo
+                          ? `/dispatch/${dispatch.dispatchNo}`
+                          : `/orders/${dispatch.orderId}`
+                      }
+                      className="text-sm font-medium text-[#FF6B00] hover:underline"
+                    >
+                      {dispatch.orderId}
+                    </Link>
+                  </td>
+                  <td className="px-5 py-4 text-sm text-gray-700">
+                    {dispatch.customerName}
+                  </td>
+                  <td className="max-w-[200px] truncate px-5 py-4 text-sm text-gray-600">
+                    {dispatch.destination}
+                  </td>
+                  {operationalFilter && (
+                    <td className="px-5 py-4">
+                      <OrderFeatureBadges operational={dispatch.operational} />
+                    </td>
+                  )}
+                  <td className="px-5 py-4">
+                    <StatusPill status={dispatch.status} />
+                  </td>
+                  <td className="px-5 py-4 text-right">
+                    <DispatchRowActions dispatch={dispatch} />
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}

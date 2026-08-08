@@ -1,0 +1,42 @@
+{
+  "tracks": [
+    {
+      "dispatchId": "dsp-queue-9912",
+      "dispatchNo": "DSP-2025-00912",
+      "currentLocation": "Western Express Highway, Kandivali East",
+      "origin": "Noida (UP-04) Dark Store #422",
+      "destination": "Skyline Tower A, Sector 62, Noida",
+      "eta": "45 min",
+      "driver": "Karan Rathore",
+      "vehicle": "MH-04-AX-4432",
+      "distanceRemaining": "18.4 km",
+      "routeProgress": 62,
+      "timeline": [
+        { "id": "trk-1", "title": "Dispatched from Hub", "timestamp": "Today, 2:45 PM", "status": "completed" },
+        { "id": "trk-2", "title": "Left Warehouse Zone", "timestamp": "Today, 3:10 PM", "status": "completed" },
+        { "id": "trk-3", "title": "On Western Express Highway", "timestamp": "Today, 3:42 PM", "status": "active" },
+        { "id": "trk-4", "title": "Approaching Destination", "status": "pending" },
+        { "id": "trk-5", "title": "Arrived at Site", "status": "pending" }
+      ]
+    },
+    {
+      "dispatchId": "dsp-queue-9915",
+      "dispatchNo": "DSP-2025-00915",
+      "currentLocation": "NH-48, Vashi Toll Plaza",
+      "origin": "Noida (UP-04) Dark Store #422",
+      "destination": "Navi Port Infrastructure Site, Navi Mumbai",
+      "eta": "1h 20m",
+      "driver": "Sanjay Dutta",
+      "vehicle": "MH-01-CZ-9910",
+      "distanceRemaining": "34.2 km",
+      "routeProgress": 48,
+      "timeline": [
+        { "id": "trk-1", "title": "Dispatched from Hub", "timestamp": "Today, 1:30 PM", "status": "completed" },
+        { "id": "trk-2", "title": "Crossed Thane Checkpoint", "timestamp": "Today, 2:15 PM", "status": "completed" },
+        { "id": "trk-3", "title": "On NH-48", "timestamp": "Today, 3:05 PM", "status": "active" },
+        { "id": "trk-4", "title": "Approaching Destination", "status": "pending" },
+        { "id": "trk-5", "title": "Arrived at Site", "status": "pending" }
+      ]
+    }
+  ]
+}

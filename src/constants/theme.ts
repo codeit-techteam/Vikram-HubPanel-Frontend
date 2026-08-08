@@ -1,0 +1,30 @@
+export const THEME = {
+  primary: "#FF6B00",
+  primaryHover: "#E55F00",
+  primaryLight: "#FFF4EC",
+  background: "#FFFFFF",
+  foreground: "#1A1A1A",
+  muted: "#6B7280",
+  border: "#E5E7EB",
+  card: "#F9FAFB",
+  cardBorder: "#F3F4F6",
+  success: "#10B981",
+  warning: "#F59E0B",
+  error: "#EF4444",
+  info: "#3B82F6",
+} as const;
+
+export const STATUS_COLORS: Record<string, string> = {
+  active: "bg-emerald-100 text-emerald-700",
+  inactive: "bg-gray-100 text-gray-600",
+  pending: "bg-amber-100 text-amber-700",
+  approved: "bg-blue-100 text-blue-700",
+  rejected: "bg-red-100 text-red-700",
+  in_transit: "bg-purple-100 text-purple-700",
+  delivered: "bg-emerald-100 text-emerald-700",
+  received: "bg-emerald-100 text-emerald-700",
+  dispatched: "bg-blue-100 text-blue-700",
+  cancelled: "bg-red-100 text-red-700",
+  low_stock: "bg-amber-100 text-amber-700",
+  critical: "bg-red-100 text-red-700",
+};

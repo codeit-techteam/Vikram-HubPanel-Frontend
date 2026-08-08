@@ -1,0 +1,320 @@
+"use client";
+
+import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import {
+  ArrowLeft,
+  CheckCircle2,
+  Download,
+  MapPin,
+  Phone,
+  Play,
+  Truck,
+  User,
+} from "lucide-react";
+import toast from "react-hot-toast";
+import { dispatchService } from "@/services/dispatch.service";
+import { ordersService } from "@/services/orders.service";
+import { driverService } from "@/services/driver.service";
+import { useDispatchStore } from "@/store";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DispatchStatusBadge } from "@/components/dispatch/DispatchStatusBadge";
+import { DispatchTimeline } from "@/components/dispatch/DispatchTimeline";
+import { OrderOperationalDetails } from "@/components/orders/OrderOperationalDetails";
+import { HUB_OPERATION_STATUS_DESCRIPTIONS } from "@/constants/operationStatus";
+import type { DispatchQueueStatus, DispatchRecord } from "@/types";
+
+export default function DispatchDetailsPage() {
+  const params = useParams();
+  const router = useRouter();
+  const dispatchId = params.dispatchId as string;
+  const { updateStatus } = useDispatchStore();
+
+  const [dispatch, setDispatch] = useState<DispatchRecord | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false);
+
+  const reload = useCallback(async () => {
+    const data = await dispatchService.getById(dispatchId);
+    setDispatch(data ?? null);
+  }, [dispatchId]);
+
+  useEffect(() => {
+    async function load() {
+      setLoading(true);
+      await reload();
+      setLoading(false);
+    }
+    if (dispatchId) load();
+  }, [dispatchId, reload]);
+
+  const handleStatusUpdate = async (
+    status: DispatchQueueStatus,
+    message: string
+  ) => {
+    if (!dispatch) return;
+    setUpdating(true);
+    await updateStatus(dispatch.id, status);
+    await reload();
+    setUpdating(false);
+    toast.success(message);
+  };
+
+  if (loading) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#FF6B00] border-t-transparent" />
+      </div>
+    );
+  }
+
+  if (!dispatch) {
+    return (
+      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4">
+        <p className="text-sm text-gray-500">Dispatch not found.</p>
+        <Button variant="outline" asChild>
+          <Link href="/dispatch">
+            <ArrowLeft className="h-4 w-4" />
+            Back to Planning Center
+          </Link>
+        </Button>
+      </div>
+    );
+  }
+
+  const customerStatus = HUB_OPERATION_STATUS_DESCRIPTIONS[dispatch.status];
+  const isDelivered = dispatch.status === "delivered";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35 }}
+      className="space-y-6 pb-8"
+    >
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+        <div>
+          <button
+            type="button"
+            onClick={() => router.push("/dispatch")}
+            className="mb-2 flex items-center gap-1 text-xs font-medium text-gray-500 hover:text-[#FF6B00]"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" />
+            Back to Planning Center
+          </button>
+          <h1 className="text-2xl font-bold text-[#111827]">Dispatch Details</h1>
+          <p className="mt-1 text-sm text-gray-500">{dispatch.dispatchNo}</p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          {!isDelivered && dispatch.status === "pending" && (
+            <Button
+              className="gap-2 rounded-xl bg-[#FF6B00] hover:bg-[#E55F00]"
+              disabled={updating}
+              onClick={() =>
+                handleStatusUpdate("loading", "Loading started at hub")
+              }
+            >
+              <Play className="h-4 w-4" />
+              Start Loading
+            </Button>
+          )}
+          {!isDelivered && dispatch.status === "loading" && (
+            <Button
+              className="gap-2 rounded-xl bg-[#FF6B00] hover:bg-[#E55F00]"
+              disabled={updating}
+              onClick={() =>
+                handleStatusUpdate("dispatch", "Dispatch started — customer notified")
+              }
+            >
+              <Truck className="h-4 w-4" />
+              Start Dispatch
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            className="gap-2 rounded-xl"
+            onClick={async () => {
+              try {
+                const drivers = await driverService.getDrivers();
+                const match = drivers.find((d) => d.name === dispatch.driver);
+                const phone = match?.phone || match?.mobile;
+                if (!phone) {
+                  toast.error("Driver phone number not available");
+                  return;
+                }
+                window.location.href = `tel:${phone}`;
+              } catch {
+                toast.error("Unable to load driver contact");
+              }
+            }}
+          >
+            <Phone className="h-4 w-4" />
+            Contact Driver
+          </Button>
+          <Button
+            variant="outline"
+            className="gap-2 rounded-xl"
+            disabled={!dispatch.orderId}
+            onClick={async () => {
+              try {
+                if (!dispatch.orderId) {
+                  toast.error("No order linked to this dispatch");
+                  return;
+                }
+                await ordersService.downloadInvoice(dispatch.orderId);
+                toast.success("Invoice downloaded");
+              } catch {
+                toast.error("Unable to download invoice");
+              }
+            }}
+          >
+            <Download className="h-4 w-4" />
+            Download Invoice
+          </Button>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-3">
+        <DispatchStatusBadge status={dispatch.status} />
+        <span className="text-sm text-gray-500">ETA: {dispatch.eta}</span>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-3">
+        <Card className="rounded-2xl border-[#E5E7EB] shadow-sm lg:col-span-2">
+          <CardHeader>
+            <CardTitle className="text-base">Dispatch Summary</CardTitle>
+          </CardHeader>
+          <CardContent className="grid gap-4 sm:grid-cols-2">
+            <SummaryBlock label="Order" value={dispatch.orderNo} href={`/orders/${dispatch.orderNo}`} />
+            <SummaryBlock label="Schedule" value={dispatch.schedule} />
+            <SummaryBlock label="Route" value={dispatch.route} />
+            <SummaryBlock label="Priority" value={dispatch.priority.toUpperCase()} />
+            <SummaryBlock label="Items" value={String(dispatch.items ?? "—")} />
+            <SummaryBlock label="Dispatch Date" value={dispatch.dispatchDate ?? "Today"} />
+          </CardContent>
+        </Card>
+
+        <Card className="rounded-2xl border-[#E5E7EB] shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-base">Delivery ETA</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-3xl font-bold text-[#FF6B00]">{dispatch.eta}</p>
+            <p className="mt-2 text-sm text-gray-500">{dispatch.schedule}</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      <OrderOperationalDetails
+        customerName={dispatch.customerDetails.name}
+        operational={dispatch.operational}
+        paymentMethod={dispatch.paymentMethod}
+        eta={dispatch.eta}
+      />
+
+      <div className="grid gap-6 lg:grid-cols-3">
+        <Card className="rounded-2xl border-[#E5E7EB] shadow-sm lg:col-span-1">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-base">
+              <User className="h-5 w-5 text-[#FF6B00]" />
+              Customer
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4 text-sm">
+            <div>
+              <p className="font-semibold text-[#111827]">{dispatch.customerDetails.name}</p>
+              {dispatch.customerDetails.phone && (
+                <p className="text-gray-500">{dispatch.customerDetails.phone}</p>
+              )}
+              {dispatch.customerDetails.email && (
+                <p className="text-gray-500">{dispatch.customerDetails.email}</p>
+              )}
+              {dispatch.customerDetails.address && (
+                <p className="mt-1 text-gray-500">{dispatch.customerDetails.address}</p>
+              )}
+            </div>
+
+            <div className="rounded-xl border border-orange-100 bg-orange-50/60 p-4">
+              <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+                Customer Delivery Status
+              </p>
+              <div className="mt-2 flex items-center gap-2">
+                <DispatchStatusBadge status={dispatch.status} />
+              </div>
+              <p className="mt-2 text-sm font-medium text-[#111827]">{customerStatus}</p>
+              <p className="mt-1 text-xs text-gray-500">
+                Updated manually by hub — no live GPS tracking
+              </p>
+            </div>
+
+            {!isDelivered && (
+              <div className="space-y-2">
+                <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+                  Hub Manual Updates
+                </p>
+                {dispatch.status === "dispatch" && (
+                  <Button
+                    size="sm"
+                    className="w-full rounded-xl bg-[#FF6B00] hover:bg-[#E55F00]"
+                    onClick={() => {
+                      const orderPath = dispatch.orderId
+                        ? `/orders/${dispatch.orderId}`
+                        : "/orders";
+                      router.push(orderPath);
+                    }}
+                  >
+                    <CheckCircle2 className="mr-2 h-3.5 w-3.5" />
+                    Complete Delivery (OTP)
+                  </Button>
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card className="rounded-2xl border-[#E5E7EB] shadow-sm lg:col-span-2">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-base">
+              <MapPin className="h-5 w-5 text-[#FF6B00]" />
+              Route & Timeline
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <DispatchTimeline
+              events={dispatch.timeline}
+              operational={dispatch.operational}
+            />
+          </CardContent>
+        </Card>
+      </div>
+    </motion.div>
+  );
+}
+
+function SummaryBlock({
+  label,
+  value,
+  href,
+}: {
+  label: string;
+  value: string;
+  href?: string;
+}) {
+  return (
+    <div>
+      <p className="text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+        {label}
+      </p>
+      {href ? (
+        <Link href={href} className="text-sm font-semibold text-[#FF6B00] hover:underline">
+          {value}
+        </Link>
+      ) : (
+        <p className="text-sm font-semibold text-[#111827]">{value}</p>
+      )}
+    </div>
+  );
+}

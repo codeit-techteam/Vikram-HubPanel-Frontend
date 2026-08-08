@@ -1,0 +1,62 @@
+[
+  {
+    "id": "mat-001",
+    "name": "Steel Rods 12mm",
+    "sku": "STL-ROD-12",
+    "category": "Construction",
+    "unit": "MT",
+    "minStock": 500,
+    "maxStock": 5000,
+    "unitPrice": 65000
+  },
+  {
+    "id": "mat-002",
+    "name": "Cement OPC 53 Grade",
+    "sku": "CEM-OPC-53",
+    "category": "Construction",
+    "unit": "Bags",
+    "minStock": 2000,
+    "maxStock": 20000,
+    "unitPrice": 380
+  },
+  {
+    "id": "mat-003",
+    "name": "Electrical Cable 2.5mm",
+    "sku": "ELC-CBL-25",
+    "category": "Electrical",
+    "unit": "Meters",
+    "minStock": 5000,
+    "maxStock": 50000,
+    "unitPrice": 45
+  },
+  {
+    "id": "mat-004",
+    "name": "PVC Pipes 4 inch",
+    "sku": "PVC-PIP-4",
+    "category": "Plumbing",
+    "unit": "Pieces",
+    "minStock": 1000,
+    "maxStock": 10000,
+    "unitPrice": 850
+  },
+  {
+    "id": "mat-005",
+    "name": "Safety Helmets",
+    "sku": "SAF-HEL-01",
+    "category": "Safety",
+    "unit": "Pieces",
+    "minStock": 200,
+    "maxStock": 2000,
+    "unitPrice": 450
+  },
+  {
+    "id": "mat-006",
+    "name": "Industrial Lubricant 20L",
+    "sku": "IND-LUB-20",
+    "category": "Maintenance",
+    "unit": "Drums",
+    "minStock": 50,
+    "maxStock": 500,
+    "unitPrice": 8500
+  }
+]
