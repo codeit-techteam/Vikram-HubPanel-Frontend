@@ -87,7 +87,7 @@ function transferToReceivingRecord(transfer: IncomingTransfer): ReceivingRecord 
           : undefined;
       return {
         id: m.id,
-        productId: m.id,
+        productId: (m as { productId?: string }).productId ?? m.id,
         productName: m.name,
         sku: m.sku ?? "",
         dispatchedQty: qty,
@@ -97,7 +97,7 @@ function transferToReceivingRecord(transfer: IncomingTransfer): ReceivingRecord 
         verificationStatus: isReceived
           ? ("verified" as const)
           : ("pending" as const),
-        inventoryProductId: m.id,
+        inventoryProductId: (m as { productId?: string }).productId ?? m.id,
       };
     }),
     photos,
@@ -362,6 +362,10 @@ export const materialReceivingService = {
     const record = await this.getReceivingDetails(transferId);
     if (!record) throw new Error("Receiving record not found");
 
+    if (record.photos.filter((p) => p.url).length < 1) {
+      throw new Error("Upload at least one receiving proof photo before accepting");
+    }
+
     for (const m of record.materials) {
       if (m.receivedQty > m.dispatchedQty) {
         throw new Error(
@@ -370,7 +374,7 @@ export const materialReceivingService = {
       }
       if (
         m.receivedQty < m.dispatchedQty &&
-        !(m.remarks?.trim() || m.verificationStatus === "discrepancy")
+        !m.remarks?.trim()
       ) {
         throw new Error(
           `Shortage reason required for ${m.productName} before accepting`,
@@ -416,7 +420,11 @@ export const materialReceivingService = {
             shortageQty: shortage,
             damageQty,
             missingQty,
-            remarks: m.remarks ?? `Received by ${receivedBy}`,
+            remarks:
+              m.remarks?.trim() ||
+              (shortage > 0
+                ? undefined
+                : `Received by ${receivedBy}`),
           };
         }),
         comment: `Accepted delivery by ${receivedBy}`,

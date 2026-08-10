@@ -226,14 +226,17 @@ export const useMaterialReceivingStore = create<MaterialReceivingState>(
       }
 
       const shortageWithoutReason = receivingRecord.materials.find(
-        (m) =>
-          m.receivedQty < m.dispatchedQty &&
-          !(m.remarks?.trim() || m.verificationStatus === "discrepancy"),
+        (m) => m.receivedQty < m.dispatchedQty && !m.remarks?.trim(),
       );
       if (shortageWithoutReason) {
         toast.error(
           `Shortage reason required for ${shortageWithoutReason.productName}`,
         );
+        return false;
+      }
+
+      if (receivingRecord.photos.filter((p) => p.url).length < 1) {
+        toast.error("Upload at least one receiving proof photo before accepting");
         return false;
       }
 

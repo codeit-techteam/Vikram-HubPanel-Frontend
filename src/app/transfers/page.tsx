@@ -12,11 +12,23 @@ export default function TransfersPage() {
   const { loading, loadTransfers, filteredTransfers } = useTransferStore();
 
   useEffect(() => {
-    loadTransfers();
+    void loadTransfers();
     const id = window.setInterval(() => {
       void loadTransfers();
-    }, 30_000);
-    return () => window.clearInterval(id);
+    }, 10_000);
+
+    const refreshOnFocus = () => {
+      if (document.visibilityState === "hidden") return;
+      void loadTransfers();
+    };
+    window.addEventListener("focus", refreshOnFocus);
+    document.addEventListener("visibilitychange", refreshOnFocus);
+
+    return () => {
+      window.clearInterval(id);
+      window.removeEventListener("focus", refreshOnFocus);
+      document.removeEventListener("visibilitychange", refreshOnFocus);
+    };
   }, [loadTransfers]);
 
   if (loading) {

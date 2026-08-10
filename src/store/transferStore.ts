@@ -230,20 +230,34 @@ export const useTransferStore = create<TransferState>((set, get) => ({
   closeCreate: () => set({ isCreateOpen: false }),
 
   loadTransfers: async () => {
-    set({ loading: true });
-    const data = await transferService.getTransfers();
-    const state = get();
-    const filteredTransfers = applyFiltersAndSort(
-      data.transfers,
-      state.filters,
-      state.sortBy
-    );
-    set({
-      transfers: data.transfers,
-      filteredTransfers,
-      summary: data.summary,
-      loading: false,
-    });
+    const hadData = get().transfers.length > 0;
+    // Avoid full-page spinner flicker on background polling refreshes.
+    if (!hadData) set({ loading: true });
+
+    try {
+      const data = await transferService.getTransfers();
+      const state = get();
+      const filteredTransfers = applyFiltersAndSort(
+        data.transfers,
+        state.filters,
+        state.sortBy,
+      );
+      set({
+        transfers: data.transfers,
+        filteredTransfers,
+        summary: data.summary,
+        loading: false,
+      });
+    } catch (error) {
+      set({ loading: false });
+      // Keep existing list on transient network failures (e.g. backend restart).
+      if (!hadData) {
+        toast.error(
+          "Unable to load transfers. Check that the API is running.",
+        );
+      }
+      console.warn("[transfers] loadTransfers failed", error);
+    }
   },
 
   loadTransferById: async (id) => {
