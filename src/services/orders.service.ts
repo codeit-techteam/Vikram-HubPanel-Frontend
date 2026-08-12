@@ -102,6 +102,16 @@ interface BackendOrderDetail extends BackendOrderListItem {
   vehicle?: { id: string; registration: string } | null;
   assignedDriver?: { id: string; name: string; phone: string } | null;
   assignedVehicle?: { id: string; registration: string } | null;
+  deliveryCharge?: number | string | null;
+  deliveryVehicleType?: string | null;
+  deliveryVehicleCount?: number | null;
+  deliveryDistanceKm?: number | string | null;
+  deliveryTotalWeightKg?: number | string | null;
+  deliveryTotalVolumeCft?: number | string | null;
+  deliveryCapacityUsed?: number | string | null;
+  deliveryCapacityLimit?: number | string | null;
+  freeDeliveryApplied?: boolean;
+  deliveryMultiVehicle?: boolean;
   dispatchHistory?: Array<{
     dispatchNo: string;
     status: string;
@@ -113,6 +123,14 @@ interface BackendOrderDetail extends BackendOrderListItem {
     deliveryOtpVerified?: boolean;
   }>;
 }
+
+const DELIVERY_VEHICLE_LABELS: Record<string, string> = {
+  BIKE: "Bike",
+  E_LOADER: "E-Loader",
+  THREE_WHEELER_LOADER: "3 Wheeler Loader",
+  PICK_UP_VAN: "Pick Up Van",
+  FULL_TRUCK: "Full Truck",
+};
 
 const PENDING_BACKEND: BackendOrderStatus[] = [
   "PENDING",
@@ -280,6 +298,38 @@ function mapOrder(order: BackendOrderDetail): HubOrder {
         `https://delivery.bajriwala.in/verify/${order.orderNumber}`,
       driverName,
       vehicleNumber,
+    },
+    deliveryPricing: {
+      vehicleType: order.deliveryVehicleType ?? null,
+      vehicleDisplayName: order.deliveryVehicleType
+        ? DELIVERY_VEHICLE_LABELS[order.deliveryVehicleType] ??
+          String(order.deliveryVehicleType).replaceAll("_", " ")
+        : null,
+      vehicleCount: order.deliveryVehicleCount ?? 1,
+      distanceKm:
+        order.deliveryDistanceKm != null
+          ? Number(order.deliveryDistanceKm)
+          : null,
+      totalWeightKg:
+        order.deliveryTotalWeightKg != null
+          ? Number(order.deliveryTotalWeightKg)
+          : null,
+      totalVolumeCft:
+        order.deliveryTotalVolumeCft != null
+          ? Number(order.deliveryTotalVolumeCft)
+          : null,
+      capacityUsed:
+        order.deliveryCapacityUsed != null
+          ? Number(order.deliveryCapacityUsed)
+          : null,
+      capacityLimit:
+        order.deliveryCapacityLimit != null
+          ? Number(order.deliveryCapacityLimit)
+          : null,
+      deliveryCharge:
+        order.deliveryCharge != null ? Number(order.deliveryCharge) : null,
+      freeDeliveryApplied: order.freeDeliveryApplied ?? false,
+      multiVehicle: order.deliveryMultiVehicle ?? false,
     },
   };
 }

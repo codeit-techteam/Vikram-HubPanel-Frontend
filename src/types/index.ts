@@ -731,6 +731,20 @@ export interface HubOrder {
   inventoryAllocation?: { sku: string; name: string; allocated: number; unit: string }[];
   operational?: OrderOperationalFlags;
   delivery?: DeliveryCompletionState;
+  /** Snapshot from order confirmation — do not recalculate with current rules. */
+  deliveryPricing?: {
+    vehicleType?: string | null;
+    vehicleDisplayName?: string | null;
+    vehicleCount?: number | null;
+    distanceKm?: number | null;
+    totalWeightKg?: number | null;
+    totalVolumeCft?: number | null;
+    capacityUsed?: number | null;
+    capacityLimit?: number | null;
+    deliveryCharge?: number | null;
+    freeDeliveryApplied?: boolean;
+    multiVehicle?: boolean;
+  };
   dispatchedAt?: string | null;
   deliveredAt?: string | null;
 }

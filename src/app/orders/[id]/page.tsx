@@ -250,6 +250,70 @@ export default function OrderDetailsPage() {
             <p className="mt-2 text-xs text-gray-400">Site: {order.location}</p>
           </CardContent>
         </Card>
+
+        {order.deliveryPricing ? (
+          <Card className="rounded-2xl border-[#E5E7EB] shadow-sm lg:col-span-1">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <Truck className="h-5 w-5 text-[#FF6B00]" />
+                Delivery Calculation
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2 text-sm">
+              <InfoRow
+                label="Required Vehicle"
+                value={
+                  order.deliveryPricing.vehicleDisplayName
+                    ? `${order.deliveryPricing.vehicleDisplayName}${
+                        order.deliveryPricing.vehicleCount &&
+                        order.deliveryPricing.vehicleCount > 1
+                          ? ` × ${order.deliveryPricing.vehicleCount}`
+                          : ""
+                      }`
+                    : "—"
+                }
+              />
+              <InfoRow
+                label="Distance"
+                value={
+                  order.deliveryPricing.distanceKm != null
+                    ? `${order.deliveryPricing.distanceKm.toFixed(1)} km`
+                    : "—"
+                }
+              />
+              <InfoRow
+                label="Total Weight"
+                value={
+                  order.deliveryPricing.totalWeightKg != null
+                    ? `${order.deliveryPricing.totalWeightKg} kg`
+                    : "—"
+                }
+              />
+              <InfoRow
+                label="Capacity"
+                value={
+                  order.deliveryPricing.capacityUsed != null &&
+                  order.deliveryPricing.capacityLimit != null
+                    ? `${order.deliveryPricing.capacityUsed} / ${order.deliveryPricing.capacityLimit}`
+                    : "—"
+                }
+              />
+              <InfoRow
+                label="Delivery Charge"
+                value={
+                  order.deliveryPricing.freeDeliveryApplied
+                    ? "FREE"
+                    : order.deliveryPricing.deliveryCharge != null
+                      ? formatCurrency(order.deliveryPricing.deliveryCharge)
+                      : "—"
+                }
+              />
+              <p className="pt-1 text-xs text-gray-400">
+                Snapshot from order confirmation — not recalculated.
+              </p>
+            </CardContent>
+          </Card>
+        ) : null}
       </div>
 
       <Card className="rounded-2xl border-[#E5E7EB] shadow-sm">
