@@ -156,7 +156,11 @@ function recomputeInventorySummary() {
 
 const CATEGORY_ICON_MAP: Record<string, string> = {
   raw_materials: "package",
+  rmc: "layers",
+  /** Legacy mock / filter key */
   structural_steel: "layers",
+  steel: "layers",
+  bricks: "box",
   masonry: "box",
   plumbing: "pipette",
   electrical: "layers",

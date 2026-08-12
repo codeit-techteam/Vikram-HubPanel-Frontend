@@ -41,6 +41,9 @@ export interface MockProduct {
   unitPrice: number;
   unit: string;
   category: string;
+  /** Brick catalog attributes when applicable */
+  productType?: string;
+  grade?: string;
 }
 
 export interface OrderLineItem {
@@ -72,7 +75,7 @@ export const MOCK_CUSTOMERS: Record<string, MockCustomer> = {
     customerSince: "Mar 2022",
     outstandingBalance: 142000,
     creditLimit: 500000,
-    loyaltyPoints: 4250,
+    loyaltyPoints: 0,
   },
   "9123456789": {
     id: "CUST-002",
@@ -90,7 +93,7 @@ export const MOCK_CUSTOMERS: Record<string, MockCustomer> = {
     customerSince: "Jan 2021",
     outstandingBalance: 0,
     creditLimit: 1500000,
-    loyaltyPoints: 12800,
+    loyaltyPoints: 0,
   },
 };
 
@@ -121,39 +124,55 @@ export const MOCK_PRODUCTS: MockProduct[] = [
   },
   {
     id: "PROD-003",
-    name: "TMT Steel Bar (12mm)",
-    sku: "TMT-12-FE550",
-    image: "/products/tmt-12.jpg",
-    stockAvailable: 45,
-    stockLabel: "45 MT (Low)",
-    stockStatus: "low_stock",
-    unitPrice: 68500,
-    unit: "Tons",
-    category: "Steel",
+    name: "RMC M25",
+    sku: "RMC-M25",
+    image: "/products/rmc-m25.jpg",
+    stockAvailable: 120,
+    stockLabel: "120 Cum",
+    stockStatus: "in_stock",
+    unitPrice: 4800,
+    unit: "Cum",
+    category: "RMC",
   },
   {
     id: "PROD-004",
-    name: "TMT Steel Bar (16mm)",
-    sku: "TMT-16-FE550",
-    image: "/products/tmt-16.jpg",
-    stockAvailable: 32,
-    stockLabel: "32 MT",
+    name: "RMC M30",
+    sku: "RMC-M30",
+    image: "/products/rmc-m30.jpg",
+    stockAvailable: 80,
+    stockLabel: "80 Cum",
     stockStatus: "in_stock",
-    unitPrice: 67200,
-    unit: "Tons",
-    category: "Steel",
+    unitPrice: 5200,
+    unit: "Cum",
+    category: "RMC",
   },
   {
     id: "PROD-005",
-    name: "Red Bricks (Class A)",
-    sku: "BRK-RED-A",
+    name: "Red Bricks — A",
+    sku: "BRK-RED",
     image: "/products/bricks.jpg",
     stockAvailable: 25000,
     stockLabel: "25,000 Pcs",
     stockStatus: "in_stock",
     unitPrice: 8.5,
     unit: "Pieces",
-    category: "Masonry",
+    category: "Bricks",
+    productType: "RED_BRICKS",
+    grade: "A",
+  },
+  {
+    id: "PROD-005b",
+    name: "Grey Ash Bricks (Fly Ash Bricks) — A+",
+    sku: "BRK-ASH-A+",
+    image: "/products/bricks.jpg",
+    stockAvailable: 18000,
+    stockLabel: "18,000 Pcs",
+    stockStatus: "in_stock",
+    unitPrice: 7.5,
+    unit: "Pieces",
+    category: "Bricks",
+    productType: "GREY_ASH_BRICKS",
+    grade: "A_PLUS",
   },
   {
     id: "PROD-006",
@@ -200,7 +219,8 @@ export const CUSTOMER_TYPE_OPTIONS: { value: CustomerType; label: string }[] = [
   { value: "interior_designer", label: "Interior Designer / Architect" },
 ];
 
-export const DELIVERY_CHARGE = 2500;
+/** @deprecated Prefer backend DeliveryPricingService — Hub create-order preview only. */
+export const DELIVERY_CHARGE = 0;
 export const GST_RATE = 0.18;
 export const DEFAULT_DISCOUNT = 0;
 

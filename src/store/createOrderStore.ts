@@ -6,7 +6,6 @@ import {
   type OrderLineItem,
   type OrderPaymentStatus,
   type PaymentMethod,
-  DELIVERY_CHARGE,
   DEFAULT_DISCOUNT,
   GST_RATE,
   generatePaymentLink,
@@ -399,8 +398,11 @@ export const useCreateOrderStore = create<CreateOrderState>((set, get) => ({
       0
     ),
 
-  deliveryCharge: () =>
-    get().lineItems.length > 0 ? DELIVERY_CHARGE : 0,
+  deliveryCharge: () => {
+    // Preview only — order placement must use server-calculated deliveryCharge.
+    // Historical hub orders keep the snapshot on the order record.
+    return 0;
+  },
 
   gstAmount: () => {
     const material = get().materialTotal();
