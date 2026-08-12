@@ -35,7 +35,7 @@ import {
 import { useInventoryStore } from "@/store";
 import { cn } from "@/lib/utils";
 
-const UNITS = ["Bags", "Tons", "Cum", "Units", "Pieces", "Kg", "Liters"];
+const UNITS = ["Bags", "Tons", "Cubic Meter", "Cum", "Units", "Pieces", "Kg", "Liters"];
 
 const addMaterialSchema = z.object({
   name: z.string().min(2, "Material name is required"),
