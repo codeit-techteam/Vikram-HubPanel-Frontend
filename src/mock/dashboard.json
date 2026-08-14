@@ -48,9 +48,9 @@
     },
     {
       "id": "priority-members",
-      "label": "Priority Members",
+      "label": "Priority Delivery",
       "value": "2",
-      "sublabel": "Gold & Platinum",
+      "sublabel": "Priority orders",
       "variant": "primary"
     },
     {

@@ -373,21 +373,15 @@ function computeDashboardKpis(): DashboardKpi[] {
   const countBulk = (items: { operational?: { isBulkProcurement?: boolean } }[]) =>
     items.filter((i) => i.operational?.isBulkProcurement).length;
 
-  const countPriorityMembers = (
-    items: { operational?: { membershipStatus?: string; isPriorityDelivery?: boolean } }[]
-  ) =>
-    items.filter(
-      (i) =>
-        i.operational?.isPriorityDelivery &&
-        i.operational?.membershipStatus &&
-        i.operational.membershipStatus !== "Non-Member"
-    ).length;
+  const countPriorityDelivery = (
+    items: { operational?: { isPriorityDelivery?: boolean } }[]
+  ) => items.filter((i) => i.operational?.isPriorityDelivery).length;
 
   const readyToDispatch = queueStore.filter((d) => d.status === "pending").length;
 
   const emergencyCount = countEmergency([...activeOrders, ...activeQueue]);
   const bulkCount = countBulk([...activeOrders, ...activeQueue]);
-  const priorityMemberCount = countPriorityMembers([...activeOrders, ...activeQueue]);
+  const priorityDeliveryCount = countPriorityDelivery([...activeOrders, ...activeQueue]);
 
   return dashboardKpis.map((kpi) => {
     switch (kpi.id) {
@@ -404,7 +398,7 @@ function computeDashboardKpis(): DashboardKpi[] {
       case "bulk-orders":
         return { ...kpi, value: String(bulkCount) };
       case "priority-members":
-        return { ...kpi, value: String(priorityMemberCount) };
+        return { ...kpi, value: String(priorityDeliveryCount) };
       case "ready-to-dispatch":
         return { ...kpi, value: String(readyToDispatch) };
       default:

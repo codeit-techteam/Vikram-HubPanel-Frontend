@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { AlertTriangle, Check, Circle, Crown, Package, Truck, Zap } from "lucide-react";
+import { AlertTriangle, Check, Circle, Package, Truck, Zap } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { DispatchTimelineEvent, OrderOperationalFlags } from "@/types";
@@ -40,14 +40,12 @@ function getTimelineAccent(operational?: OrderOperationalFlags) {
       label: "Bulk Order",
     };
   }
-  if (operational?.isPriorityDelivery || operational?.membershipStatus) {
+  if (operational?.isPriorityDelivery) {
     return {
       border: "border-amber-200",
       banner: "bg-amber-50 border-amber-200 text-amber-700",
-      icon: operational?.membershipStatus ? Crown : AlertTriangle,
-      label: operational?.membershipStatus
-        ? `Priority Member — ${operational.membershipStatus}`
-        : "Priority Delivery",
+      icon: AlertTriangle,
+      label: "Priority Delivery",
     };
   }
   return null;
@@ -98,11 +96,6 @@ export function DispatchTimeline({ events, compact, operational }: DispatchTimel
           {operational?.isPriorityDelivery && (
             <Badge variant="warning" className="text-[10px]">
               Priority
-            </Badge>
-          )}
-          {operational?.membershipStatus && (
-            <Badge variant="secondary" className="text-[10px]">
-              {operational.membershipStatus}
             </Badge>
           )}
         </div>

@@ -39,14 +39,6 @@ export function OrderOperationalDetails({
         label="Customer Name"
         value={customerName}
       />
-      {operational?.membershipStatus && (
-        <DetailItem
-          icon={<User className="h-4 w-4 text-[#FF6B00]" />}
-          label="Membership Status"
-          value={operational.membershipStatus}
-          readOnly
-        />
-      )}
       <DetailItem
         icon={<Truck className="h-4 w-4 text-[#FF6B00]" />}
         label="Emergency Order"

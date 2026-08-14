@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle, Crown, Package, Zap } from "lucide-react";
+import { AlertTriangle, Package, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { OrderOperationalFlags } from "@/types";
 import { cn } from "@/lib/utils";
@@ -20,14 +20,12 @@ export function OrderFeatureBadges({
     isEmergencyDelivery,
     isBulkProcurement,
     isPriorityDelivery,
-    membershipStatus,
   } = operational;
 
   const hasBadges =
     isEmergencyDelivery ||
     isBulkProcurement ||
-    isPriorityDelivery ||
-    membershipStatus;
+    isPriorityDelivery;
 
   if (!hasBadges) return null;
 
@@ -40,15 +38,6 @@ export function OrderFeatureBadges({
         >
           <Zap className="h-3 w-3" />
           Emergency
-        </Badge>
-      )}
-      {membershipStatus && (
-        <Badge
-          variant="info"
-          className="gap-1 text-[10px] font-semibold uppercase tracking-wide"
-        >
-          <Crown className="h-3 w-3" />
-          {membershipStatus}
         </Badge>
       )}
       {isBulkProcurement && (

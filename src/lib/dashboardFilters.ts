@@ -9,7 +9,7 @@ export const OPERATIONAL_FILTER_LABELS: Record<
 > = {
   "emergency-orders": "Emergency Orders",
   "bulk-orders": "Bulk Orders",
-  "priority-members": "Priority Members",
+  "priority-members": "Priority Delivery",
   "ready-to-dispatch": "Orders Ready to Dispatch",
 };
 
@@ -29,11 +29,7 @@ export function matchesOperationalFilter(
     case "bulk-orders":
       return dispatch.operational?.isBulkProcurement === true;
     case "priority-members":
-      return (
-        dispatch.operational?.isPriorityDelivery === true &&
-        Boolean(dispatch.operational?.membershipStatus) &&
-        dispatch.operational.membershipStatus !== "Non-Member"
-      );
+      return dispatch.operational?.isPriorityDelivery === true;
     case "ready-to-dispatch":
       return dispatch.status === "pending" && Boolean(dispatch.dispatchNo);
     default:
