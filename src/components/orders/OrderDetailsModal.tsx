@@ -146,6 +146,31 @@ export function OrderDetailsModal() {
         </section>
 
         <section className="rounded-2xl border border-[#E5E7EB] p-4">
+          <div className="mb-2 flex items-center gap-2">
+            <Clock className="h-4 w-4 text-[#FF6B00]" />
+            <h3 className="text-sm font-semibold text-[#111827]">
+              Delivery Preference
+            </h3>
+          </div>
+          <p className="text-sm font-medium text-[#111827]">
+            {order.deliveryPreference?.label ?? "As soon as possible"}
+          </p>
+          {order.deliveryPreference?.scheduledDateLabel ? (
+            <p className="mt-1 text-sm text-gray-600">
+              {order.deliveryPreference.scheduledDateLabel}
+              {order.deliveryPreference.scheduledSlotLabel
+                ? `, ${order.deliveryPreference.scheduledSlotLabel}`
+                : ""}
+            </p>
+          ) : null}
+          {order.customerRemark || order.deliveryPreference?.customerRemark ? (
+            <p className="mt-2 text-sm text-gray-600">
+              {order.customerRemark || order.deliveryPreference?.customerRemark}
+            </p>
+          ) : null}
+        </section>
+
+        <section className="rounded-2xl border border-[#E5E7EB] p-4">
           <div className="mb-4 flex items-center gap-2">
             <Clock className="h-4 w-4 text-[#FF6B00]" />
             <h3 className="text-sm font-semibold text-[#111827]">Timeline</h3>

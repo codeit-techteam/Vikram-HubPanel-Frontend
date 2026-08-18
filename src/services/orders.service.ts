@@ -112,6 +112,18 @@ interface BackendOrderDetail extends BackendOrderListItem {
   deliveryCapacityLimit?: number | string | null;
   freeDeliveryApplied?: boolean;
   deliveryMultiVehicle?: boolean;
+  notes?: string | null;
+  deliveryCustomerRemark?: string | null;
+  adminInternalNote?: string | null;
+  deliveryPreferenceType?: string;
+  deliveryPreference?: {
+    type?: string;
+    label?: string;
+    scheduledDate?: string | null;
+    scheduledDateLabel?: string | null;
+    scheduledSlotLabel?: string | null;
+    customerRemark?: string | null;
+  } | null;
   dispatchHistory?: Array<{
     dispatchNo: string;
     status: string;
@@ -130,13 +142,14 @@ const DELIVERY_VEHICLE_LABELS: Record<string, string> = {
   THREE_WHEELER_LOADER: "3 Wheeler Loader",
   PICK_UP_VAN: "Pick Up Van",
   FULL_TRUCK: "Full Truck",
+  HEAVY_LOADER: "600 sqft Loader",
+  RMC_TRANSIT_MIXER: "RMC Transit Mixer",
 };
 
 const PENDING_BACKEND: BackendOrderStatus[] = [
   "PENDING",
   "CONFIRMED",
   "HUB_ASSIGNED",
-  "AWAITING_HUB_ALLOCATION",
 ];
 
 const LOADING_BACKEND: BackendOrderStatus[] = [
@@ -299,6 +312,13 @@ function mapOrder(order: BackendOrderDetail): HubOrder {
       driverName,
       vehicleNumber,
     },
+    deliveryPreference: order.deliveryPreference ?? undefined,
+    customerRemark:
+      order.deliveryPreference?.customerRemark ??
+      order.deliveryCustomerRemark ??
+      order.notes ??
+      undefined,
+    adminInternalNote: order.adminInternalNote ?? undefined,
     deliveryPricing: {
       vehicleType: order.deliveryVehicleType ?? null,
       vehicleDisplayName: order.deliveryVehicleType

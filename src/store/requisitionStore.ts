@@ -15,7 +15,19 @@ import type {
 import { requisitionService } from "@/services/requisition.service";
 import { useAuthStore } from "@/store/authStore";
 
-const SOURCE_WAREHOUSE = "Main Warehouse Gurugram";
+function createDefaultDraft(): DraftRequisition {
+  const hub = resolveAssignedHub();
+  return {
+    requisitionId: "Draft",
+    hubId: hub.hubId,
+    hubName: hub.hubName,
+    priority: "high",
+    expectedDate: "",
+    requestReason: "Upcoming Demand",
+    materials: getDefaultMaterials(),
+    sourceWarehouse: "Central Warehouse",
+  };
+}
 
 function parseStockValue(stock: string): number {
   const match = stock.match(/^([\d,.]+)/);
@@ -74,12 +86,6 @@ function toDraftMaterial(
     : productToMaterial(product);
 }
 
-function generateRequisitionId(): string {
-  const year = new Date().getFullYear();
-  const seq = String(Math.floor(1000 + Math.random() * 9000));
-  return `REQ-${year}-${seq}`;
-}
-
 function getDefaultMaterials(): DraftMaterialItem[] {
   return [];
 }
@@ -89,20 +95,6 @@ function resolveAssignedHub() {
   return {
     hubId: manager?.hubId || "",
     hubName: manager?.hubName || "Assigned Hub",
-  };
-}
-
-function createDefaultDraft(): DraftRequisition {
-  const hub = resolveAssignedHub();
-  return {
-    requisitionId: generateRequisitionId(),
-    hubId: hub.hubId,
-    hubName: hub.hubName,
-    priority: "high",
-    expectedDate: "",
-    requestReason: "Upcoming Demand",
-    materials: getDefaultMaterials(),
-    sourceWarehouse: SOURCE_WAREHOUSE,
   };
 }
 
@@ -474,7 +466,14 @@ export const useRequisitionStore = create<RequisitionState>((set, get) => ({
         toDraftMaterial(product),
       ];
       return {
-        draftRequisition: { ...state.draftRequisition, materials },
+        draftRequisition: {
+          ...state.draftRequisition,
+          materials,
+          sourceWarehouse:
+            isMaterialOption(product) && product.warehouseName
+              ? product.warehouseName
+              : state.draftRequisition.sourceWarehouse,
+        },
         estimatedValue: calculateEstimatedValue(materials),
       };
     }),
@@ -515,14 +514,22 @@ export const useRequisitionStore = create<RequisitionState>((set, get) => ({
 
   saveDraft: async () => {
     const { draftRequisition } = get();
+    const hasContent =
+      draftRequisition.materials.length > 0 || Boolean(draftRequisition.expectedDate);
+    if (!hasContent || !draftRequisition.hubId) {
+      return;
+    }
     set({ isSavingDraft: true });
-    await requisitionService.saveDraft(draftRequisition);
-    const savedAt = new Date().toISOString();
-    set({
-      isSavingDraft: false,
-      draftSavedAt: savedAt,
-      draftRequisition: { ...draftRequisition, lastSavedAt: savedAt },
-    });
+    try {
+      const saved = await requisitionService.saveDraft(draftRequisition);
+      set({
+        isSavingDraft: false,
+        draftSavedAt: saved.lastSavedAt ?? new Date().toISOString(),
+        draftRequisition: saved,
+      });
+    } catch {
+      set({ isSavingDraft: false });
+    }
   },
 
   submitRequisition: async () => {
@@ -533,10 +540,11 @@ export const useRequisitionStore = create<RequisitionState>((set, get) => ({
     const data = await requisitionService.getData();
     const filtered = filterRequests(data.requests, trackingFilters);
     const paginated = paginateRequests(filtered, 1, pagination.pageSize);
-    const newRequest = data.requests[0];
+    const newRequest =
+      data.requests.find((row) => row.requestId === requestId) ??
+      data.requests[0];
 
     set((state) => ({
-      requisitions: [...state.requisitions, draftRequisition],
       draftRequisition: createDefaultDraft(),
       estimatedValue: 0,
       selectedPriority: "high",
@@ -548,7 +556,7 @@ export const useRequisitionStore = create<RequisitionState>((set, get) => ({
       currentPage: 1,
       pagination: {
         ...pagination,
-        totalOpen: pagination.totalOpen + 1,
+        totalOpen: data.pagination.totalOpen,
         totalPages: Math.ceil(filtered.length / pagination.pageSize) || 1,
       },
     }));

@@ -93,7 +93,9 @@ function transferToReceivingRecord(transfer: IncomingTransfer): ReceivingRecord 
         dispatchedQty: qty,
         dispatchedUnit: unit,
         dispatchedDisplay: m.quantity,
-        receivedQty: isReceived ? (receivedFromApi ?? qty) : qty,
+        receivedQty: isReceived
+          ? (receivedFromApi ?? qty)
+          : Math.max(0, qty - (receivedFromApi ?? 0)),
         verificationStatus: isReceived
           ? ("verified" as const)
           : ("pending" as const),

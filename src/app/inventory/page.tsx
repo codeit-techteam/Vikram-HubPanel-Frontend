@@ -59,7 +59,17 @@ export default function InventoryPage() {
   useEffect(() => {
     const q = searchParams.get("search");
     if (q) setSearch(q);
-    loadInventory();
+    void loadInventory();
+    const refreshOnFocus = () => {
+      if (document.visibilityState === "hidden") return;
+      void loadInventory();
+    };
+    window.addEventListener("focus", refreshOnFocus);
+    document.addEventListener("visibilitychange", refreshOnFocus);
+    return () => {
+      window.removeEventListener("focus", refreshOnFocus);
+      document.removeEventListener("visibilitychange", refreshOnFocus);
+    };
   }, [loadInventory, searchParams, setSearch]);
 
   const handleExport = () => {

@@ -25,6 +25,11 @@ interface HubDashboardApiData {
   vehiclesAvailable: number;
   driversAvailable: number;
   todaysRevenue: number;
+  pendingRequisitions?: number;
+  incomingTransfers?: number;
+  warehouseName?: string;
+  incomingDeliveries?: IncomingDelivery[];
+  activeRequisitions?: ActiveRequisition[];
   hubPerformance: {
     deliveryRate: number;
     dispatchRate: number;
@@ -79,14 +84,16 @@ function mapDashboardKpis(data: HubDashboardApiData): DashboardKpi[] {
     {
       id: "pending-requisitions",
       label: "Pending Requisitions",
-      value: "0",
-      variant: "default",
+      value: String(data.pendingRequisitions ?? 0),
+      sublabel: "Awaiting warehouse review",
+      variant: (data.pendingRequisitions ?? 0) > 0 ? "alert" : "default",
     },
     {
       id: "incoming-transfers",
       label: "Incoming Transfers",
-      value: "0",
-      variant: "default",
+      value: String(data.incomingTransfers ?? 0),
+      sublabel: "In transit / pending receipt",
+      variant: (data.incomingTransfers ?? 0) > 0 ? "alert" : "default",
     },
     {
       id: "low-stock-alerts",
@@ -191,13 +198,27 @@ export const dashboardService = {
       /* orders list is best-effort for dashboard widgets */
     }
 
+    const incomingDeliveries = (payload.incomingDeliveries ?? []).map(
+      (delivery) => ({
+        ...delivery,
+        expectedArrival: delivery.expectedArrival
+          ? new Date(delivery.expectedArrival).toLocaleString("en-IN", {
+              day: "2-digit",
+              month: "short",
+              hour: "2-digit",
+              minute: "2-digit",
+            })
+          : "ETA pending",
+      }),
+    ) as IncomingDelivery[];
+
     return {
-      lastSync: "Just now",
+      lastSync: new Date().toLocaleString("en-IN"),
       kpis,
       outgoingDispatches,
-      incomingDeliveries: [] as IncomingDelivery[],
+      incomingDeliveries,
       quickOperations: QUICK_OPERATIONS as QuickOperation[],
-      activeRequisitions: [] as ActiveRequisition[],
+      activeRequisitions: (payload.activeRequisitions ?? []) as ActiveRequisition[],
       outboundEfficiency,
       recentLogs,
     };

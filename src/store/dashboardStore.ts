@@ -41,7 +41,7 @@ interface DashboardState {
   ) => void;
 }
 
-export const useDashboardStore = create<DashboardState>((set) => ({
+export const useDashboardStore = create<DashboardState>((set, get) => ({
   lastSync: "",
   kpis: [],
   outgoingDispatches: [],
@@ -100,16 +100,7 @@ export const useDashboardStore = create<DashboardState>((set) => ({
   },
 
   updateIncomingTransfersKpi: () => {
-    set((state) => ({
-      kpis: state.kpis.map((kpi) =>
-        kpi.id === "incoming-transfers"
-          ? {
-              ...kpi,
-              value: String(Math.max(0, parseInt(kpi.value, 10) - 1)),
-            }
-          : kpi,
-      ),
-    }));
+    void get().loadDashboard();
   },
 
   updateDispatchKpis: (action: "created" | "delivered", revenue?: number) => {

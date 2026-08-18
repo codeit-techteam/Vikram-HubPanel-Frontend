@@ -251,6 +251,40 @@ export default function OrderDetailsPage() {
           </CardContent>
         </Card>
 
+        <Card className="rounded-2xl border-[#E5E7EB] shadow-sm">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-base">
+              <Clock className="h-5 w-5 text-[#FF6B00]" />
+              Delivery Preference
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2 text-sm">
+            <InfoRow
+              label="Delivery Type"
+              value={order.deliveryPreference?.label ?? "As soon as possible"}
+            />
+            <InfoRow
+              label="Date"
+              value={order.deliveryPreference?.scheduledDateLabel ?? "—"}
+            />
+            <InfoRow
+              label="Time"
+              value={order.deliveryPreference?.scheduledSlotLabel ?? "—"}
+            />
+            <InfoRow
+              label="Customer Remark"
+              value={
+                order.customerRemark ||
+                order.deliveryPreference?.customerRemark ||
+                "—"
+              }
+            />
+            {order.adminInternalNote ? (
+              <InfoRow label="Internal Note" value={order.adminInternalNote} />
+            ) : null}
+          </CardContent>
+        </Card>
+
         {order.deliveryPricing ? (
           <Card className="rounded-2xl border-[#E5E7EB] shadow-sm lg:col-span-1">
             <CardHeader>

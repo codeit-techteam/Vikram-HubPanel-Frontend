@@ -11,6 +11,14 @@ const STATUS_CONFIG: Record<
     label: "Pending",
     className: "bg-gray-100 text-gray-600",
   },
+  draft: {
+    label: "Draft",
+    className: "bg-slate-100 text-slate-600",
+  },
+  rejected: {
+    label: "Rejected",
+    className: "bg-red-100 text-red-700",
+  },
   approved: {
     label: "Approved",
     className: "bg-blue-100 text-blue-700",
@@ -42,7 +50,7 @@ export function RequisitionStatusBadge({
   status,
   className,
 }: RequisitionStatusBadgeProps) {
-  const config = STATUS_CONFIG[status];
+  const config = STATUS_CONFIG[status] ?? STATUS_CONFIG.pending;
 
   return (
     <span

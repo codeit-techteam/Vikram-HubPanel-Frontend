@@ -78,7 +78,10 @@ export function IncomingDeliveriesTable({
               </tr>
             ) : (
               filteredDeliveries.map((delivery) => {
-                const status = HUB_OPERATION_STATUS_CONFIG[delivery.status];
+                const status = HUB_OPERATION_STATUS_CONFIG[delivery.status] ?? {
+                  label: delivery.status,
+                  className: "bg-gray-100 text-gray-600",
+                };
                 return (
                   <tr
                     key={delivery.id}

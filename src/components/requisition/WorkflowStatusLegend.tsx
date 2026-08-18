@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 const STAGES = [
   { label: "Pending", color: "bg-gray-400" },
   { label: "Approved", color: "bg-blue-500" },
+  { label: "Rejected", color: "bg-red-500" },
   { label: "Allocated", color: "bg-purple-500" },
   { label: "In Transit", color: "bg-[#FF6B00]" },
   { label: "Delivered", color: "bg-emerald-500" },

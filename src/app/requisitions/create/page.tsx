@@ -201,8 +201,11 @@ export default function CreateRequisitionPage() {
       await submitRequisition();
       toast.success("Requisition submitted successfully");
       router.push("/requisitions");
-    } catch {
-      toast.error("Failed to submit requisition");
+    } catch (error) {
+      const message =
+        (error as { response?: { data?: { message?: string } } })?.response
+          ?.data?.message || "Failed to submit requisition";
+      toast.error(message);
     }
   };
 

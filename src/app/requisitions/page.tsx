@@ -43,7 +43,21 @@ export default function RequisitionsPage() {
   const { loading, loadRequests } = useRequisitionStore();
 
   useEffect(() => {
-    loadRequests();
+    void loadRequests();
+    const timer = window.setInterval(() => {
+      void loadRequests();
+    }, 15_000);
+    const refreshOnFocus = () => {
+      if (document.visibilityState === "hidden") return;
+      void loadRequests();
+    };
+    window.addEventListener("focus", refreshOnFocus);
+    document.addEventListener("visibilitychange", refreshOnFocus);
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener("focus", refreshOnFocus);
+      document.removeEventListener("visibilitychange", refreshOnFocus);
+    };
   }, [loadRequests]);
 
   if (loading) {

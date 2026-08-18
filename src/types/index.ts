@@ -136,8 +136,10 @@ export interface AddMaterialPayload {
 }
 
 export type RequisitionStatus =
+  | "draft"
   | "pending"
   | "approved"
+  | "rejected"
   | "allocated"
   | "in_transit"
   | "delivered"
@@ -203,6 +205,8 @@ export interface RequisitionRequest {
   priority?: string;
   expectedDate?: string;
   reason?: string;
+  rejectionReason?: string;
+  warehouseName?: string;
   materials?: RequisitionMaterialLine[];
   dispatch?: RequisitionDispatchInfo;
   receiving?: RequisitionReceivingInfo;
@@ -218,6 +222,7 @@ export interface RequisitionMaterialOption {
   currentStock: number;
   minimumStock?: number;
   warehouseStock: number;
+  warehouseName?: string;
   unit: string;
   unitPrice: number;
   lowStock?: boolean;
@@ -282,6 +287,7 @@ export interface DraftMaterialItem {
 }
 
 export interface DraftRequisition {
+  id?: string;
   requisitionId: string;
   hubId: string;
   hubName: string;
@@ -745,6 +751,18 @@ export interface HubOrder {
     freeDeliveryApplied?: boolean;
     multiVehicle?: boolean;
   };
+  deliveryPreference?: {
+    type?: string;
+    label?: string;
+    scheduledDate?: string | null;
+    scheduledDateLabel?: string | null;
+    scheduledSlotLabel?: string | null;
+    scheduledStartAt?: string | null;
+    scheduledEndAt?: string | null;
+    customerRemark?: string | null;
+  };
+  customerRemark?: string | null;
+  adminInternalNote?: string | null;
   dispatchedAt?: string | null;
   deliveredAt?: string | null;
 }

@@ -4,10 +4,13 @@ import type { NextRequest } from "next/server";
 const PUBLIC_PATHS = ["/login"];
 
 /**
- * Next.js 16: `middleware` → `proxy` (nodejs runtime).
- * Auth gate for hub portal routes.
+ * Server auth gate for hub portal routes.
+ *
+ * Next.js 16.2.x Turbopack currently 404s every App Router page when
+ * `src/proxy.ts` is present (routes.d.ts compiles as `AppRoutes = never`).
+ * Keep this as `middleware.ts` until that bug is fixed.
  */
-export function proxy(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get("hub_access_token")?.value;
 
@@ -33,5 +36,7 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
+  ],
 };

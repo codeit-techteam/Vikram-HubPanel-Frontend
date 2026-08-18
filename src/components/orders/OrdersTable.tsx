@@ -24,7 +24,6 @@ const PENDING_BACKEND = new Set([
   "PENDING",
   "CONFIRMED",
   "HUB_ASSIGNED",
-  "AWAITING_HUB_ALLOCATION",
 ]);
 
 function canAcceptOrder(order: HubOrder) {

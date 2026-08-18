@@ -74,6 +74,15 @@ export function RequisitionDetailSummary({
         </div>
       </div>
 
+      {request.status === "rejected" && request.rejectionReason ? (
+        <div className="mt-4 rounded-lg border border-red-100 bg-red-50 px-3 py-2">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-red-400">
+            Rejection Reason
+          </p>
+          <p className="mt-1 text-sm text-red-700">{request.rejectionReason}</p>
+        </div>
+      ) : null}
+
       {materials.length > 0 && (
         <div className="mt-6">
           <p className="mb-3 text-[10px] font-semibold uppercase tracking-wider text-gray-400">

@@ -55,7 +55,17 @@ export default function DashboardPage() {
     const timer = window.setInterval(() => {
       void loadDashboard();
     }, 15_000);
-    return () => window.clearInterval(timer);
+    const refreshOnFocus = () => {
+      if (document.visibilityState === "hidden") return;
+      void loadDashboard();
+    };
+    window.addEventListener("focus", refreshOnFocus);
+    document.addEventListener("visibilitychange", refreshOnFocus);
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener("focus", refreshOnFocus);
+      document.removeEventListener("visibilitychange", refreshOnFocus);
+    };
   }, [loadDashboard]);
 
   const handleSync = async () => {

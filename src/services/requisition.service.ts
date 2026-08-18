@@ -27,12 +27,29 @@ const REASON_TO_API: Record<string, string> = {
 };
 
 const STATUS_UI_TO_API: Record<string, string> = {
+  draft: "DRAFT",
   pending: "PENDING_APPROVAL",
   approved: "APPROVED",
+  rejected: "REJECTED",
   allocated: "ALLOCATED",
   in_transit: "IN_TRANSIT",
   delivered: "DISPATCHED",
   received: "COMPLETED",
+};
+
+const API_TO_REASON: Record<string, string> = {
+  LOW_STOCK: "Low Stock",
+  UPCOMING_DEMAND: "Upcoming Demand",
+  EMERGENCY_ORDER: "Emergency Order",
+  FESTIVAL_STOCK: "Festival Stock",
+  PROJECT_REQUIREMENT: "Project Requirement",
+  OTHER: "Other",
+};
+
+const API_TO_PRIORITY: Record<string, DraftRequisition["priority"]> = {
+  NORMAL: "normal",
+  HIGH: "high",
+  URGENT: "urgent",
 };
 
 interface BackendRequisitionRow {
@@ -54,6 +71,8 @@ interface BackendRequisitionRow {
   rawStatus?: string;
   expectedDate?: string;
   reason?: string;
+  rejectionReason?: string;
+  warehouseName?: string;
   timeline: RequisitionRequest["timeline"];
   materials?: RequisitionRequest["materials"];
   dispatch?: RequisitionRequest["dispatch"];
@@ -87,6 +106,8 @@ function mapRequest(row: BackendRequisitionRow): RequisitionRequest {
       ? formatDisplayDate(row.expectedDate)
       : undefined,
     reason: row.reason,
+    rejectionReason: row.rejectionReason,
+    warehouseName: row.warehouseName,
     materials: row.materials,
     dispatch: row.dispatch,
     receiving: row.receiving,
@@ -186,6 +207,56 @@ async function fetchRequisitionRow(
   }
 }
 
+function draftPayload(draft: DraftRequisition, submit: boolean) {
+  const activeMaterials = draft.materials.filter((m) => m.requestedQty > 0);
+  return {
+    priority:
+      PRIORITY_TO_API[draft.priority as keyof typeof PRIORITY_TO_API] ?? "NORMAL",
+    reason: REASON_TO_API[draft.requestReason] ?? "OTHER",
+    expectedDate: draft.expectedDate || undefined,
+    remarks: draft.requestReason,
+    submit,
+    items: activeMaterials.map((material) => ({
+      productId: material.productId,
+      requestedQty: Math.max(1, Math.round(material.requestedQty)),
+    })),
+  };
+}
+
+function mapDraftFromRow(row: BackendRequisitionRow): DraftRequisition {
+  const expected = row.expectedDate
+    ? new Date(row.expectedDate).toISOString().slice(0, 10)
+    : "";
+  return {
+    id: row.id,
+    requisitionId: row.requestNo ?? row.requestId,
+    hubId: row.hubId,
+    hubName: row.hubName ?? row.hubLocation,
+    priority:
+      API_TO_PRIORITY[String(row.priority).toUpperCase()] ??
+      ((row.priority as DraftRequisition["priority"]) || "normal"),
+    expectedDate: Number.isNaN(new Date(expected).getTime()) ? "" : expected,
+    requestReason:
+      API_TO_REASON[String(row.reason ?? "")] ??
+      row.reason ??
+      "Upcoming Demand",
+    sourceWarehouse: row.warehouseName ?? "Central Warehouse",
+    lastSavedAt: new Date().toISOString(),
+    materials: (row.materials ?? []).map((material) => ({
+      id: `row-${material.productId}`,
+      productId: material.productId,
+      productName: material.productName,
+      sku: material.sku ?? "",
+      currentStock: material.availableStock,
+      requestedQty: material.requestedQty,
+      unit: material.unit,
+      unitPrice: material.unitPrice ?? 0,
+      minimumStock: material.minimumStock ?? 0,
+      warehouseStock: material.warehouseStock ?? 0,
+    })),
+  };
+}
+
 export const requisitionService = {
   async getData(): Promise<RequisitionData> {
     const [listResponse, statsResponse] = await Promise.all([
@@ -206,8 +277,10 @@ export const requisitionService = {
       stats: mapStats(statsPayload),
       statusOptions: [
         { value: "all", label: "All Statuses" },
+        { value: "draft", label: "Draft" },
         { value: "pending", label: "Pending" },
         { value: "approved", label: "Approved" },
+        { value: "rejected", label: "Rejected" },
         { value: "allocated", label: "Allocated" },
         { value: "in_transit", label: "In Transit" },
         { value: "delivered", label: "Dispatched" },
@@ -273,6 +346,7 @@ export const requisitionService = {
           currentStock: number;
           minimumStock: number;
           warehouseStock: number;
+          warehouseName?: string;
           unit: string;
           unitPrice: number;
           lowStock: boolean;
@@ -289,6 +363,7 @@ export const requisitionService = {
       currentStock: item.currentStock,
       minimumStock: item.minimumStock,
       warehouseStock: item.warehouseStock,
+      warehouseName: item.warehouseName,
       unit: item.unit,
       unitPrice: item.unitPrice,
       lowStock: item.lowStock,
@@ -296,11 +371,28 @@ export const requisitionService = {
   },
 
   async getDraft(): Promise<DraftRequisition | null> {
-    return null;
+    const { data } = await api.get<ApiResponse<BackendRequisitionRow | null>>(
+      "/hub/requisitions/draft",
+    );
+    const row = data.data;
+    if (!row) return null;
+    return mapDraftFromRow(row);
   },
 
-  async saveDraft(_draft: DraftRequisition): Promise<void> {
-    // Drafts are local-only until submit (backend has no draft endpoint yet)
+  async saveDraft(draft: DraftRequisition): Promise<DraftRequisition> {
+    const payload = draftPayload(draft, false);
+    if (draft.id) {
+      const { data } = await api.patch<ApiResponse<BackendRequisitionRow>>(
+        `/hub/requisitions/${draft.id}`,
+        payload,
+      );
+      return mapDraftFromRow(data.data);
+    }
+    const { data } = await api.post<ApiResponse<BackendRequisitionRow>>(
+      "/hub/requisitions",
+      payload,
+    );
+    return mapDraftFromRow(data.data);
   },
 
   getEstimatedValue(materials: DraftMaterialItem[]): number {
@@ -311,23 +403,17 @@ export const requisitionService = {
   },
 
   async createRequisition(draft: DraftRequisition): Promise<string> {
-    const activeMaterials = draft.materials.filter((m) => m.requestedQty > 0);
+    if (draft.id) {
+      await api.patch(`/hub/requisitions/${draft.id}`, draftPayload(draft, false));
+      const { data } = await api.patch<ApiResponse<BackendRequisitionRow>>(
+        `/hub/requisitions/${draft.id}/submit`,
+      );
+      return data.data.requestNo ?? data.data.requestId;
+    }
 
     const { data } = await api.post<ApiResponse<BackendRequisitionRow>>(
       "/hub/requisitions",
-      {
-        priority:
-          PRIORITY_TO_API[draft.priority as keyof typeof PRIORITY_TO_API] ??
-          "NORMAL",
-        reason: REASON_TO_API[draft.requestReason] ?? "OTHER",
-        expectedDate: draft.expectedDate,
-        remarks: draft.requestReason,
-        submit: true,
-        items: activeMaterials.map((material) => ({
-          productId: material.productId,
-          requestedQty: Math.max(1, Math.round(material.requestedQty)),
-        })),
-      },
+      draftPayload(draft, true),
     );
 
     return data.data.requestNo ?? data.data.requestId;
