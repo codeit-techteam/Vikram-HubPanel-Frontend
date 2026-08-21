@@ -30,10 +30,23 @@ type ApiEnvelope<T> = {
   data: T;
 };
 
-async function hubFetch<T>(path: string, token: string): Promise<T> {
-  const base =
+function resolveApiBase(): string {
+  const configured =
     process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ||
-    "http://localhost:8000/api/v1";
+    "/backend-api/v1";
+  if (configured.startsWith("http")) return configured;
+  // Rewrites only apply to browser→Next; server fetch must hit upstream directly.
+  if (typeof window === "undefined") {
+    const target =
+      process.env.API_PROXY_TARGET ??
+      "https://bajriwala-backend-zkuxd.ondigitalocean.app";
+    return `${target.replace(/\/$/, "")}/api/v1`;
+  }
+  return configured;
+}
+
+async function hubFetch<T>(path: string, token: string): Promise<T> {
+  const base = resolveApiBase();
   const res = await fetch(`${base}${path}`, {
     headers: {
       Authorization: `Bearer ${token}`,
