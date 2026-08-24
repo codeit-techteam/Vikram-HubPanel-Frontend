@@ -11,3 +11,4 @@ export { useTransferStore } from "./transferStore";
 export { useMaterialReceivingStore } from "./materialReceivingStore";
 export { useOrdersStore } from "./ordersStore";
 export { useAnalyticsStore } from "./analyticsStore";
+export { useLedgerStore } from "./ledgerStore";
