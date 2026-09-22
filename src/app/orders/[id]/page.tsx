@@ -279,6 +279,39 @@ export default function OrderDetailsPage() {
                 "—"
               }
             />
+            {order.deliveryInstructions ? (
+              <div className="pt-1">
+                <p className="mb-1.5 text-xs text-gray-400">Instructions</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {order.deliveryInstructions.callOnArrival ? (
+                    <span className="rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-semibold text-blue-700">
+                      Call on Arrival
+                    </span>
+                  ) : null}
+                  {order.deliveryInstructions.leaveAtSecurity ? (
+                    <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-700">
+                      Leave at Security
+                    </span>
+                  ) : null}
+                  {order.deliveryInstructions.heavyVehicleAccess ? (
+                    <span className="rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-semibold text-amber-700">
+                      Heavy Vehicle Access
+                    </span>
+                  ) : null}
+                  {order.deliveryInstructions.openAreaConfirmed ? (
+                    <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-semibold text-emerald-700">
+                      Open Area Confirmed
+                    </span>
+                  ) : null}
+                  {!order.deliveryInstructions.callOnArrival &&
+                  !order.deliveryInstructions.leaveAtSecurity &&
+                  !order.deliveryInstructions.heavyVehicleAccess &&
+                  !order.deliveryInstructions.openAreaConfirmed ? (
+                    <span className="text-sm text-gray-500">None</span>
+                  ) : null}
+                </div>
+              </div>
+            ) : null}
             {order.adminInternalNote ? (
               <InfoRow label="Internal Note" value={order.adminInternalNote} />
             ) : null}

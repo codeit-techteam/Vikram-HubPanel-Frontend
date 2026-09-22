@@ -761,6 +761,13 @@ export interface HubOrder {
     scheduledEndAt?: string | null;
     customerRemark?: string | null;
   };
+  /** Site / driver instruction flags from order confirmation. */
+  deliveryInstructions?: {
+    callOnArrival?: boolean;
+    leaveAtSecurity?: boolean;
+    heavyVehicleAccess?: boolean;
+    openAreaConfirmed?: boolean;
+  };
   customerRemark?: string | null;
   adminInternalNote?: string | null;
   dispatchedAt?: string | null;

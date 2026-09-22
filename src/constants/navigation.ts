@@ -1,6 +1,7 @@
 import {
   ArrowLeftRight,
   Boxes,
+  CalendarClock,
   ClipboardList,
   FileBarChart,
   LayoutDashboard,
@@ -47,6 +48,12 @@ export const NAV_ITEMS: NavItem[] = [
   { title: "Requisitions", href: "/requisitions", icon: ClipboardList },
   { title: "Transfers", href: "/transfers", icon: ArrowLeftRight },
   {
+    title: "Delivery Schedule",
+    href: "/delivery-schedule",
+    icon: CalendarClock,
+    section: "Operations",
+  },
+  {
     title: "Dispatch Planning",
     href: "/dispatch",
     icon: Send,
@@ -77,6 +84,7 @@ export const BREADCRUMB_LABELS: Record<string, string> = {
   "[transferId]": "Transfer Details",
   orders: "Orders",
   "[id]": "Order Details",
+  "delivery-schedule": "Delivery Schedule",
   dispatch: "Dispatch Planning",
   "[dispatchId]": "Dispatch Details",
   tracking: "Delivery Tracking",

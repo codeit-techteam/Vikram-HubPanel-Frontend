@@ -114,6 +114,10 @@ interface BackendOrderDetail extends BackendOrderListItem {
   deliveryMultiVehicle?: boolean;
   notes?: string | null;
   deliveryCustomerRemark?: string | null;
+  deliveryCallOnArrival?: boolean | null;
+  deliveryLeaveAtSecurity?: boolean | null;
+  deliveryHeavyVehicleAccess?: boolean | null;
+  openAreaConfirmed?: boolean | null;
   adminInternalNote?: string | null;
   deliveryPreferenceType?: string;
   deliveryPreference?: {
@@ -313,6 +317,12 @@ function mapOrder(order: BackendOrderDetail): HubOrder {
       vehicleNumber,
     },
     deliveryPreference: order.deliveryPreference ?? undefined,
+    deliveryInstructions: {
+      callOnArrival: Boolean(order.deliveryCallOnArrival),
+      leaveAtSecurity: Boolean(order.deliveryLeaveAtSecurity),
+      heavyVehicleAccess: Boolean(order.deliveryHeavyVehicleAccess),
+      openAreaConfirmed: Boolean(order.openAreaConfirmed),
+    },
     customerRemark:
       order.deliveryPreference?.customerRemark ??
       order.deliveryCustomerRemark ??

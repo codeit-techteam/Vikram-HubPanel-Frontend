@@ -32,6 +32,7 @@ export const HUB_ROLE_PERMISSIONS: Record<string, string[]> = {
 export const HUB_ROUTE_PERMISSIONS: Record<string, HubPermission | HubPermission[]> = {
   "/dashboard": HUB_PERMISSIONS.DASHBOARD,
   "/orders": HUB_PERMISSIONS.ORDERS,
+  "/delivery-schedule": HUB_PERMISSIONS.ORDERS,
   "/inventory": HUB_PERMISSIONS.INVENTORY,
   "/requisitions": HUB_PERMISSIONS.INVENTORY,
   "/transfers": HUB_PERMISSIONS.INVENTORY,
