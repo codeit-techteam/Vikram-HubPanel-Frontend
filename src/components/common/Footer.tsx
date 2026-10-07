@@ -28,10 +28,10 @@ export function Footer() {
           <span>
             Technical Support:{" "}
             <a
-              href="tel:+911800BUILDOPS"
+              href="tel:+919211899956"
               className="font-semibold text-[#FF6B00] hover:underline"
             >
-              +91 1800-BUILDOPS
+              +91 92118 99956
             </a>
           </span>
         </div>
